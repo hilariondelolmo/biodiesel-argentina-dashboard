@@ -1,0 +1,100 @@
+.sources-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.source-card {
+  background: var(--bg-2);
+  padding: 1.8rem 1.6rem;
+}
+
+.source-card.full {
+  grid-column: 1 / -1;
+}
+
+.source-card h4 {
+  color: var(--accent-oil);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.9rem;
+  font-weight: 500;
+}
+
+.source-card p {
+  color: var(--ink-2);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 0.8rem;
+}
+
+.source-card p:last-child {
+  margin-bottom: 0;
+}
+
+.source-card a {
+  display: inline-block;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.75rem;
+  background: var(--bg-3);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  margin-top: 0.3rem;
+}
+
+.source-card a:hover {
+  border-color: var(--accent-exp);
+}
+
+.source-card code {
+  font-size: 0.9em;
+  background: var(--bg-3);
+  padding: 0.05rem 0.35rem;
+  border-radius: 2px;
+  color: var(--accent-oil);
+}
+
+.sources-footer {
+  padding-top: 2rem;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.sources-footer p {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  max-width: 70ch;
+}
+
+/* Footer del sitio */
+.site-footer {
+  padding: 3rem 0;
+  border-top: 1px solid var(--rule);
+  background: var(--bg-2);
+}
+
+.site-footer p {
+  font-size: 0.82rem;
+  color: var(--ink-2);
+  line-height: 1.6;
+  margin-bottom: 0.7rem;
+  max-width: 70ch;
+}
+
+.site-footer p:last-child {
+  margin-bottom: 0;
+}
+
+.site-footer strong {
+  color: var(--ink);
+}
+
+@media (max-width: 720px) {
+  .sources-grid { grid-template-columns: 1fr; }
+  .source-card.full { grid-column: 1; }
+}

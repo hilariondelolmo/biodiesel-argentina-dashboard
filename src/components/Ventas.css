@@ -1,0 +1,80 @@
+.tabla-detalle-wrap {
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.tabla-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -1.5rem;
+  padding: 0 1.5rem;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum", "kern";
+  min-width: 800px;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-muted);
+  font-weight: 500;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--rule-soft);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.data-table tbody tr:hover {
+  background: var(--bg-3);
+}
+
+.row-explora {
+  background: rgba(74, 143, 168, 0.08) !important;
+}
+.row-explora td {
+  color: var(--ink);
+  font-weight: 500;
+}
+.row-explora .marker {
+  color: var(--accent-exp);
+  margin-right: 0.4rem;
+}
+
+.cat-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  padding: 0.12rem 0.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.cat-integrada {
+  color: var(--accent-oil);
+  border-color: rgba(212, 165, 116, 0.4);
+}
+.cat-no-integrada {
+  color: var(--accent-bio);
+  border-color: rgba(127, 176, 105, 0.4);
+}
+.cat-comercializadora {
+  color: var(--accent-neutral);
+}

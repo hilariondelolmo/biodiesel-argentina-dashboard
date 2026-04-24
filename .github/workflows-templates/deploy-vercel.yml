@@ -1,0 +1,46 @@
+# ═══════════════════════════════════════════════════════════════════
+# Deploy automático a Vercel
+#
+# Para activar este workflow:
+# 1. Moverlo a .github/workflows/ (renombrarlo a deploy-vercel.yml).
+# 2. En vercel.com crear el proyecto conectando el repo de GitHub.
+#    Vercel generalmente no necesita este workflow — maneja el deploy
+#    solo mediante su propia integración con GitHub.
+# 3. Si preferís control total vía Actions (para runs custom, pre-build,
+#    tests antes de deploy, etc.), usá este workflow con los secrets:
+#    - VERCEL_TOKEN (desde vercel.com → Account Settings → Tokens)
+#    - VERCEL_ORG_ID
+#    - VERCEL_PROJECT_ID
+#    Guardalos en GitHub → Settings → Secrets → Actions.
+# ═══════════════════════════════════════════════════════════════════
+
+name: Deploy · Vercel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Pull Vercel Environment
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

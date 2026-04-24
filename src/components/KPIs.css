@@ -1,0 +1,46 @@
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.kpi-card {
+  background: var(--bg-2);
+  padding: 1.2rem 1.3rem;
+}
+
+.kpi-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  margin-bottom: 0.7rem;
+  line-height: 1.3;
+}
+
+.kpi-val {
+  font-size: 1.55rem;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  line-height: 1.1;
+  margin-bottom: 0.3rem;
+}
+
+.kpi-sub {
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+}
+
+/* Variantes de color */
+.kpi-card.tone-pos .kpi-val { color: var(--accent-bio); }
+.kpi-card.tone-neg .kpi-val { color: var(--accent-alert); }
+.kpi-card.tone-warn .kpi-val { color: var(--accent-oil); }
+.kpi-card.tone-info .kpi-val { color: var(--accent-exp); }

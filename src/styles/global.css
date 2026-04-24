@@ -1,0 +1,153 @@
+/* ═══════════════════════════════════════════════════════
+   Tablero Biodiesel Argentina — CSS Global
+   Variables, reset, tipografía base, helpers
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+  /* Paleta — Dark Dashboard con acentos industriales */
+  --bg: #0A0E12;
+  --bg-2: #111820;
+  --bg-3: #171F28;
+  --bg-4: #1E2832;
+
+  --ink: #E8ECF0;
+  --ink-2: #B8C2CC;
+  --ink-muted: #6B7680;
+
+  --rule: #2A3340;
+  --rule-soft: #1E2832;
+
+  --accent-bio: #7FB069;      /* Verde biodiesel */
+  --accent-oil: #D4A574;      /* Ámbar petróleo */
+  --accent-exp: #4A8FA8;      /* Azul Explora */
+  --accent-exp-dim: #2F5668;
+  --accent-alert: #C67B5C;    /* Terracota alerta */
+  --accent-neutral: #8B9AAB;
+
+  /* Tipografía */
+  --font-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+
+  /* Layout */
+  --max-width: 1280px;
+  --gutter: 2rem;
+}
+
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 1.47;
+  letter-spacing: -0.003em;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern", "liga", "calt";
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.028em;
+  line-height: 1.08;
+  color: var(--ink);
+}
+h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); letter-spacing: -0.035em; }
+h2 { font-size: clamp(1.7rem, 2.8vw, 2.4rem); letter-spacing: -0.028em; }
+h3 { font-size: clamp(1.15rem, 1.6vw, 1.4rem); letter-spacing: -0.02em; }
+h4 { font-size: 1rem; letter-spacing: -0.015em; }
+em { font-style: italic; }
+
+a {
+  color: var(--accent-exp);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+a:hover { color: var(--ink); }
+
+code, .mono, .data {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum", "kern";
+  letter-spacing: 0;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* Contenedor base */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+section {
+  padding: 5rem 0;
+  border-top: 1px solid var(--rule);
+}
+
+.section-eyebrow {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent-oil);
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+}
+
+.section-header {
+  margin-bottom: 2.5rem;
+  max-width: 60rem;
+}
+
+.section-header p {
+  color: var(--ink-2);
+  font-size: 1.05rem;
+  margin-top: 0.8rem;
+  line-height: 1.55;
+}
+
+/* Helpers */
+.muted { color: var(--ink-muted); }
+.soft { color: var(--ink-2); }
+
+/* Nota al pie de cards */
+.note {
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+  margin-top: 0.75rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--rule-soft);
+  line-height: 1.5;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-muted); }
+
+/* Responsive */
+@media (max-width: 720px) {
+  :root { --gutter: 1.2rem; }
+  section { padding: 3.5rem 0; }
+}
+
+/* Modal open — bloquear scroll del body */
+body.modal-open { overflow: hidden; }

@@ -1,0 +1,154 @@
+[
+  {
+    "year": "2006",
+    "cat": "ley",
+    "bio": true,
+    "title": "Ley 26.093 — Régimen de Regulación y Promoción",
+    "desc": "Crea el régimen de promoción para la producción y uso sustentables de biocombustibles. Vigencia 15 años desde la reglamentación. Promulgada el 12-05-2006.",
+    "url": "https://www.argentina.gob.ar/normativa/nacional/ley-26093-116299/texto",
+    "urlLabel": "Texto oficial · argentina.gob.ar"
+  },
+  {
+    "year": "2007",
+    "cat": "decreto",
+    "title": "Decreto 109/2007",
+    "desc": "Reglamentación de la Ley 26.093: define órganos de aplicación, registros, requisitos técnicos y beneficios fiscales del régimen.",
+    "url": "https://www.argentina.gob.ar/normativa/nacional/decreto-109-2007-125179",
+    "urlLabel": "Texto oficial · argentina.gob.ar"
+  },
+  {
+    "year": "2010",
+    "cat": "res",
+    "bio": true,
+    "title": "Inicio efectivo del corte obligatorio (Res. SE 1283/2006 y 6/2010)",
+    "desc": "Marzo 2010: comienzo del mandato de mezcla obligatoria de biodiesel en gasoil. Corte inicial 5%, luego 7% (2010) y 10% (2014).",
+    "url": "https://www.argentina.gob.ar/normativa/nacional/resolución-1283-2006-120710",
+    "urlLabel": "Res. 1283/2006 · argentina.gob.ar",
+    "url2": "https://www.argentina.gob.ar/normativa/nacional/resolución-6-2010-162707",
+    "url2Label": "Res. 6/2010 · argentina.gob.ar"
+  },
+  {
+    "year": "2010-2012",
+    "cat": "res",
+    "title": "Resoluciones SE 1674/2010 y SE 56/2012",
+    "desc": "Fijan límite artificial de 50.000 t/año para empresas no integradas, medida que bloquea crecimiento por economías de escala y congela la estructura del sector durante una década.",
+    "url": "https://www.argentina.gob.ar/normativa/buscar?jurisdiccion=Nacional&content_type=Resolución&number=1674&publication_date_year=2010",
+    "urlLabel": "Buscar Res. 1674/2010 · argentina.gob.ar",
+    "url2": "https://www.argentina.gob.ar/normativa/buscar?jurisdiccion=Nacional&content_type=Resolución&number=56&publication_date_year=2012",
+    "url2Label": "Buscar Res. 56/2012 · argentina.gob.ar"
+  },
+  {
+    "year": "2013",
+    "cat": "internacional",
+    "title": "UE — Reglamento 490/2013 (antidumping)",
+    "desc": "La Unión Europea aplica derechos antidumping de 22-25,7% al biodiesel argentino. El cierre del mercado europeo marca el primer shock exportador significativo del sector.",
+    "url": "https://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:32013R0490",
+    "urlLabel": "Reglamento 490/2013 · EUR-Lex"
+  },
+  {
+    "year": "2017",
+    "cat": "internacional",
+    "title": "USA — Aranceles antidumping 86,2% + compensatorios 71,4%",
+    "desc": "El Departamento de Comercio emite órdenes de derechos sobre el biodiesel argentino. Las exportaciones a EEUU caen a cero inmediatamente.",
+    "url": "https://www.federalregister.gov/documents/2018/01/04/2017-28457/biodiesel-from-argentina-and-indonesia-amended-final-affirmative-antidumping-duty-determinations-and",
+    "urlLabel": "Orden DoC · Federal Register"
+  },
+  {
+    "year": "2017",
+    "cat": "res",
+    "title": "Resolución SE 415/2017",
+    "desc": "Modifica la fórmula de precio del biodiesel establecida en Res. 1125/2013. Continúan los ajustes insuficientes que afectan la rentabilidad del sector.",
+    "url": "https://www.argentina.gob.ar/normativa/buscar?jurisdiccion=Nacional&content_type=Resolución&number=415&publication_date_year=2017",
+    "urlLabel": "Buscar Res. 415/2017 · argentina.gob.ar"
+  },
+  {
+    "year": "2019",
+    "cat": "internacional",
+    "bio": true,
+    "title": "Acuerdo de Compromiso UE - CARBIO",
+    "desc": "La UE acepta un compromiso de precio mínimo y cupo de 1,2 millones de toneladas. El acuerdo excluye explícitamente a las empresas no integradas.",
+    "url": "https://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:32019D0245",
+    "urlLabel": "Decisión 2019/245 · EUR-Lex"
+  },
+  {
+    "year": "2021",
+    "cat": "ley",
+    "highlight": true,
+    "title": "Ley 27.640 — Marco Regulatorio de Biocombustibles",
+    "desc": "Reemplaza el régimen de promoción. Reduce el corte obligatorio de biodiesel del 10% al 5% (con piso de 3%), mientras mantiene el de bioetanol en 12%. Autora: Marcos Cleri. Promotor: Máximo Kirchner.",
+    "url": "https://www.argentina.gob.ar/normativa/nacional/ley-27640-352587/texto",
+    "urlLabel": "Texto oficial · argentina.gob.ar"
+  },
+  {
+    "year": "2021",
+    "cat": "decreto",
+    "title": "Decreto 717/2021",
+    "desc": "Reglamenta la Ley 27.640. Mantiene restricciones sobre empresas no integradas y el límite de 50.000 t/año.",
+    "url": "https://servicios.infoleg.gob.ar/infolegInternet/anexos/355000-359999/355460/texact.htm",
+    "urlLabel": "Texto actualizado · InfoLEG"
+  },
+  {
+    "year": "2022",
+    "cat": "res",
+    "title": "Resoluciones SE 689/2022 y 776/2022",
+    "desc": "Crean el Registro de Operadores y Mezcladores de Biocombustibles (689) y establecen pautas obligatorias para abastecimiento del mercado interno (776).",
+    "url": "https://www.argentina.gob.ar/normativa/buscar?jurisdiccion=Nacional&content_type=Resolución&number=689&publication_date_year=2022",
+    "urlLabel": "Buscar Res. 689/2022 · argentina.gob.ar",
+    "url2": "https://www.argentina.gob.ar/normativa/buscar?jurisdiccion=Nacional&content_type=Resolución&number=776&publication_date_year=2022",
+    "url2Label": "Buscar Res. 776/2022 · argentina.gob.ar"
+  },
+  {
+    "year": "2023",
+    "cat": "res",
+    "highlight": true,
+    "title": "Resolución SE 963/2023",
+    "desc": "Publicada el 29-11-2023, tres años y tres meses después de la Ley 27.640, aprueba la metodología para determinación del precio del biodiesel — cumplimiento tardío del Art. 14. Incluye en su Art. 5 una cláusula discrecional que permite apartarse de la fórmula.",
+    "url": "https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-963-2023-394051",
+    "urlLabel": "Texto oficial · argentina.gob.ar",
+    "url2": "https://www.boletinoficial.gob.ar/detalleAviso/primera/299472/20231130",
+    "url2Label": "Boletín Oficial 30-11-2023"
+  },
+  {
+    "year": "2023",
+    "cat": "decreto",
+    "title": "DNU 70/2023",
+    "desc": "Decreto del gobierno Milei. Su Capítulo VI originalmente modificaba sustancialmente el régimen de biocombustibles; fue retirado de la versión definitiva tras negociaciones con las provincias productoras.",
+    "url": "https://www.argentina.gob.ar/normativa/nacional/decreto-70-2023-395521/texto",
+    "urlLabel": "Texto oficial · argentina.gob.ar"
+  },
+  {
+    "year": "2024",
+    "cat": "proyecto",
+    "bio": true,
+    "title": "Proyecto Liga Bioenergética (S-1495/24 + 4752-D-2024)",
+    "desc": "Ingresa al Senado respaldado por nueve provincias, CAPBA, CASFER, el Centro Azucarero y la Cámara del Bioetanol de Maíz. Introduce licitaciones públicas, igualación del factor de utilización, contratos take-or-pay y límites del 14% por empresa y grupo económico.",
+    "url": "https://www.senado.gob.ar/parlamentario/comisiones/proyectosDictamenes/54",
+    "urlLabel": "Comisión Min/Energía · Senado",
+    "url2": "https://www.diputados.gob.ar/proyectos/proyecto.jsp?exp=4752-D-2024",
+    "url2Label": "Expte. 4752-D-2024 · Diputados"
+  },
+  {
+    "year": "2024",
+    "cat": "ley",
+    "title": "Ley 27.742 — Bases (sin capítulo biocombustibles)",
+    "desc": "Sancionada sin el capítulo original de biocombustibles, que había sido incluido por el PEN. Las provincias productoras lograron que se retirara para dar tratamiento separado.",
+    "url": "https://www.argentina.gob.ar/normativa/nacional/ley-27742-401266/texto",
+    "urlLabel": "Texto oficial · argentina.gob.ar"
+  },
+  {
+    "year": "2024",
+    "cat": "proyecto",
+    "title": "Proyecto Dip. Villaverde (redactado por Sec. Coord. Energía)",
+    "desc": "Expediente D-6969/2024. Redactado por el Secretario Daniel González y presentado por la Dip. Lorena Villaverde (LLA). Reduce el corte a 5% y lo extingue progresivamente hasta 0% en 2031. Habilita coprocesado como componente del corte.",
+    "url": "https://www.diputados.gob.ar/proyectos/proyecto.jsp?exp=6969-D-2024",
+    "urlLabel": "Expte. 6969-D-2024 · Diputados"
+  },
+  {
+    "year": "2025",
+    "cat": "proyecto",
+    "title": "Propuesta de la Secretaría de Energía (Veller)",
+    "desc": "Presentada en octubre 2025. Reduce la participación de no integradas del 7,5% al 2% entre 2025 y 2031. Preserva el universo cerrado de la Ley 27.640 con nuevo lenguaje.",
+    "url": null,
+    "urlLabel": "Sin texto público formal — propuesta presentada en comisión"
+  }
+]

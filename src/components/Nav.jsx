@@ -1,18 +1,13 @@
-import { useActiveSection } from '../hooks/useActiveSection.js';
+import { NavLink } from 'react-router-dom';
 import './Nav.css';
 
-const SECTIONS = [
-  { id: 'hero', label: 'Inicio' },
-  { id: 'indicadores', label: 'Indicadores' },
-  { id: 'ventas', label: 'Ventas' },
-  { id: 'timeline', label: 'Marco Legal' },
-  { id: 'articles', label: 'Análisis' },
-  { id: 'sources', label: 'Fuentes' },
+const ROUTES = [
+  { to: '/', label: 'Portada', end: true },
+  { to: '/mercado', label: 'Mercado Interno' },
+  { to: '/gestion', label: 'Gestión y Cupo' },
 ];
 
 export default function Nav() {
-  const active = useActiveSection(SECTIONS.map((s) => s.id));
-
   return (
     <nav className="top-nav">
       <div className="top-nav-inner container">
@@ -22,14 +17,15 @@ export default function Nav() {
           <span className="brand-sub">· Tablero</span>
         </div>
         <ul className="top-nav-links">
-          {SECTIONS.map((s) => (
-            <li key={s.id}>
-              <a
-                href={`#${s.id}`}
-                className={active === s.id ? 'active' : ''}
+          {ROUTES.map((r) => (
+            <li key={r.to}>
+              <NavLink
+                to={r.to}
+                end={r.end}
+                className={({ isActive }) => (isActive ? 'active' : '')}
               >
-                {s.label}
-              </a>
+                {r.label}
+              </NavLink>
             </li>
           ))}
         </ul>

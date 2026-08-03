@@ -75,7 +75,7 @@ export default function Sources() {
 
         <div className="sources-footer">
           <p className="muted">
-            Última actualización del dataset: febrero 2026 · Compilado por Explora S.A. · Las
+            Última actualización del dataset: febrero 2026 · Compilado por explorarg · Las
             opiniones editoriales vertidas son del autor y no comprometen a terceros citados.
           </p>
         </div>

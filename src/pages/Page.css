@@ -1,0 +1,79 @@
+/* Estilos compartidos de las páginas por eje (Mercado, Gestión) */
+
+.page-hero {
+  padding: 4.5rem var(--gutter) 2.5rem;
+  border-bottom: 1px solid var(--rule-soft);
+  background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
+}
+
+.page-hero .container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.page-hero .kicker {
+  color: var(--accent-exp);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.page-hero h1 {
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  margin-bottom: 0.8rem;
+}
+
+.page-hero .lede {
+  color: var(--ink-2);
+  font-size: 1.02rem;
+  max-width: 62ch;
+}
+
+.page-section {
+  padding: 3.5rem 0 1rem;
+  scroll-margin-top: 110px;
+}
+
+.page-section > .container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.page-section .section-kicker {
+  color: var(--ink-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.page-section h2 {
+  font-size: 1.45rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.page-section .section-intro {
+  color: var(--ink-2);
+  font-size: 0.92rem;
+  max-width: 68ch;
+  margin-bottom: 1.6rem;
+}
+
+/* Placeholder de sección en construcción (esqueleto Fase 1) */
+.section-placeholder {
+  border: 1px dashed var(--rule);
+  border-radius: 4px;
+  padding: 2.2rem;
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+  background: var(--bg-2);
+}

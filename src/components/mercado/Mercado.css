@@ -1,0 +1,336 @@
+/* Componentes del eje Mercado Interno */
+
+.empresa-selector-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.4rem;
+}
+
+.empresa-selector-row label {
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.empresa-select {
+  background: var(--bg-3);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  padding: 0.5rem 0.8rem;
+  min-width: 280px;
+  max-width: 100%;
+  cursor: pointer;
+}
+
+.empresa-select:focus {
+  outline: none;
+  border-color: var(--accent-exp);
+}
+
+/* --- Mapa de plantas --- */
+.mapa-plantas-wrap {
+  display: grid;
+  grid-template-columns: minmax(280px, 480px) 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.mapa-svg {
+  width: 100%;
+  height: auto;
+}
+
+.mapa-svg .provincia {
+  fill: var(--bg-3);
+  stroke: var(--rule);
+  stroke-width: 0.7;
+}
+
+.mapa-svg .planta {
+  fill: var(--accent-bio);
+  fill-opacity: 0.75;
+  stroke: var(--bg);
+  stroke-width: 0.6;
+  cursor: pointer;
+  transition: fill 0.15s;
+}
+
+.mapa-svg .planta:hover,
+.mapa-svg .planta.activa {
+  fill: var(--accent-exp);
+  fill-opacity: 1;
+}
+
+.mapa-detalle {
+  font-size: 0.85rem;
+}
+
+.mapa-detalle-titulo {
+  font-weight: 650;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.mapa-detalle-sub {
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  margin-bottom: 1rem;
+}
+
+.mapa-lista {
+  max-height: 420px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-right: 0.5rem;
+}
+
+.mapa-lista-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.8rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 3px;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+.mapa-lista-row:hover,
+.mapa-lista-row.activa {
+  background: var(--bg-3);
+  color: var(--ink);
+}
+
+.mapa-lista-cap {
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 780px) {
+  .mapa-plantas-wrap { grid-template-columns: 1fr; }
+}
+
+/* --- El mercado hoy: grilla 4 indicadores × 4 horizontes ---
+   Las tarjetas comparten filas vía subgrid: los bloques Mes/Acumulado/12m/
+   Evolución quedan perfectamente alineados entre columnas. */
+.mh-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.mh-col {
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1.1rem 1.2rem;
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 5;
+  row-gap: 1.1rem;
+}
+
+/* Fallback sin subgrid: columnas independientes (no alineadas) */
+@supports not (grid-template-rows: subgrid) {
+  .mh-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+}
+
+.mh-titulo {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  align-self: start;
+}
+
+.mh-bloque {
+  border-top: 1px solid var(--rule-soft);
+  padding-top: 0.8rem;
+}
+
+.mh-periodo {
+  color: var(--ink-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.mh-valor {
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.3rem;
+}
+
+.mh-delta {
+  color: var(--ink-muted);
+  font-size: 0.73rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+}
+
+.delta-pos { color: var(--accent-bio); font-weight: 600; }
+.delta-neg { color: var(--accent-alert); font-weight: 600; }
+
+.mh-spark-labels {
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink-muted);
+  font-size: 0.68rem;
+}
+
+@media (max-width: 980px) {
+  .mh-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .mh-grid { grid-template-columns: 1fr; }
+}
+
+/* Dropdown multi-selección de sectores del GO */
+.mh-selectores {
+  flex-wrap: wrap;
+}
+
+.mh-dropdown {
+  position: relative;
+}
+
+.mh-dropdown-boton {
+  min-width: 190px;
+  text-align: left;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.mh-dropdown-boton.abierto {
+  border-color: var(--accent-exp);
+}
+
+.mh-dropdown-caret {
+  color: var(--ink-muted);
+  font-size: 0.7rem;
+}
+
+.mh-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 50;
+  min-width: 250px;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.mh-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 3px;
+  color: var(--ink-2);
+  font-size: 0.83rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.mh-dropdown-item:hover {
+  background: var(--bg-3);
+  color: var(--ink);
+}
+
+.mh-dropdown-item input {
+  accent-color: var(--accent-exp);
+}
+
+.mh-subtitulo {
+  font-size: 1.05rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  margin: 2.2rem 0 1rem;
+}
+
+.mh-subtitulo:first-child {
+  margin-top: 0;
+}
+
+/* Conclusiones de la sección Principales Indicadores */
+.mh-conclusiones {
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent-exp);
+  border-radius: 4px;
+  padding: 1.4rem 1.6rem;
+  margin-top: 2rem;
+}
+
+.mh-conclusiones-titulo {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 0.9rem;
+}
+
+.mh-conclusiones ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1.1rem;
+}
+
+.mh-conclusiones li {
+  color: var(--ink-2);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.mh-conclusiones li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--accent-exp);
+  font-weight: 700;
+}
+
+.mh-conclusiones li strong {
+  color: var(--ink);
+}
+
+.mh-conclusiones-sintesis {
+  border-top: 1px solid var(--rule-soft);
+  padding-top: 1rem;
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  font-weight: 550;
+}

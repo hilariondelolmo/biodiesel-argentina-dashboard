@@ -1,63 +1,52 @@
-import { useState, useCallback } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Nav from './components/Nav.jsx';
-import Hero from './components/Hero.jsx';
-import Indicadores from './components/Indicadores.jsx';
-import Ventas from './components/Ventas.jsx';
-import Timeline from './components/Timeline.jsx';
-import Articles from './components/Articles.jsx';
-import Sources from './components/Sources.jsx';
-import DocModal from './components/DocModal.jsx';
+import Home from './pages/Home.jsx';
+import mercadoData from './data/mercado.json';
+import { fmt } from './lib/format.js';
+
+const Mercado = lazy(() => import('./pages/Mercado.jsx'));
+const Gestion = lazy(() => import('./pages/Gestion.jsx'));
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 export default function App() {
-  const [modalState, setModalState] = useState({
-    open: false,
-    mode: 'doc', // 'doc' | 'article'
-    url: null,
-    title: null,
-    articleId: null,
-  });
-
-  const openDoc = useCallback((url, title) => {
-    setModalState({ open: true, mode: 'doc', url, title, articleId: null });
-  }, []);
-
-  const openArticle = useCallback((articleId, title, originalUrl) => {
-    setModalState({
-      open: true,
-      mode: 'article',
-      url: originalUrl,
-      title,
-      articleId,
-    });
-  }, []);
-
-  const closeModal = useCallback(() => {
-    setModalState((s) => ({ ...s, open: false }));
-  }, []);
-
   return (
-    <>
+    <BrowserRouter>
+      <ScrollToTop />
       <Nav />
-      <Hero />
-      <Indicadores />
-      <Ventas />
-      <Timeline onOpenDoc={openDoc} />
-      <Articles onOpenArticle={openArticle} />
-      <Sources />
-      <DocModal state={modalState} onClose={closeModal} />
+      <Suspense fallback={<div className="page-loading">Cargando…</div>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/mercado" element={<Mercado />} />
+          <Route path="/gestion" element={<Gestion />} />
+        </Routes>
+      </Suspense>
       <footer className="site-footer">
         <div className="container">
           <p>
-            Tablero desarrollado por <strong>Explora S.A.</strong> · Datos propios agregados de
-            reportes mensuales de la Secretaría de Energía · Actualizado con datos hasta febrero 2026.
+            Un desarrollo de{' '}
+            <strong>
+              <a href="https://www.explorarg.com" target="_blank" rel="noopener noreferrer">
+                explorarg
+              </a>
+            </strong>{' '}
+            · Datos agregados de reportes mensuales de la Secretaría de Energía · Actualizado
+            con datos hasta {fmt.monthShort(mercadoData.ultimo_mes)}.
           </p>
           <p className="muted">
-            El dashboard refleja la posición editorial de Hilarión Del Olmo (CEO) sobre el mercado
-            de biodiesel en Argentina. Las opiniones son del autor; los datos están verificados
-            contra fuentes oficiales.
+            El tablero refleja la posición editorial de explorarg sobre el mercado de biodiesel
+            en Argentina. Las opiniones son del autor; los datos están verificados contra
+            fuentes oficiales.
           </p>
         </div>
       </footer>
-    </>
+    </BrowserRouter>
   );
 }

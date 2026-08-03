@@ -9,7 +9,6 @@ import './Ventas.css';
 
 export default function Ventas() {
   const top = data.top_empresas_12m;
-  const explora = top.find((e) => e['EMPRESA ELABORADORA'] === 'EXPLORA S.A.');
 
   const integradas = top.filter((e) => e.CATEGORIA === 'INTEGRADA');
   const noIntegradas = top.filter((e) => e.CATEGORIA === 'NO INTEGRADA');
@@ -26,7 +25,6 @@ export default function Ventas() {
 
   const kpis = [
     { label: 'Top empresa', value: fmt.truncate(top[0]['EMPRESA ELABORADORA'], 18), sub: fmt.int(top[0]['PRODUCTION [ton]']) + ' ton · 12m' },
-    { label: 'Explora S.A.', value: explora ? fmt.int(explora['PRODUCTION [ton]']) : '—', sub: explora ? `cumplimiento ${fmt.pct(explora['CUMPLIMIENTO %'])}` : '', tone: 'info' },
     { label: 'YPF · share', value: fmt.pct(ypfShare), sub: 'de las compras totales al corte' },
     { label: 'Santa Fe · share', value: fmt.pct(sfShare), sub: 'de la producción nacional', tone: 'warn' },
     { label: 'Integradas · top', value: fmt.int(prodInt), sub: `ton · ${integradas.length} empresas en top 20` },
@@ -55,7 +53,7 @@ export default function Ventas() {
           <div className="chart-card-header">
             <div>
               <span className="chart-card-title">Tabla detallada · empresas elaboradoras</span>
-              <span className="chart-card-subtitle">últimos 12 meses · ordenado por producción · Explora marcada con ◆</span>
+              <span className="chart-card-subtitle">últimos 12 meses · ordenado por producción</span>
             </div>
           </div>
           <div className="tabla-scroll">
@@ -73,11 +71,9 @@ export default function Ventas() {
               </thead>
               <tbody>
                 {top.map((e, i) => {
-                  const isExplora = e['EMPRESA ELABORADORA'] === 'EXPLORA S.A.';
                   return (
-                    <tr key={i} className={isExplora ? 'row-explora' : ''}>
+                    <tr key={i}>
                       <td>
-                        {isExplora && <span className="marker">◆</span>}
                         {e['EMPRESA ELABORADORA']}
                       </td>
                       <td>

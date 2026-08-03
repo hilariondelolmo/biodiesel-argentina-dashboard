@@ -21,7 +21,7 @@ export default function Hero() {
         <p className="hero-lede">
           Datos mensuales de producción, ventas y cumplimiento de cupo, empresa por empresa, basados
           en reportes oficiales de la Secretaría de Energía. Cruzados con el marco regulatorio
-          vigente y con análisis de posición propios. Compilado y mantenido por Explora S.A.
+          vigente y con análisis de posición propios. Compilado y mantenido por explorarg.
         </p>
 
         <div className="hero-kpis">

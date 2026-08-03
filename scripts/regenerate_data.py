@@ -56,8 +56,24 @@ ALIAS_PETROLERAS = {
     "SHELL ARGENTINA C.A.P.S.A.": "RAIZEN (ex SHELL)",
 }
 
-def alias_petrolera(nombre):
-    return ALIAS_PETROLERAS.get(nombre, nombre)
+# La SE renombró retroactivamente a ESSO S.A.P.A. como AXION en el dataset de
+# biodiesel (todas las compras históricas figuran como AXION), mientras que en
+# el de derivados partió los nombres: ESSO hasta 2018-03, AXION desde 2018-04.
+# Decisión HDO (2026-08-03): usar ese corte de los datos SE como límite de la
+# entidad en TODOS los datasets - hasta 2018-03 inclusive es ESSO S.A.P.A.,
+# desde 2018-04 es AXION ENERGY ARGENTINA S.A.
+CORTE_ESSO_AXION = "2018-03"  # último mes imputado a ESSO S.A.P.A.
+NOMBRE_AXION = "AXION ENERGY ARGENTINA S.A."
+NOMBRE_ESSO = "ESSO S.A.P.A."
+
+def alias_petrolera(nombre, fecha=None):
+    nombre = ALIAS_PETROLERAS.get(nombre, nombre)
+    if fecha is not None:
+        if nombre == NOMBRE_AXION and fecha <= CORTE_ESSO_AXION:
+            return NOMBRE_ESSO
+        if nombre == NOMBRE_ESSO and fecha > CORTE_ESSO_AXION:
+            return NOMBRE_AXION
+    return nombre
 
 
 PETROLERAS_COLS = [
@@ -138,12 +154,13 @@ def extraer_detalle(hy):
     rows = hy.query("detalle", f'SELECT {cols} FROM "Extract"."Extract" ORDER BY "DATE"')
     registros = []
     for r in rows:
+        fecha = ym(r[0])
         d = dict(
-            fecha=ym(r[0]), empresa=nfc(r[1]), categoria=r[2], grupo=nfc(r[3]),
+            fecha=fecha, empresa=nfc(r[1]), categoria=r[2], grupo=nfc(r[3]),
             provincia=r[4], localidad=r[5], explora=(r[6] == "Y"),
             prod=r[7] or 0, cupo=r[8] or 0, vc=r[9] or 0,
             xq=r[10] or 0, cotab=r[11] or 0, exp=r[12] or 0,
-            petroleras={alias_petrolera(PETROLERAS_COLS[i]): v
+            petroleras={alias_petrolera(PETROLERAS_COLS[i], fecha): v
                         for i, v in enumerate(r[13:]) if v},
         )
         check(d["categoria"] in ("INTEGRADA", "NO INTEGRADA", "COMERCIALIZADORA"),
@@ -165,6 +182,7 @@ MAPA_PETROLERAS_GO = {
     "YPF S.A.": "YPF S.A.",
     "SHELL C.A.P.S.A.": "RAIZEN (ex SHELL)",
     "AXION S.A.": "AXION ENERGY ARGENTINA S.A.",
+    "ESSO S.A.P.A.": "ESSO S.A.P.A.",
     "TRAFIGURA S.A.": "TRAFIGURA ARGENTINA S.A.",
     "DAPSA S.A.": "DESTILERÍA ARGENTINA DE PETRÓLEO S.A.",
     "REFIPAMPA S.A.": "REFI PAMPA S.A.",
@@ -188,8 +206,9 @@ def extraer_go_todas_empresas(hy):
     out = defaultdict(dict)
     for f, emp, v in rows:
         if v and v > 0:
-            nombre = alias_petrolera(MAPA_PETROLERAS_GO.get(emp, emp.strip()))
-            out[ym(f)][nombre] = round((out[ym(f)].get(nombre, 0) or 0) + v, 1)
+            fecha = ym(f)
+            nombre = alias_petrolera(MAPA_PETROLERAS_GO.get(emp, emp.strip()), fecha)
+            out[fecha][nombre] = round((out[fecha].get(nombre, 0) or 0) + v, 1)
     return [dict(fecha=f, **vals) for f, vals in sorted(out.items())]
 
 
@@ -236,7 +255,7 @@ def extraer_go_sectores(hy):
     por_pet = defaultdict(lambda: defaultdict(dict))
     for f, emp, sector, v in pet_rows:
         s = normalizar_sector(sector)
-        pet = MAPA_PETROLERAS_GO[emp]
+        pet = alias_petrolera(MAPA_PETROLERAS_GO[emp], ym(f))
         prev = por_pet[ym(f)][pet].get(s, 0) or 0
         por_pet[ym(f)][pet][s] = round(prev + v, 1)
 
@@ -262,7 +281,9 @@ def extraer_go_por_petrolera(hy):
     out = defaultdict(dict)
     for r in rows:
         if r[0]:
-            out[ym(r[0])][MAPA_PETROLERAS_GO[r[1]]] = round(r[2], 1)
+            fecha = ym(r[0])
+            pet = alias_petrolera(MAPA_PETROLERAS_GO[r[1]], fecha)
+            out[fecha][pet] = round((out[fecha].get(pet, 0) or 0) + r[2], 1)
     return dict(out)
 
 
@@ -322,7 +343,7 @@ def extraer_cumpli_petro(hy):
                SUM(COALESCE("CUOTA",0))
         FROM "Extract"."Extract" WHERE "MES" IS NOT NULL
         GROUP BY 1,2 ORDER BY 1''')
-    return [dict(fecha=ym(r[0]), petrolera=alias_petrolera(nfc(r[1])),
+    return [dict(fecha=ym(r[0]), petrolera=alias_petrolera(nfc(r[1]), ym(r[0])),
                  solicitado=r1(r[2]), cupo=r1(r[3]))
             for r in rows]
 
@@ -591,6 +612,7 @@ def validar(agg, empresas):
         check(b == esperado, f"Hueco en la serie mensual: {a} → {b}")
 
     print(f"  ✓ Corte 2025: real {a2025['real']:.1%} / obligatorio {a2025['obligatorio']:.1%}")
+    print(f"  ✓ ESSO/AXION particionadas en {CORTE_ESSO_AXION}")
     print(f"  ✓ Explora 2025: {vc25:,.0f} ton, cumplimiento {vc25 / cupo25:.0%}")
     print(f"  ✓ Serie mensual continua: {meses[0]} → {meses[-1]} ({len(meses)} meses)")
 
@@ -645,6 +667,24 @@ def main():
 
     print("Validando contra cifras ancla…")
     validar(agg, empresas)
+
+    # Consistencia de la partición ESSO/AXION en todas las series con nombre+mes
+    def _check_particion(series, origen):
+        for row in series:
+            f = row["fecha"]
+            nombres = [row["petrolera"]] if "petrolera" in row else \
+                      [k for k in row if k != "fecha"]
+            for n in nombres:
+                check(not (n == NOMBRE_AXION and f <= CORTE_ESSO_AXION),
+                      f"{origen}: AXION en {f}, debería ser ESSO (corte {CORTE_ESSO_AXION})")
+                check(not (n == NOMBRE_ESSO and f > CORTE_ESSO_AXION),
+                      f"{origen}: ESSO en {f}, debería ser AXION (corte {CORTE_ESSO_AXION})")
+    _check_particion(petroleras["mensual"], "bio compras mensual")
+    _check_particion(cumpli, "cumplimiento petrolera")
+    _check_particion(go_todas, "GO todas las vendedoras")
+    _check_particion([dict(fecha=f, **v) for f, v in go_petrolera.items()],
+                     "GO por petrolera")
+    _check_particion(go_sectores["mensual_petrolera"], "GO por sector/petrolera")
 
     # Fechas de asunción presidenciales (registro público) para las bandas de
     # los charts; partido/coalición se toma de los secretarios de cada gestión.

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useTheme } from '../lib/theme.jsx';
 import './Nav.css';
@@ -10,6 +11,8 @@ const DASHBOARDS = [
   { label: 'Biodiesel - Primas y Precios Relativos', disabled: true },
 ];
 
+const MQ_ANGOSTO = '(max-width: 560px)';
+
 export default function Nav() {
   const { theme, toggle } = useTheme();
   const { pathname } = useLocation();
@@ -20,16 +23,55 @@ export default function Nav() {
   const [abierto, setAbierto] = useState(false);
   const dropdownRef = useRef(null);
 
+  // En pantallas angostas el menú se monta en un portal sobre <body>:
+  // dentro de la barra, Safari ancla los position:fixed al backdrop-filter
+  // de .top-nav (y la franja de links scrollea), y el menú queda roto.
+  const [angosto, setAngosto] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(MQ_ANGOSTO).matches
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia(MQ_ANGOSTO);
+    const fn = (e) => setAngosto(e.matches);
+    mq.addEventListener('change', fn);
+    return () => mq.removeEventListener('change', fn);
+  }, []);
+
   useEffect(() => setAbierto(false), [pathname]);
 
   useEffect(() => {
     if (!abierto) return undefined;
     const cerrar = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setAbierto(false);
+      if (!e.target.closest('.nav-dropdown') && !e.target.closest('.nav-dropdown-menu')) {
+        setAbierto(false);
+      }
     };
     document.addEventListener('pointerdown', cerrar);
     return () => document.removeEventListener('pointerdown', cerrar);
   }, [abierto]);
+
+  const menu = (
+    <ul className="nav-dropdown-menu">
+      {DASHBOARDS.map((d) =>
+        d.disabled ? (
+          <li key={d.label}>
+            <span className="nav-dropdown-item deshabilitado" aria-disabled="true">
+              {d.label}
+            </span>
+          </li>
+        ) : (
+          <li key={d.label}>
+            <NavLink
+              to={d.to}
+              className={({ isActive }) => `nav-dropdown-item ${isActive ? 'active' : ''}`}
+            >
+              {d.label}
+            </NavLink>
+          </li>
+        )
+      )}
+    </ul>
+  );
 
   return (
     <nav className="top-nav">
@@ -57,28 +99,7 @@ export default function Nav() {
             >
               Dashboards <span className="nav-dropdown-caret">▾</span>
             </button>
-            <ul className="nav-dropdown-menu">
-              {DASHBOARDS.map((d) =>
-                d.disabled ? (
-                  <li key={d.label}>
-                    <span className="nav-dropdown-item deshabilitado" aria-disabled="true">
-                      {d.label}
-                    </span>
-                  </li>
-                ) : (
-                  <li key={d.label}>
-                    <NavLink
-                      to={d.to}
-                      className={({ isActive }) =>
-                        `nav-dropdown-item ${isActive ? 'active' : ''}`
-                      }
-                    >
-                      {d.label}
-                    </NavLink>
-                  </li>
-                )
-              )}
-            </ul>
+            {angosto ? abierto && createPortal(menu, document.body) : menu}
           </li>
           <li>
             <NavLink

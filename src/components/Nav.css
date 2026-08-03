@@ -167,10 +167,12 @@ a.nav-dropdown-item.active {
   cursor: default;
 }
 
-/* En pantallas angostas el menú ancla al viewport (300px no entran
-   posicionados bajo el trigger) */
+/* En pantallas angostas el menú se monta por portal sobre <body> (Safari
+   ancla los fixed al backdrop-filter de la barra) y solo existe abierto:
+   ancla al viewport y se muestra por sí solo */
 @media (max-width: 560px) {
   .nav-dropdown-menu {
+    display: block;
     position: fixed;
     top: var(--nav-h);
     left: 0.75rem;

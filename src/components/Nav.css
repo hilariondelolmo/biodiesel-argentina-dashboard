@@ -97,11 +97,17 @@
   transition: all 0.15s;
 }
 
-.nav-dropdown:hover .nav-dropdown-trigger,
-.nav-dropdown:focus-within .nav-dropdown-trigger,
+.nav-dropdown.abierto .nav-dropdown-trigger,
 .nav-dropdown-trigger.active {
   color: var(--ink);
   background: var(--bg-3);
+}
+
+@media (hover: hover) {
+  .nav-dropdown:hover .nav-dropdown-trigger {
+    color: var(--ink);
+    background: var(--bg-3);
+  }
 }
 
 .nav-dropdown-caret {
@@ -125,9 +131,14 @@
   z-index: 110;
 }
 
-.nav-dropdown:hover .nav-dropdown-menu,
-.nav-dropdown:focus-within .nav-dropdown-menu {
+.nav-dropdown.abierto .nav-dropdown-menu {
   display: block;
+}
+
+@media (hover: hover) {
+  .nav-dropdown:hover .nav-dropdown-menu {
+    display: block;
+  }
 }
 
 .nav-dropdown-item {
@@ -154,6 +165,23 @@ a.nav-dropdown-item.active {
   color: var(--ink-muted);
   opacity: 0.65;
   cursor: default;
+}
+
+/* En pantallas angostas el menú ancla al viewport (300px no entran
+   posicionados bajo el trigger) */
+@media (max-width: 560px) {
+  .nav-dropdown-menu {
+    position: fixed;
+    top: var(--nav-h);
+    left: 0.75rem;
+    right: 0.75rem;
+    min-width: 0;
+  }
+
+  .nav-dropdown-item {
+    white-space: normal;
+    padding: 0.7rem 0.8rem;
+  }
 }
 
 @media (max-width: 820px) {

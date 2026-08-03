@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useTheme } from '../lib/theme.jsx';
 import './Nav.css';
@@ -13,6 +14,22 @@ export default function Nav() {
   const { theme, toggle } = useTheme();
   const { pathname } = useLocation();
   const enDashboards = pathname.startsWith('/mercado') || pathname.startsWith('/gestion');
+
+  // En móvil no hay hover (y iOS no enfoca botones al tocar): el desplegable
+  // se abre/cierra por estado. Se cierra al navegar o al tocar afuera.
+  const [abierto, setAbierto] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => setAbierto(false), [pathname]);
+
+  useEffect(() => {
+    if (!abierto) return undefined;
+    const cerrar = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setAbierto(false);
+    };
+    document.addEventListener('pointerdown', cerrar);
+    return () => document.removeEventListener('pointerdown', cerrar);
+  }, [abierto]);
 
   return (
     <nav className="top-nav">
@@ -30,11 +47,13 @@ export default function Nav() {
               Home
             </NavLink>
           </li>
-          <li className="nav-dropdown">
+          <li className={`nav-dropdown ${abierto ? 'abierto' : ''}`} ref={dropdownRef}>
             <button
               type="button"
               className={`nav-dropdown-trigger ${enDashboards ? 'active' : ''}`}
               aria-haspopup="true"
+              aria-expanded={abierto}
+              onClick={() => setAbierto((o) => !o)}
             >
               Dashboards <span className="nav-dropdown-caret">▾</span>
             </button>

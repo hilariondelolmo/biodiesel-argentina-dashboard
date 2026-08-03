@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import Nav from './components/Nav.jsx';
 import Hero from './components/Hero.jsx';
 import Indicadores from './components/Indicadores.jsx';
@@ -58,6 +59,7 @@ export default function App() {
           </p>
         </div>
       </footer>
+      <Analytics />
     </>
   );
 }

@@ -61,8 +61,8 @@ export default function Articles({ onOpenArticle }) {
     <section id="articles">
       <div className="container">
         <div className="section-header">
-          <div className="section-eyebrow">Sección 4</div>
-          <h2>Análisis y posiciones propias</h2>
+          <div className="section-eyebrow">Artículos</div>
+          <h2>Editoriales y análisis del mercado</h2>
           <p>
             25 artículos publicados en explorarg.com sobre biodiesel, marco legal, estructura de
             mercado y posiciones de política pública. Al hacer click en cada título se abre el

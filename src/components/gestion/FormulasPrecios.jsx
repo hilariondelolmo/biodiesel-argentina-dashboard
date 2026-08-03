@@ -30,7 +30,7 @@ export default function FormulasPrecios() {
       </div>
       <p className="note">
         {periodos.length} fórmulas o ajustes de precio en{' '}
-        {new Date().getFullYear() - 2010} años — un cambio cada ~
+        {new Date().getFullYear() - 2010} años - un cambio cada ~
         {Math.round(((new Date().getFullYear() - 2010) * 12) / periodos.length)} meses.
         La SE 963/2023 (marcada) es la fórmula vigente; la aplicación de su art. 5 a las
         empresas no integradas es objeto de una demanda de nulidad en trámite

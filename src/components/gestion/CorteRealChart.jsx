@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-  ComposedChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip,
+  ComposedChart, Line, Area, XAxis, YAxis, Tooltip,
   ReferenceArea, ReferenceLine, ResponsiveContainer,
 } from 'recharts';
 import corte from '../../data/corte.json';
@@ -73,7 +73,6 @@ export default function CorteRealChart() {
       <div className="chart-card-body">
         <ResponsiveContainer width="100%" height={380}>
           <ComposedChart data={serie} margin={{ top: 24, right: 10, left: 0, bottom: 0 }}>
-            <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />
             <XAxis
               dataKey="x"
               tick={{ fill: C.tick, fontSize: 11 }}

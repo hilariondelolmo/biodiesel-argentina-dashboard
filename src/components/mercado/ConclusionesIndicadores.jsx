@@ -1,12 +1,13 @@
 import corte from '../../data/corte.json';
 import mercado from '../../data/mercado.json';
 import { fmt } from '../../lib/format.js';
+import { demandaPetroleras12m, sinDemanda } from '../../lib/demandaPetroleras.js';
 import './Mercado.css';
 
 /**
  * Conclusiones calculadas en vivo sobre los dos análisis de la sección:
  * corte obligatorio y asignación de cupos. Todo sale de los mismos JSON que
- * alimentan los cuadros — sin cifras redactadas a mano que puedan envejecer.
+ * alimentan los cuadros - sin cifras redactadas a mano que puedan envejecer.
  *
  * Descomposición del incumplimiento en cada ventana:
  *   mandato (GO × %oblig, en ton) − entregado
@@ -39,23 +40,34 @@ function stats(rows) {
   };
 }
 
-export default function ConclusionesIndicadores() {
-  const ult = CM.at(-1).fecha;
-  const anio = ult.slice(0, 4);
-  const ytd = stats(CM.filter((r) => r.fecha >= `${anio}-01`));
-  const u12 = stats(CM.slice(-12));
+export default function ConclusionesIndicadores({ mes, children }) {
+  const hastaMes = mes && CM.some((r) => r.fecha === mes) ? mes : CM.at(-1).fecha;
+  const filas = CM.filter((r) => r.fecha <= hastaMes);
+  const anio = hastaMes.slice(0, 4);
+  const ytd = stats(filas.filter((r) => r.fecha >= `${anio}-01`));
+  const u12 = stats(filas.slice(-12));
 
   const pAsigYtd = (ytd.brechaAsig / ytd.total) * 100;
   const pAsig12 = (u12.brechaAsig / u12.total) * 100;
 
+  // Vendedoras de GO que compran ínfimamente o nada de biodiesel (12m al mes elegido)
+  const demanda = demandaPetroleras12m(hastaMes);
+  const criticas = sinDemanda(demanda.filas);
+  const goCriticas = criticas.reduce((s, f) => s + f.go, 0);
+  const faltanteCriticas = criticas.reduce((s, f) => s + f.faltanteTon, 0);
+  const topCriticas = criticas.slice(0, 3).map((f) => f.empresa);
+
   return (
     <div className="mh-conclusiones">
-      <div className="mh-conclusiones-titulo">Conclusiones</div>
+      <div className="mh-conclusiones-titulo">
+        Conclusiones · {fmt.monthShort(hastaMes)}
+      </div>
       <ul>
         <li>
-          <strong>El corte no se cumple.</strong> En lo que va de {anio} el corte real promedió{' '}
-          {fmt.pct(ytd.real)} contra un obligatorio de {fmt.pct(ytd.oblig)}; en los últimos doce
-          meses, {fmt.pct(u12.real)} contra {fmt.pct(u12.oblig)}. El mandato requería{' '}
+          <strong>El corte no se cumple.</strong> En {anio}, a {fmt.monthShort(hastaMes)}, el
+          corte real promedió {fmt.pct(ytd.real)} contra un obligatorio de {fmt.pct(ytd.oblig)};
+          en los doce meses a esa fecha, {fmt.pct(u12.real)} contra {fmt.pct(u12.oblig)}. El
+          mandato requería{' '}
           {fmt.int(u12.mandato)} ton de biodiesel en el año móvil y se entregaron{' '}
           {fmt.int(u12.vc)}: faltaron {fmt.int(u12.total)} ton.
         </li>
@@ -80,7 +92,19 @@ export default function ConclusionesIndicadores() {
           normalización de las entregas en {anio} todavía no se refleja completa en la ventana
           móvil.
         </li>
+        {criticas.length > 0 && (
+          <li>
+            <strong>Hay gas oil que no tracciona demanda de biodiesel.</strong>{' '}
+            {criticas.length} vendedoras de gas oil compraron menos del 20% del biodiesel que
+            su volumen requería en los últimos doce meses
+            {topCriticas.length ? ` (entre ellas ${topCriticas.join(', ')})` : ''}: acumularon{' '}
+            {fmt.int(goCriticas)} m³ de gas oil con {fmt.int(faltanteCriticas)} ton de
+            biodiesel sin demandar. El detalle, empresa por empresa, en el cuadro
+            siguiente.
+          </li>
+        )}
       </ul>
+      {children}
       <p className="mh-conclusiones-sintesis">
         El incumplimiento del corte tiene origen administrativo antes que industrial: la
         asignación de cupos de la Secretaría de Energía cubre el {fmt.pct(ytd.coberturaAsig, 0)}{' '}

@@ -269,10 +269,14 @@
 }
 
 .mh-subtitulo {
-  font-size: 1.05rem;
+  /* Encabezado de bloque: misma familia visual que las etiquetas de selector
+     pero un cuerpo mayor y en tinta plena, para marcar jerarquía */
+  font-size: 0.95rem;
   font-weight: 650;
-  letter-spacing: -0.015em;
-  margin: 2.2rem 0 1rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 2.4rem 0 1rem;
 }
 
 .mh-subtitulo:first-child {
@@ -281,12 +285,8 @@
 
 /* Conclusiones de la sección Principales Indicadores */
 .mh-conclusiones {
-  background: var(--bg-2);
-  border: 1px solid var(--rule);
-  border-left: 3px solid var(--accent-exp);
-  border-radius: 4px;
-  padding: 1.4rem 1.6rem;
-  margin-top: 2rem;
+  padding: 0.4rem 0;
+  margin-top: 1.6rem;
 }
 
 .mh-conclusiones-titulo {
@@ -333,4 +333,82 @@
   font-size: 0.95rem;
   line-height: 1.55;
   font-weight: 550;
+}
+
+/* Cuadro de demanda de bio por petrolera */
+.mh-cuadro {
+  margin-top: 2.4rem;
+}
+
+.mh-tabla-scroll {
+  overflow-x: auto;
+}
+
+.mh-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.mh-tabla th {
+  color: var(--ink-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.mh-tabla td {
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid var(--rule-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.mh-tabla .num {
+  text-align: right;
+}
+
+.mh-tabla tr.critica td {
+  background: color-mix(in srgb, var(--accent-alert) 7%, transparent);
+}
+
+.mh-tabla .cumplimiento { font-weight: 600; }
+.mh-tabla .cumplimiento.ok { color: var(--accent-bio); }
+.mh-tabla .cumplimiento.medio { color: var(--accent-oil); }
+.mh-tabla .cumplimiento.bajo { color: var(--accent-alert); }
+
+/* Tabs de análisis estilo Tablero v16 (Tablero | Gráficos) */
+.mh-tabs {
+  display: flex;
+  gap: 0.4rem;
+  border-bottom: 1px solid var(--rule);
+  margin: 1.6rem 0 1.4rem;
+}
+
+.mh-tabs button {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  transition: color 0.15s;
+}
+
+.mh-tabs button:hover {
+  color: var(--ink);
+}
+
+.mh-tabs button.active {
+  color: var(--accent-exp);
+  border-bottom-color: var(--accent-exp);
+}
+
+.mh-tabs .mh-tab-derecha {
+  margin-left: auto;
 }

@@ -51,6 +51,15 @@ SRC = {
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "src" / "data"
 DENSIDAD_BIO = 0.885  # ton/m3, factor usado en los workbooks Tableau
+# Nombres de exhibición: la fuente SE conserva razones sociales históricas
+ALIAS_PETROLERAS = {
+    "SHELL ARGENTINA C.A.P.S.A.": "RAIZEN (ex SHELL)",
+}
+
+def alias_petrolera(nombre):
+    return ALIAS_PETROLERAS.get(nombre, nombre)
+
+
 PETROLERAS_COLS = [
     "AXION ENERGY ARGENTINA S.A.", "DESTILERÍA ARGENTINA DE PETRÓLEO S.A.",
     "PETROBRAS ARGENTINA S.A.", "PETROLERA DEL CONOSUR S.A.", "POLIPETROL S.A.",
@@ -134,7 +143,8 @@ def extraer_detalle(hy):
             provincia=r[4], localidad=r[5], explora=(r[6] == "Y"),
             prod=r[7] or 0, cupo=r[8] or 0, vc=r[9] or 0,
             xq=r[10] or 0, cotab=r[11] or 0, exp=r[12] or 0,
-            petroleras={PETROLERAS_COLS[i]: v for i, v in enumerate(r[13:]) if v},
+            petroleras={alias_petrolera(PETROLERAS_COLS[i]): v
+                        for i, v in enumerate(r[13:]) if v},
         )
         check(d["categoria"] in ("INTEGRADA", "NO INTEGRADA", "COMERCIALIZADORA"),
               f"Empresa sin categoría válida: {d['empresa']} {d['fecha']} → {d['categoria']!r}")
@@ -153,7 +163,7 @@ SECTORES_SIN_CORTE = ("Bunker Cabotaje", "Bunker Internacional", "Usinas Eléctr
 # detalle de biodiesel. Solo mezcladoras relevantes con cupo asignado.
 MAPA_PETROLERAS_GO = {
     "YPF S.A.": "YPF S.A.",
-    "SHELL C.A.P.S.A.": "SHELL ARGENTINA C.A.P.S.A.",
+    "SHELL C.A.P.S.A.": "RAIZEN (ex SHELL)",
     "AXION S.A.": "AXION ENERGY ARGENTINA S.A.",
     "TRAFIGURA S.A.": "TRAFIGURA ARGENTINA S.A.",
     "DAPSA S.A.": "DESTILERÍA ARGENTINA DE PETRÓLEO S.A.",
@@ -162,6 +172,25 @@ MAPA_PETROLERAS_GO = {
     "NEW AMERICAN OIL": "NEW AMERICAN OIL S.A.",
     "PETROLERA DEGAB S.A.": "PETROLERA DEGAB S.A.",
 }
+
+
+def extraer_go_todas_empresas(hy):
+    """GO G2+G3 (m3) por empresa-mes para TODAS las vendedoras del dataset,
+    sin sectores exentos. Alimenta el cuadro de demanda de bio por petrolera:
+    las que venden GO sin comprar biodiesel también deben aparecer."""
+    rows = hy.query("derivados", f'''
+        SELECT "FECHA", "empresa",
+               SUM(COALESCE("Gasoil Grado 2 (Común)", 0) + COALESCE("Gasoil Grado 3 (Ultra)", 0))
+        FROM "Extract"."Extract"
+        WHERE "FECHA" IS NOT NULL AND "empresa" IS NOT NULL
+          AND "SECTOR" NOT IN {SECTORES_SIN_CORTE!r}
+        GROUP BY 1, 2 ORDER BY 1''')
+    out = defaultdict(dict)
+    for f, emp, v in rows:
+        if v and v > 0:
+            nombre = alias_petrolera(MAPA_PETROLERAS_GO.get(emp, emp.strip()))
+            out[ym(f)][nombre] = round((out[ym(f)].get(nombre, 0) or 0) + v, 1)
+    return [dict(fecha=f, **vals) for f, vals in sorted(out.items())]
 
 
 def extraer_go_mensual(hy):
@@ -293,7 +322,8 @@ def extraer_cumpli_petro(hy):
                SUM(COALESCE("CUOTA",0))
         FROM "Extract"."Extract" WHERE "MES" IS NOT NULL
         GROUP BY 1,2 ORDER BY 1''')
-    return [dict(fecha=ym(r[0]), petrolera=nfc(r[1]), solicitado=r1(r[2]), cupo=r1(r[3]))
+    return [dict(fecha=ym(r[0]), petrolera=alias_petrolera(nfc(r[1])),
+                 solicitado=r1(r[2]), cupo=r1(r[3]))
             for r in rows]
 
 
@@ -438,6 +468,102 @@ def agregar_petroleras(registros, cumpli):
     return dict(mensual=serie, matriz_12m=matriz, cumplimiento=cumpli,
                 periodo_12m={"desde": min(ult12), "hasta": max(ult12)})
 
+def generar_dashboard_legacy(registros):
+    """dashboard.json con el esquema original de la Portada, con datos frescos.
+    Mismos nombres de campo que la v2 generada en claude.ai: la Portada no
+    necesita cambios de código para actualizarse."""
+    meses = sorted({d["fecha"] for d in registros})
+    ult12 = set(meses[-12:])
+
+    mensual = defaultdict(lambda: defaultdict(float))
+    anual = defaultdict(lambda: defaultdict(float))
+    cat_anual = defaultdict(lambda: defaultdict(float))
+    emp12 = defaultdict(lambda: defaultdict(float))
+    emp_cat = {}
+    pet12 = defaultdict(float)
+    prov12 = defaultdict(float)
+    grp12 = defaultdict(lambda: defaultdict(float))
+    grp_cat = {}
+
+    for d in registros:
+        m = mensual[d["fecha"]]
+        m["PRODUCTION [ton]"] += d["prod"]
+        m["BIODIESEL QUOTA [ton]"] += d["cupo"]
+        m["BIODIESEL QUOTA SALES [ton]"] += d["vc"]
+        m["BIODIESEL XQUOTA SALES [ton]"] += d["xq"]
+        m["BIODIESEL EXPORTS [ton]"] += d["exp"]
+
+        a = anual[d["fecha"][:4]]
+        a["PRODUCTION [ton]"] += d["prod"]
+        a["BIODIESEL QUOTA [ton]"] += d["cupo"]
+        a["BIODIESEL QUOTA SALES [ton]"] += d["vc"]
+        a["BIODIESEL EXPORTS [ton]"] += d["exp"]
+
+        cat_anual[d["fecha"][:4]][d["categoria"]] += d["prod"]
+
+        if d["fecha"] in ult12:
+            e = emp12[d["empresa"]]
+            e["PRODUCTION [ton]"] += d["prod"]
+            e["BIODIESEL QUOTA SALES [ton]"] += d["vc"]
+            e["BIODIESEL EXPORTS [ton]"] += d["exp"]
+            e["BIODIESEL QUOTA [ton]"] += d["cupo"]
+            emp_cat[d["empresa"]] = d["categoria"]
+            for pet, v in d["petroleras"].items():
+                pet12[pet] += v
+            if d["provincia"]:
+                prov12[d["provincia"]] += d["prod"]
+            g = grp12[d["grupo"] or d["empresa"]]
+            g["PRODUCTION [ton]"] += d["prod"]
+            g["BIODIESEL QUOTA SALES [ton]"] += d["vc"]
+            grp_cat[d["grupo"] or d["empresa"]] = d["categoria"]
+
+    top = sorted(emp12.items(), key=lambda kv: -kv[1]["PRODUCTION [ton]"])[:20]
+    return dict(
+        meta=dict(
+            ultimo_mes=meses[-1], primer_mes=meses[0],
+            total_empresas=len({d["empresa"] for d in registros}),
+            total_petroleras_mezcladoras=len(PETROLERAS_COLS),
+            correccion_aplicada="Patagonia Bioenergia S.A. reclasificada como INTEGRADA",
+        ),
+        mensual=[dict(FECHA=f, **{k: r1(v) for k, v in vals.items()})
+                 for f, vals in sorted(mensual.items())],
+        anual=[dict(AÑO=int(y), **{k: r1(v) for k, v in vals.items()})
+               for y, vals in sorted(anual.items())],
+        categoria_anual=[
+            dict(AÑO=int(y), COMERCIALIZADORA=r1(vals.get("COMERCIALIZADORA", 0)),
+                 INTEGRADA=r1(vals.get("INTEGRADA", 0)),
+                 **{"NO INTEGRADA": r1(vals.get("NO INTEGRADA", 0))})
+            for y, vals in sorted(cat_anual.items())
+        ],
+        top_empresas_12m=[
+            dict(
+                **{"EMPRESA ELABORADORA": emp, "CATEGORIA": emp_cat[emp]},
+                **{k: r1(v) for k, v in vals.items()},
+                **{"CUMPLIMIENTO %": r1(vals["BIODIESEL QUOTA SALES [ton]"]
+                                        / vals["BIODIESEL QUOTA [ton]"] * 100)
+                   if vals["BIODIESEL QUOTA [ton]"] > 0 else None},
+            )
+            for emp, vals in top
+        ],
+        ventas_petroleras_12m=[
+            dict(PETROLERA=p, TONELADAS=r1(v))
+            for p, v in sorted(pet12.items(), key=lambda kv: -kv[1]) if v > 0
+        ],
+        provincia_12m=[
+            dict(PROVINCIA=p, **{"PRODUCTION [ton]": r1(v)})
+            for p, v in sorted(prov12.items(), key=lambda kv: -kv[1]) if v > 0
+        ],
+        grupos_12m=[
+            dict(**{"GRUPO ECONÓMICO": g, "CATEGORIA": grp_cat[g]},
+                 **{k: r1(v) for k, v in vals.items()})
+            for g, vals in sorted(grp12.items(),
+                                  key=lambda kv: -kv[1]["PRODUCTION [ton]"])
+            if vals["PRODUCTION [ton]"] > 0 or vals["BIODIESEL QUOTA SALES [ton]"] > 0
+        ],
+        periodo_12m=dict(desde=min(ult12), hasta=max(ult12)),
+    )
+
+
 # ---------------------------------------------------------------- validaciones
 
 def validar(agg, empresas):
@@ -472,9 +598,10 @@ def validar(agg, empresas):
 
 def escribir(nombre, payload, fuentes, dry):
     payload["meta"] = dict(
+        **payload.get("meta", {}),
         generado=datetime.now().strftime("%Y-%m-%d %H:%M"),
         fuentes=fuentes,
-        nota="Generado por scripts/regenerate_data.py — no editar a mano",
+        nota="Generado por scripts/regenerate_data.py - no editar a mano",
     )
     destino = OUT_DIR / nombre
     if dry:
@@ -497,6 +624,7 @@ def main():
         registros = extraer_detalle(hy)
         go_mensual = extraer_go_mensual(hy)
         go_petrolera = extraer_go_por_petrolera(hy)
+        go_todas = extraer_go_todas_empresas(hy)
         go_sectores = extraer_go_sectores(hy)
         corte_oblig = extraer_corte_obligatorio()
         secretarios = extraer_secretarios(hy)
@@ -546,6 +674,7 @@ def main():
     petroleras["go_mensual"] = [
         dict(fecha=f, **vals) for f, vals in sorted(go_petrolera.items())
     ]
+    petroleras["go_empresas_mensual"] = go_todas
     escribir("petroleras.json", petroleras,
              ["Detalle Biodiesel Argentina.hyper", "Cumplimiento Petrolera.hyper",
               "Mercado Argentino Derivados Petroleo Table.hyper"], dry)
@@ -557,6 +686,8 @@ def main():
     ), ["Lineas para grafico corte obligatorio.xlsx",
         "Mercado Argentino Derivados Petroleo Table.hyper",
         "Detalle Biodiesel Argentina.hyper"], dry)
+    escribir("dashboard.json", generar_dashboard_legacy(registros),
+             ["Detalle Biodiesel Argentina.hyper"], dry)
     go_sectores["sectores_sin_corte"] = list(SECTORES_SIN_CORTE)
     escribir("go_sectores.json", go_sectores,
              ["Mercado Argentino Derivados Petroleo Table.hyper"], dry)

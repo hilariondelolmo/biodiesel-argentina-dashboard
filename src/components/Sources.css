@@ -68,7 +68,6 @@
 .sources-footer p {
   font-size: 0.82rem;
   line-height: 1.5;
-  max-width: 70ch;
 }
 
 /* Footer del sitio */
@@ -83,7 +82,6 @@
   color: var(--ink-2);
   line-height: 1.6;
   margin-bottom: 0.7rem;
-  max-width: 70ch;
 }
 
 .site-footer p:last-child {

@@ -1,5 +1,5 @@
 import {
-  ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  ComposedChart, Bar, Line, XAxis, YAxis, Tooltip, ResponsiveContainer,
 } from 'recharts';
 import corte from '../../data/corte.json';
 import { fmt } from '../../lib/format.js';
@@ -31,7 +31,6 @@ export default function DeficitChart() {
       <div className="chart-card-body">
         <ResponsiveContainer width="100%" height={340}>
           <ComposedChart data={serie} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-            <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="anio" tick={{ fill: C.tick, fontSize: 11 }} stroke={C.axis} />
             <YAxis
               yAxisId="izq"

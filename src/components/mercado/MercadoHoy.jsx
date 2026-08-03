@@ -119,10 +119,9 @@ function SectoresDropdown({ seleccion, onToggle }) {
   );
 }
 
-export default function MercadoHoy() {
+export default function MercadoHoy({ mes: mesProp }) {
   const C = useChartColors();
   const [petrolera, setPetrolera] = useState(TODAS);
-  const [mesSel, setMesSel] = useState(null);
   const [sectores, setSectores] = useState(SECTORES_DEFAULT);
 
   const toggleSector = (s) => {
@@ -136,7 +135,8 @@ export default function MercadoHoy() {
 
   const serie = useMemo(() => serieBase(petrolera, sectores), [petrolera, sectores]);
   const fechas = serie.map((m) => m.fecha);
-  const mes = mesSel && fechas.includes(mesSel) ? mesSel : fechas.at(-1);
+  // Mes efectivo: el seleccionado, o el último disponible de esta serie
+  const mes = fechas.filter((f) => f <= mesProp).at(-1) || fechas.at(-1);
 
   const d = useMemo(() => {
     const anio = mes.slice(0, 4);
@@ -196,15 +196,6 @@ export default function MercadoHoy() {
   return (
     <>
       <div className="empresa-selector-row mh-selectores">
-        <label htmlFor="mes-select">Mes de análisis</label>
-        <select
-          id="mes-select" className="empresa-select" style={{ minWidth: 150 }}
-          value={mes} onChange={(e) => setMesSel(e.target.value)}
-        >
-          {[...fechas].reverse().map((f) => (
-            <option key={f} value={f}>{fmt.monthShort(f)}</option>
-          ))}
-        </select>
         <label htmlFor="petrolera-select">Petrolera</label>
         <select
           id="petrolera-select" className="empresa-select" style={{ minWidth: 220 }}
@@ -221,7 +212,7 @@ export default function MercadoHoy() {
 
       <div className="mh-grid">
         {INDICADORES.map((ind) => (
-          <div key={ind.clave} className="mh-col">
+          <div key={ind.clave} className="mh-col" style={{ borderColor: ind.color }}>
             <div className="mh-titulo" style={{ color: ind.color }}>{ind.titulo}</div>
 
             <div className="mh-bloque">

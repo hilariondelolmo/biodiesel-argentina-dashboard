@@ -8,6 +8,8 @@ import { fmt } from './lib/format.js';
 
 const Mercado = lazy(() => import('./pages/Mercado.jsx'));
 const Gestion = lazy(() => import('./pages/Gestion.jsx'));
+const MarcoLegal = lazy(() => import('./pages/MarcoLegal.jsx'));
+const Articulos = lazy(() => import('./pages/Articulos.jsx'));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -26,21 +28,23 @@ export default function App() {
       <Suspense fallback={<div className="page-loading">Cargando…</div>}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/mercado" element={<Mercado />} />
+          <Route path="/mercado/:seccion?" element={<Mercado />} />
           <Route path="/gestion" element={<Gestion />} />
+          <Route path="/marco-legal" element={<MarcoLegal />} />
+          <Route path="/articulos" element={<Articulos />} />
         </Routes>
       </Suspense>
       <footer className="site-footer">
         <div className="container">
           <p>
-            Un desarrollo de{' '}
+            Market Analysis, Dashboards and Data Viz by HDO -{' '}
             <strong>
               <a href="https://www.explorarg.com" target="_blank" rel="noopener noreferrer">
-                explorarg
+                Explorarg
               </a>
             </strong>{' '}
-            · Datos agregados de reportes mensuales de la Secretaría de Energía · Actualizado
-            con datos hasta {fmt.monthShort(mercadoData.ultimo_mes)}.
+            Copyright © 2022 · Datos agregados de reportes mensuales de la Secretaría de
+            Energía · Actualizado con datos hasta {fmt.monthShort(mercadoData.ultimo_mes)}.
           </p>
           <p className="muted">
             El tablero refleja la posición editorial de explorarg sobre el mercado de biodiesel

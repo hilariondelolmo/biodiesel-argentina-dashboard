@@ -1,8 +1,9 @@
 /* Estilos compartidos de las páginas por eje (Mercado, Gestión) */
 
 .page-hero {
-  padding: 4.5rem var(--gutter) 2.5rem;
-  border-bottom: 1px solid var(--rule-soft);
+  /* Sin gutter propio: el .container interno ya aporta el suyo,
+     así el título queda alineado con el resto de la página */
+  padding: 1.5rem 0 1.8rem;
   background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
 }
 
@@ -31,12 +32,14 @@
 .page-hero .lede {
   color: var(--ink-2);
   font-size: 1.02rem;
-  max-width: 62ch;
 }
 
 .page-section {
-  padding: 3.5rem 0 1rem;
-  scroll-margin-top: 110px;
+  /* Sin borde. El relleno superior es el aire entre las barras pegajosas y
+     el título al navegar por ancla - nada del tema anterior queda a la vista. */
+  border-top: none;
+  padding: 2.2rem 0 2.6rem;
+  scroll-margin-top: 0;
 }
 
 .page-section > .container {
@@ -64,7 +67,6 @@
 .page-section .section-intro {
   color: var(--ink-2);
   font-size: 0.92rem;
-  max-width: 68ch;
   margin-bottom: 1.6rem;
 }
 

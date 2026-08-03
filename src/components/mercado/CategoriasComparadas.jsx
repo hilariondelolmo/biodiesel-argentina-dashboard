@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
 } from 'recharts';
 import mercado from '../../data/mercado.json';
 import { fmt } from '../../lib/format.js';
@@ -67,7 +67,6 @@ export default function CategoriasComparadas() {
       <div className="chart-card-body">
         <ResponsiveContainer width="100%" height={340}>
           <AreaChart data={serie} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-            <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />
             <XAxis
               dataKey="x" tick={{ fill: C.tick, fontSize: 11 }} stroke={C.axis}
               tickFormatter={anual ? undefined : (v) => fmt.monthShort(v)} minTickGap={30}

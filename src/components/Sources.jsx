@@ -1,3 +1,5 @@
+import data from '../data/dashboard.json';
+import { fmt } from '../lib/format.js';
 import './Sources.css';
 
 export default function Sources() {
@@ -5,7 +7,7 @@ export default function Sources() {
     <section id="sources">
       <div className="container">
         <div className="section-header">
-          <div className="section-eyebrow">Sección 5</div>
+          <div className="section-eyebrow">Sección 3</div>
           <h2>Fuentes y metodología</h2>
         </div>
 
@@ -32,7 +34,7 @@ export default function Sources() {
               en la integración vertical con la producción primaria de materia prima (aceite de
               soja). <strong>Patagonia Bioenergía</strong> se clasifica como integrada por su
               participación en el complejo agroindustrial vinculado, aunque también abastece al
-              mercado interno — caso híbrido.
+              mercado interno - caso híbrido.
             </p>
           </div>
 
@@ -75,7 +77,7 @@ export default function Sources() {
 
         <div className="sources-footer">
           <p className="muted">
-            Última actualización del dataset: febrero 2026 · Compilado por explorarg · Las
+            Última actualización del dataset: {fmt.monthShort(data.meta.ultimo_mes)} · Compilado por explorarg · Las
             opiniones editoriales vertidas son del autor y no comprometen a terceros citados.
           </p>
         </div>

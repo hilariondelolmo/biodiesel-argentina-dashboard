@@ -9,7 +9,7 @@ import PetrolerasCumplimiento from '../components/gestion/PetrolerasCumplimiento
 import FormulasPrecios from '../components/gestion/FormulasPrecios.jsx';
 import './Page.css';
 
-// Blueprint §4 — Eje 04: Cumplimiento de Cupo y Gestión Estatal.
+// Blueprint §4 - Eje 04: Cumplimiento de Cupo y Gestión Estatal.
 // Títulos editoriales propuestos; se revisan con HDO antes de publicar.
 const SECTIONS = [
   {
@@ -24,7 +24,7 @@ const SECTIONS = [
   },
   {
     id: 'deficit', label: 'Déficit', title: 'El costo del incumplimiento',
-    intro: 'Cada punto de corte incumplido son toneladas de biodiesel que no se produjeron y gas oil —en parte importado— que ocupó su lugar.',
+    intro: 'Cada punto de corte incumplido son toneladas de biodiesel que no se produjeron y gas oil -en parte importado- que ocupó su lugar.',
     Comp: DeficitChart,
   },
   {

@@ -1,7 +1,12 @@
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import SectionNav from '../components/SectionNav.jsx';
+import corte from '../data/corte.json';
+import { fmt } from '../lib/format.js';
 import MercadoHoy from '../components/mercado/MercadoHoy.jsx';
 import AsignacionHoy from '../components/mercado/AsignacionHoy.jsx';
 import ConclusionesIndicadores from '../components/mercado/ConclusionesIndicadores.jsx';
+import DemandaPetroleras from '../components/mercado/DemandaPetroleras.jsx';
 import EvolucionVentas from '../components/mercado/EvolucionVentas.jsx';
 import CategoriasComparadas from '../components/mercado/CategoriasComparadas.jsx';
 import CapacidadChart from '../components/mercado/CapacidadChart.jsx';
@@ -13,23 +18,87 @@ import MapaPlantas from '../components/mercado/MapaPlantas.jsx';
 import CorteRealGO from '../components/mercado/CorteRealGO.jsx';
 import './Page.css';
 
-// Blueprint §3 — Eje 02: Mercado Interno Biodiesel (2.1–2.10; 2.11 y 2.12 en Fase 2).
+// Meses con dato de corte: dominio del mes de análisis de Principales Indicadores
+const MESES_ANALISIS = corte.mensual
+  .filter((m) => m.fecha >= '2010-01' && m.obligatorio !== null)
+  .map((m) => m.fecha);
+
+// El mes de análisis gobierna TODA la sección: los dos análisis (en tabs
+// estilo Tablero v16), las conclusiones y el cuadro de demanda por petrolera.
+function PrincipalesIndicadores() {
+  const [mes, setMes] = useState(MESES_ANALISIS.at(-1));
+  const [analisis, setAnalisis] = useState('corte');
+  return (
+    <>
+      <div className="empresa-selector-row">
+        <label htmlFor="mes-analisis">Mes de análisis</label>
+        <select
+          id="mes-analisis" className="empresa-select" style={{ minWidth: 150 }}
+          value={mes} onChange={(e) => setMes(e.target.value)}
+        >
+          {[...MESES_ANALISIS].reverse().map((f) => (
+            <option key={f} value={f}>{fmt.monthShort(f)}</option>
+          ))}
+        </select>
+      </div>
+      <div className="mh-tabs" role="tablist">
+        <button
+          role="tab" aria-selected={analisis === 'corte'}
+          className={analisis === 'corte' ? 'active' : ''}
+          onClick={() => setAnalisis('corte')}
+        >
+          Corte Obligatorio
+        </button>
+        <button
+          role="tab" aria-selected={analisis === 'asignacion'}
+          className={analisis === 'asignacion' ? 'active' : ''}
+          onClick={() => setAnalisis('asignacion')}
+        >
+          Asignación Cupos
+        </button>
+        <button
+          role="tab" aria-selected={analisis === 'conclusiones'}
+          className={analisis === 'conclusiones' ? 'active' : ''}
+          onClick={() => setAnalisis('conclusiones')}
+        >
+          Conclusiones
+        </button>
+        <button
+          role="tab" aria-selected={analisis === 'tableau'}
+          className={`mh-tab-derecha ${analisis === 'tableau' ? 'active' : ''}`}
+          onClick={() => setAnalisis('tableau')}
+        >
+          Ver en Tableau
+        </button>
+      </div>
+      {analisis === 'corte' && <MercadoHoy mes={mes} />}
+      {analisis === 'asignacion' && <AsignacionHoy mes={mes} />}
+      {analisis === 'conclusiones' && (
+        <ConclusionesIndicadores mes={mes}>
+          <DemandaPetroleras mes={mes} />
+        </ConclusionesIndicadores>
+      )}
+      {analisis === 'tableau' && (
+        <iframe
+          title="Tablero Tableau - Mercado Interno Biodiesel"
+          width="100%"
+          height="1200"
+          frameBorder="0"
+          style={{ margin: 0, padding: 0 }}
+          src="https://sd-3088058-w.ferozo.com/tableau/02MARKETINDUSTRY-MERCADOINTERNOBIODIESEL/MERCADOINTERNOIntroExplorarg"
+        />
+      )}
+    </>
+  );
+}
+
+// Blueprint §3 - Eje 02: Mercado Interno Biodiesel (2.1–2.10; 2.11 y 2.12 en Fase 2).
 // Títulos editoriales propuestos; se revisan con HDO antes de publicar.
 const SECTIONS = [
   {
     id: 'kpis', label: 'KPIs', title: 'Principales Indicadores',
-    intro: 'Los indicadores centrales del corte y de la asignación de cupos — en el mes elegido, el acumulado del año y los últimos doce meses.',
-    Comp: function PrincipalesIndicadores() {
-      return (
-        <>
-          <h3 className="mh-subtitulo">Análisis Corte Obligatorio</h3>
-          <MercadoHoy />
-          <h3 className="mh-subtitulo">Análisis Asignación Cupos</h3>
-          <AsignacionHoy />
-          <ConclusionesIndicadores />
-        </>
-      );
-    },
+    intro: 'Los indicadores centrales del corte y de la asignación de cupos - en el mes elegido, el acumulado del año y los últimos doce meses.',
+    Comp: PrincipalesIndicadores,
   },
   {
     id: 'evolucion', label: 'Evolución', title: 'Evolución de ventas',
@@ -79,29 +148,21 @@ const SECTIONS = [
 ];
 
 export default function Mercado() {
+  const { seccion } = useParams();
+  const activa = SECTIONS.find((s) => s.id === seccion) || SECTIONS[0];
+  const { id, title, intro, Comp } = activa;
+
   return (
     <>
-      <SectionNav sections={SECTIONS} />
-      <header className="page-hero">
+      <SectionNav sections={SECTIONS} basePath="/mercado" />
+      <section key={id} id={id} className="page-section">
         <div className="container">
-          <p className="kicker">Eje · Mercado Interno</p>
-          <h1>Mercado interno de biodiesel</h1>
-          <p className="lede">
-            Producción, ventas al corte, cupos y estructura de la industria desde 2008,
-            elaborados a partir de los reportes mensuales de la Secretaría de Energía.
-          </p>
+          <p className="section-kicker">Mercado Interno</p>
+          <h2>{title}</h2>
+          <p className="section-intro">{intro}</p>
+          <Comp />
         </div>
-      </header>
-      {SECTIONS.map(({ id, title, intro, Comp }) => (
-        <section key={id} id={id} className="page-section">
-          <div className="container">
-            <p className="section-kicker">Mercado Interno</p>
-            <h2>{title}</h2>
-            <p className="section-intro">{intro}</p>
-            <Comp />
-          </div>
-        </section>
-      ))}
+      </section>
     </>
   );
 }

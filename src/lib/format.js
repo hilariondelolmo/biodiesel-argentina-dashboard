@@ -3,13 +3,13 @@
 export const fmt = {
   /** 1234567 → "1.234.567" */
   int: (n) => {
-    if (n === null || n === undefined || isNaN(n)) return '—';
+    if (n === null || n === undefined || isNaN(n)) return '-';
     return Math.round(n).toLocaleString('es-AR');
   },
 
   /** 1234567.89 → "1,23 M" */
   compact: (n) => {
-    if (n === null || n === undefined || isNaN(n)) return '—';
+    if (n === null || n === undefined || isNaN(n)) return '-';
     if (Math.abs(n) >= 1_000_000) return (n / 1_000_000).toFixed(2).replace('.', ',') + ' M';
     if (Math.abs(n) >= 1_000) return (n / 1_000).toFixed(1).replace('.', ',') + ' K';
     return Math.round(n).toString();
@@ -17,7 +17,7 @@ export const fmt = {
 
   /** 45.67 → "45,7%" */
   pct: (n, digits = 1) => {
-    if (n === null || n === undefined || isNaN(n)) return '—';
+    if (n === null || n === undefined || isNaN(n)) return '-';
     return n.toFixed(digits).replace('.', ',') + '%';
   },
 

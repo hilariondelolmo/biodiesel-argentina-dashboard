@@ -1,4 +1,4 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import data from '../../data/dashboard.json';
 import { fmt } from '../../lib/format.js';
 import ChartTooltip from './ChartTooltip.jsx';
@@ -34,7 +34,6 @@ export default function EmpresasChart() {
             layout="vertical"
             margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
           >
-            <CartesianGrid stroke={C.grid} strokeDasharray="3 3" horizontal={false} />
             <XAxis
               type="number"
               tick={{ fill: C.tick, fontSize: 11 }}
@@ -68,7 +67,7 @@ export default function EmpresasChart() {
         </div>
         <div className="note">
           La mayoría de las integradas (LDC, Cargill, Renova, COFCO) dirige su producción a
-          exportación — por eso cumplimiento formal 0% sobre cupo interno. Patagonia Bioenergía
+          exportación - por eso cumplimiento formal 0% sobre cupo interno. Patagonia Bioenergía
           es la excepción: integrada que también abastece el corte obligatorio.
         </div>
       </div>

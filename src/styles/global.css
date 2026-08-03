@@ -1,10 +1,10 @@
 /* ═══════════════════════════════════════════════════════
-   Tablero Biodiesel Argentina — CSS Global
+   Tablero Biodiesel Argentina - CSS Global
    Variables, reset, tipografía base, helpers
    ═══════════════════════════════════════════════════════ */
 
 :root {
-  /* Tema claro (default) — estilo Tablero v16 de portal-explora */
+  /* Tema claro (default) - estilo Tablero v16 de portal-explora */
   --bg: #FFFFFF;
   --bg-2: #FFFFFF;
   --bg-3: #F9F8F6;
@@ -19,8 +19,8 @@
 
   --accent-bio: #4D8B31;      /* Verde biodiesel */
   --accent-oil: #B45309;      /* Ámbar petróleo */
-  --accent-exp: #2563EB;      /* Azul primario */
-  --accent-exp-dim: #BFDBFE;
+  --accent-exp: #1E3A8A;      /* Azul marino primario */
+  --accent-exp-dim: #B9C7E4;
   --accent-alert: #DC2626;    /* Rojo alerta */
   --accent-neutral: #6B7280;
 
@@ -34,10 +34,11 @@
   /* Layout */
   --max-width: 1280px;
   --gutter: 2rem;
+  --nav-h: 44px; /* altura fija de la barra superior; la sub-nav se pega debajo */
 }
 
 :root[data-theme='dark'] {
-  /* Tema oscuro — paleta original del dashboard */
+  /* Tema oscuro - paleta original del dashboard */
   --bg: #0A0E12;
   --bg-2: #111820;
   --bg-3: #171F28;
@@ -71,7 +72,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: calc(var(--nav-h) + 40px); /* nav + sub-nav pegajosas */
 }
 
 body {
@@ -143,7 +144,6 @@ section {
 
 .section-header {
   margin-bottom: 2.5rem;
-  max-width: 60rem;
 }
 
 .section-header p {
@@ -179,7 +179,7 @@ section {
   section { padding: 3.5rem 0; }
 }
 
-/* Modal open — bloquear scroll del body */
+/* Modal open - bloquear scroll del body */
 body.modal-open { overflow: hidden; }
 
 /* Estado de carga de páginas lazy */

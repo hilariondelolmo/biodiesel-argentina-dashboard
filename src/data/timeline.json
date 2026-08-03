@@ -3,7 +3,7 @@
     "year": "2006",
     "cat": "ley",
     "bio": true,
-    "title": "Ley 26.093 — Régimen de Regulación y Promoción",
+    "title": "Ley 26.093 - Régimen de Regulación y Promoción",
     "desc": "Crea el régimen de promoción para la producción y uso sustentables de biocombustibles. Vigencia 15 años desde la reglamentación. Promulgada el 12-05-2006.",
     "url": "https://www.argentina.gob.ar/normativa/nacional/ley-26093-116299/texto",
     "urlLabel": "Texto oficial · argentina.gob.ar"
@@ -40,7 +40,7 @@
   {
     "year": "2013",
     "cat": "internacional",
-    "title": "UE — Reglamento 490/2013 (antidumping)",
+    "title": "UE - Reglamento 490/2013 (antidumping)",
     "desc": "La Unión Europea aplica derechos antidumping de 22-25,7% al biodiesel argentino. El cierre del mercado europeo marca el primer shock exportador significativo del sector.",
     "url": "https://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:32013R0490",
     "urlLabel": "Reglamento 490/2013 · EUR-Lex"
@@ -48,7 +48,7 @@
   {
     "year": "2017",
     "cat": "internacional",
-    "title": "USA — Aranceles antidumping 86,2% + compensatorios 71,4%",
+    "title": "USA - Aranceles antidumping 86,2% + compensatorios 71,4%",
     "desc": "El Departamento de Comercio emite órdenes de derechos sobre el biodiesel argentino. Las exportaciones a EEUU caen a cero inmediatamente.",
     "url": "https://www.federalregister.gov/documents/2018/01/04/2017-28457/biodiesel-from-argentina-and-indonesia-amended-final-affirmative-antidumping-duty-determinations-and",
     "urlLabel": "Orden DoC · Federal Register"
@@ -74,7 +74,7 @@
     "year": "2021",
     "cat": "ley",
     "highlight": true,
-    "title": "Ley 27.640 — Marco Regulatorio de Biocombustibles",
+    "title": "Ley 27.640 - Marco Regulatorio de Biocombustibles",
     "desc": "Reemplaza el régimen de promoción. Reduce el corte obligatorio de biodiesel del 10% al 5% (con piso de 3%), mientras mantiene el de bioetanol en 12%. Autora: Marcos Cleri. Promotor: Máximo Kirchner.",
     "url": "https://www.argentina.gob.ar/normativa/nacional/ley-27640-352587/texto",
     "urlLabel": "Texto oficial · argentina.gob.ar"
@@ -102,7 +102,7 @@
     "cat": "res",
     "highlight": true,
     "title": "Resolución SE 963/2023",
-    "desc": "Publicada el 29-11-2023, tres años y tres meses después de la Ley 27.640, aprueba la metodología para determinación del precio del biodiesel — cumplimiento tardío del Art. 14. Incluye en su Art. 5 una cláusula discrecional que permite apartarse de la fórmula.",
+    "desc": "Publicada el 29-11-2023, tres años y tres meses después de la Ley 27.640, aprueba la metodología para determinación del precio del biodiesel - cumplimiento tardío del Art. 14. Incluye en su Art. 5 una cláusula discrecional que permite apartarse de la fórmula.",
     "url": "https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-963-2023-394051",
     "urlLabel": "Texto oficial · argentina.gob.ar",
     "url2": "https://www.boletinoficial.gob.ar/detalleAviso/primera/299472/20231130",
@@ -130,7 +130,7 @@
   {
     "year": "2024",
     "cat": "ley",
-    "title": "Ley 27.742 — Bases (sin capítulo biocombustibles)",
+    "title": "Ley 27.742 - Bases (sin capítulo biocombustibles)",
     "desc": "Sancionada sin el capítulo original de biocombustibles, que había sido incluido por el PEN. Las provincias productoras lograron que se retirara para dar tratamiento separado.",
     "url": "https://www.argentina.gob.ar/normativa/nacional/ley-27742-401266/texto",
     "urlLabel": "Texto oficial · argentina.gob.ar"
@@ -149,6 +149,6 @@
     "title": "Propuesta de la Secretaría de Energía (Veller)",
     "desc": "Presentada en octubre 2025. Reduce la participación de no integradas del 7,5% al 2% entre 2025 y 2031. Preserva el universo cerrado de la Ley 27.640 con nuevo lenguaje.",
     "url": null,
-    "urlLabel": "Sin texto público formal — propuesta presentada en comisión"
+    "urlLabel": "Sin texto público formal - propuesta presentada en comisión"
   }
 ]

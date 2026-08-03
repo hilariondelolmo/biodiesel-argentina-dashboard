@@ -1,4 +1,4 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import data from '../../data/dashboard.json';
 import { fmt } from '../../lib/format.js';
 import ChartTooltip from './ChartTooltip.jsx';
@@ -27,7 +27,6 @@ export default function ProvinciaChart() {
             layout="vertical"
             margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
           >
-            <CartesianGrid stroke={C.grid} strokeDasharray="3 3" horizontal={false} />
             <XAxis
               type="number"
               tick={{ fill: C.tick, fontSize: 11 }}

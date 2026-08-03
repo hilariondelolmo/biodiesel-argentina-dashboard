@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
 } from 'recharts';
 import data from '../../data/dashboard.json';
 import { fmt } from '../../lib/format.js';
@@ -66,7 +66,6 @@ export default function MonthlyChart() {
                 <stop offset="100%" stopColor={C.oil} stopOpacity={0.15} />
               </linearGradient>
             </defs>
-            <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />
             <XAxis
               dataKey="FECHA"
               tick={{ fill: C.tick, fontSize: 11 }}

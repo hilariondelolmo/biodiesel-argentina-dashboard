@@ -1,6 +1,6 @@
 .section-nav {
   position: sticky;
-  top: 53px; /* debajo de .top-nav */
+  top: var(--nav-h); /* pegada debajo de .top-nav, sin hueco */
   z-index: 90;
   background: var(--subnav-bg);
   backdrop-filter: blur(10px);

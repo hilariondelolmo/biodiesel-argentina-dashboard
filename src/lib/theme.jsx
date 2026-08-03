@@ -47,8 +47,8 @@ export const PALETAS = {
   light: {
     bio: '#4d8b31',        // verde biodiesel
     oil: '#b45309',        // ámbar gas oil / exportaciones
-    exp: '#2563eb',        // azul cupo / primario
-    expDim: '#bfdbfe',
+    exp: '#1e3a8a',        // azul marino cupo / primario
+    expDim: '#b9c7e4',
     neutral: '#6b7280',    // gris comercializadoras / acumulados
     alert: '#dc2626',      // rojo déficit
     ink: '#1a1a1a',        // series destacadas (cumplimiento)
@@ -61,7 +61,7 @@ export const PALETAS = {
     bioFillFuerte: 'rgba(77, 139, 49, 0.45)',
     oilFill: 'rgba(180, 83, 9, 0.16)',
     oilFillFuerte: 'rgba(180, 83, 9, 0.4)',
-    expFill: 'rgba(37, 99, 235, 0.12)',
+    expFill: 'rgba(30, 58, 138, 0.12)',
     neutralFill: 'rgba(107, 114, 128, 0.3)',
     alertFill: 'rgba(220, 38, 38, 0.22)',
     banda: 'rgba(107, 114, 128, 0.08)',

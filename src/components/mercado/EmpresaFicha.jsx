@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import {
-  ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  ComposedChart, Bar, Line, XAxis, YAxis, Tooltip, ResponsiveContainer,
 } from 'recharts';
 import empresasData from '../../data/empresas.json';
 import KPIs from '../KPIs.jsx';
@@ -95,7 +95,7 @@ export default function EmpresaFicha() {
         {
           label: 'Categoría',
           value: emp.categoria.charAt(0) + emp.categoria.slice(1).toLowerCase(),
-          sub: [emp.localidad, emp.provincia].filter(Boolean).join(', ') || '—',
+          sub: [emp.localidad, emp.provincia].filter(Boolean).join(', ') || '-',
           tone: 'info',
         },
         emp.grupo && {
@@ -139,7 +139,6 @@ export default function EmpresaFicha() {
         <div className="chart-card-body">
           <ResponsiveContainer width="100%" height={340}>
             <ComposedChart data={serie} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-              <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />
               <XAxis
                 dataKey="x" tick={{ fill: C.tick, fontSize: 11 }} stroke={C.axis}
                 tickFormatter={anual ? undefined : (v) => fmt.monthShort(v)} minTickGap={30}

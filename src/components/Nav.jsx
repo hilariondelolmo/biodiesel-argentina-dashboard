@@ -6,6 +6,8 @@ const ROUTES = [
   { to: '/', label: 'Portada', end: true },
   { to: '/mercado', label: 'Mercado Interno' },
   { to: '/gestion', label: 'Gestión y Cupo' },
+  { to: '/marco-legal', label: 'Marco Legal' },
+  { to: '/articulos', label: 'Artículos' },
 ];
 
 export default function Nav() {

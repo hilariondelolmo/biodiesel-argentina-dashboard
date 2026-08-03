@@ -1,9 +1,9 @@
 .chart-card {
-  background: var(--bg-2);
-  border: 1px solid var(--rule);
-  border-radius: 4px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
+  /* Sin recuadro: el gráfico vive directo sobre el fondo de la página */
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-bottom: 2.8rem;
 }
 
 .chart-card-header {

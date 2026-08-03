@@ -31,7 +31,7 @@ export default function EficaciaGestiones() {
           <div className="gestion-card-nombre">{g.corto}</div>
           <div className="gestion-card-periodo">
             {g.desde.slice(0, 7) < '2010-01' ? '2010-01' : g.desde.slice(0, 7)} →{' '}
-            {g.hasta ? g.hasta.slice(0, 7) : 'hoy'} · {g.coalicion || '—'}
+            {g.hasta ? g.hasta.slice(0, 7) : 'hoy'} · {g.coalicion || '-'}
           </div>
           <div
             className={`gestion-card-valor ${

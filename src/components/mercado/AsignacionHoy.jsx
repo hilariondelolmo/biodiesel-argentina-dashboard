@@ -61,14 +61,14 @@ function ventana(serie, desde, hasta) {
 
 const conSigno = (v) => `${v >= 0 ? '+' : '−'}${fmt.int(Math.abs(v))}`;
 
-export default function AsignacionHoy() {
+export default function AsignacionHoy({ mes: mesProp }) {
   const C = useChartColors();
   const [grupo, setGrupo] = useState(TODOS);
-  const [mesSel, setMesSel] = useState(null);
 
   const serie = useMemo(() => serieBase(grupo), [grupo]);
   const fechas = serie.map((m) => m.fecha);
-  const mes = mesSel && fechas.includes(mesSel) ? mesSel : fechas.at(-1);
+  // Mes efectivo: el seleccionado, o el último disponible de esta serie
+  const mes = fechas.filter((f) => f <= mesProp).at(-1) || fechas.at(-1);
 
   const d = useMemo(() => {
     const anio = mes.slice(0, 4);
@@ -95,7 +95,7 @@ export default function AsignacionHoy() {
 
   const INDICADORES = [
     {
-      clave: 'cupo', titulo: 'Asignación biodiesel corte', color: C.exp,
+      clave: 'cupo', titulo: 'Asignación biodiesel corte', color: C.oil,
       valor: (v) => v && `${fmt.int(v.cupo)} ton`, corto: (v) => v && fmt.int(v.cupo),
       crudo: (v) => v?.cupo,
     },
@@ -105,7 +105,7 @@ export default function AsignacionHoy() {
       crudo: (v) => v?.vc,
     },
     {
-      clave: 'diff', titulo: 'Cumplimiento asignación (ton)', color: C.oil,
+      clave: 'diff', titulo: 'Cumplimiento asignación (ton)', color: C.exp,
       valor: (v) => v && `${conSigno(v.diff)} ton`, corto: (v) => v && conSigno(v.diff),
       crudo: (v) => v?.diff, barras: true,
     },
@@ -122,15 +122,6 @@ export default function AsignacionHoy() {
   return (
     <>
       <div className="empresa-selector-row mh-selectores">
-        <label htmlFor="mes-asig-select">Mes de análisis</label>
-        <select
-          id="mes-asig-select" className="empresa-select" style={{ minWidth: 150 }}
-          value={mes} onChange={(e) => setMesSel(e.target.value)}
-        >
-          {[...fechas].reverse().map((f) => (
-            <option key={f} value={f}>{fmt.monthShort(f)}</option>
-          ))}
-        </select>
         <label htmlFor="grupo-select">Grupo económico</label>
         <select
           id="grupo-select" className="empresa-select" style={{ minWidth: 220 }}
@@ -145,7 +136,7 @@ export default function AsignacionHoy() {
 
       <div className="mh-grid">
         {INDICADORES.map((ind) => (
-          <div key={ind.clave} className="mh-col">
+          <div key={ind.clave} className="mh-col" style={{ borderColor: ind.color }}>
             <div className="mh-titulo" style={{ color: ind.color }}>{ind.titulo}</div>
 
             <div className="mh-bloque">

@@ -1,4 +1,4 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import data from '../../data/dashboard.json';
 import { fmt } from '../../lib/format.js';
 import ChartTooltip from './ChartTooltip.jsx';
@@ -25,7 +25,6 @@ export default function AnualChart() {
       <div className="chart-card-body">
         <ResponsiveContainer width="100%" height={340}>
           <BarChart data={series} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-            <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="AÑO" tick={{ fill: C.tick, fontSize: 11 }} stroke={C.axis} />
             <YAxis
               tick={{ fill: C.tick, fontSize: 11 }}

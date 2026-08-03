@@ -60,7 +60,7 @@
 }
 .event.highlight::before {
   background: var(--accent-exp);
-  box-shadow: 0 0 0 3px rgba(74, 143, 168, 0.2);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-exp) 25%, transparent);
 }
 
 .event .year {

@@ -2,7 +2,7 @@
   position: sticky;
   top: 53px; /* debajo de .top-nav */
   z-index: 90;
-  background: rgba(17, 24, 32, 0.88);
+  background: var(--subnav-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--rule-soft);

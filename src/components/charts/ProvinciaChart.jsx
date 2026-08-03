@@ -3,8 +3,10 @@ import data from '../../data/dashboard.json';
 import { fmt } from '../../lib/format.js';
 import ChartTooltip from './ChartTooltip.jsx';
 import './Chart.css';
+import { useChartColors } from '../../lib/theme.jsx';
 
 export default function ProvinciaChart() {
+  const C = useChartColors();
   const prov = data.provincia_12m.map((p) => ({
     nombre: p.PROVINCIA,
     Producción: Math.round(p['PRODUCTION [ton]']),
@@ -25,22 +27,22 @@ export default function ProvinciaChart() {
             layout="vertical"
             margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
           >
-            <CartesianGrid stroke="#1E2832" strokeDasharray="3 3" horizontal={false} />
+            <CartesianGrid stroke={C.grid} strokeDasharray="3 3" horizontal={false} />
             <XAxis
               type="number"
-              tick={{ fill: '#6B7680', fontSize: 11 }}
+              tick={{ fill: C.tick, fontSize: 11 }}
               tickFormatter={(v) => fmt.compact(v)}
-              stroke="#2A3340"
+              stroke={C.axis}
             />
             <YAxis
               dataKey="nombre"
               type="category"
-              tick={{ fill: '#B8C2CC', fontSize: 11 }}
+              tick={{ fill: C.tick, fontSize: 11 }}
               width={130}
-              stroke="#2A3340"
+              stroke={C.axis}
             />
-            <Tooltip content={<ChartTooltip />} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
-            <Bar dataKey="Producción" name="Producción" fill="#4A8FA8" />
+            <Tooltip content={<ChartTooltip />} cursor={{ fill: C.cursor }} />
+            <Bar dataKey="Producción" name="Producción" fill={C.exp} />
           </BarChart>
         </ResponsiveContainer>
         <div className="note">

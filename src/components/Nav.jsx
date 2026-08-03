@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import { useTheme } from '../lib/theme.jsx';
 import './Nav.css';
 
 const ROUTES = [
@@ -8,6 +9,7 @@ const ROUTES = [
 ];
 
 export default function Nav() {
+  const { theme, toggle } = useTheme();
   return (
     <nav className="top-nav">
       <div className="top-nav-inner container">
@@ -28,6 +30,17 @@ export default function Nav() {
               </NavLink>
             </li>
           ))}
+          <li>
+            <button
+              type="button"
+              className="theme-toggle"
+              onClick={toggle}
+              title={theme === 'light' ? 'Cambiar a tema oscuro' : 'Cambiar a tema claro'}
+              aria-label="Cambiar tema"
+            >
+              {theme === 'light' ? '◑' : '◐'}
+            </button>
+          </li>
         </ul>
       </div>
     </nav>

@@ -4,7 +4,40 @@
    ═══════════════════════════════════════════════════════ */
 
 :root {
-  /* Paleta — Dark Dashboard con acentos industriales */
+  /* Tema claro (default) — estilo Tablero v16 de portal-explora */
+  --bg: #F1F0EE;
+  --bg-2: #FFFFFF;
+  --bg-3: #F9F8F6;
+  --bg-4: #ECEAE6;
+
+  --ink: #1A1A1A;
+  --ink-2: #374151;
+  --ink-muted: #6B7280;
+
+  --rule: #D1CDC7;
+  --rule-soft: #E5E2DC;
+
+  --accent-bio: #4D8B31;      /* Verde biodiesel */
+  --accent-oil: #B45309;      /* Ámbar petróleo */
+  --accent-exp: #2563EB;      /* Azul primario */
+  --accent-exp-dim: #BFDBFE;
+  --accent-alert: #DC2626;    /* Rojo alerta */
+  --accent-neutral: #6B7280;
+
+  --nav-bg: rgba(255, 255, 255, 0.85);
+  --subnav-bg: rgba(249, 248, 246, 0.9);
+  --sombra-panel: 0 12px 32px rgba(0, 0, 0, 0.12);
+
+  /* Tipografía */
+  --font-display: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+  /* Layout */
+  --max-width: 1280px;
+  --gutter: 2rem;
+}
+
+:root[data-theme='dark'] {
+  /* Tema oscuro — paleta original del dashboard */
   --bg: #0A0E12;
   --bg-2: #111820;
   --bg-3: #171F28;
@@ -17,19 +50,16 @@
   --rule: #2A3340;
   --rule-soft: #1E2832;
 
-  --accent-bio: #7FB069;      /* Verde biodiesel */
-  --accent-oil: #D4A574;      /* Ámbar petróleo */
-  --accent-exp: #4A8FA8;      /* Azul Explora */
+  --accent-bio: #7FB069;
+  --accent-oil: #D4A574;
+  --accent-exp: #4A8FA8;
   --accent-exp-dim: #2F5668;
-  --accent-alert: #C67B5C;    /* Terracota alerta */
+  --accent-alert: #C67B5C;
   --accent-neutral: #8B9AAB;
 
-  /* Tipografía */
-  --font-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
-
-  /* Layout */
-  --max-width: 1280px;
-  --gutter: 2rem;
+  --nav-bg: rgba(10, 14, 18, 0.82);
+  --subnav-bg: rgba(17, 24, 32, 0.88);
+  --sombra-panel: 0 12px 32px rgba(0, 0, 0, 0.5);
 }
 
 /* Reset */

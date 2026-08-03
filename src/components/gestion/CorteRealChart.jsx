@@ -8,12 +8,14 @@ import { fmt } from '../../lib/format.js';
 import { bandas } from '../../lib/gestiones.js';
 import ChartTooltip from '../charts/ChartTooltip.jsx';
 import '../charts/Chart.css';
+import { useChartColors } from '../../lib/theme.jsx';
 
 /**
  * Corte obligatorio vs. corte real, con área de déficit sombreada y
  * bandas por gestión presidencial. Vista anual o mensual.
  */
 export default function CorteRealChart() {
+  const C = useChartColors();
   const [vista, setVista] = useState('anual');
   const [conGestiones, setConGestiones] = useState(true);
 
@@ -71,24 +73,24 @@ export default function CorteRealChart() {
       <div className="chart-card-body">
         <ResponsiveContainer width="100%" height={380}>
           <ComposedChart data={serie} margin={{ top: 24, right: 10, left: 0, bottom: 0 }}>
-            <CartesianGrid stroke="#1E2832" strokeDasharray="3 3" vertical={false} />
+            <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />
             <XAxis
               dataKey="x"
-              tick={{ fill: '#6B7680', fontSize: 11 }}
-              stroke="#2A3340"
+              tick={{ fill: C.tick, fontSize: 11 }}
+              stroke={C.axis}
               tickFormatter={tickFmt}
               minTickGap={30}
             />
             <YAxis
-              tick={{ fill: '#6B7680', fontSize: 11 }}
+              tick={{ fill: C.tick, fontSize: 11 }}
               tickFormatter={(v) => fmt.pct(v, 0)}
-              stroke="#2A3340"
+              stroke={C.axis}
               domain={[0, 12]}
             />
             <Tooltip
               content={<ChartTooltip unit="%" />}
               labelFormatter={anual ? undefined : (l) => fmt.monthShort(l)}
-              cursor={{ stroke: '#2A3340' }}
+              cursor={{ stroke: C.axis }}
             />
             {conGestiones &&
               zonas.map((z, i) => (
@@ -96,12 +98,12 @@ export default function CorteRealChart() {
                   key={z.presidente}
                   x1={z.x1}
                   x2={z.x2}
-                  fill={i % 2 ? 'rgba(139,154,171,0.07)' : 'rgba(139,154,171,0.015)'}
+                  fill={i % 2 ? C.banda : C.bandaSuave}
                   stroke="none"
                   label={{
                     value: z.corto,
                     position: 'insideTop',
-                    fill: '#6B7680',
+                    fill: C.tick,
                     fontSize: 10,
                   }}
                 />
@@ -111,7 +113,7 @@ export default function CorteRealChart() {
                 <ReferenceLine
                   key={`l-${z.presidente}`}
                   x={z.x1}
-                  stroke="#2A3340"
+                  stroke={C.axis}
                   strokeDasharray="2 4"
                 />
               ))}
@@ -119,21 +121,21 @@ export default function CorteRealChart() {
               dataKey="real"
               stackId="corte"
               name="Corte real"
-              stroke="#7FB069"
+              stroke={C.bio}
               strokeWidth={2}
-              fill="rgba(127,176,105,0.14)"
+              fill={C.bioFill}
             />
             <Area
               dataKey="deficit"
               stackId="corte"
               name="Déficit"
               stroke="none"
-              fill="rgba(198,123,92,0.30)"
+              fill={C.alertFill}
             />
             <Line
               dataKey="oblig"
               name="Corte obligatorio"
-              stroke="#4A8FA8"
+              stroke={C.exp}
               strokeWidth={2}
               dot={false}
             />
@@ -141,15 +143,15 @@ export default function CorteRealChart() {
         </ResponsiveContainer>
         <div className="chart-legend">
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#4A8FA8' }} />
+            <span className="chart-legend-swatch" style={{ background: C.exp }} />
             <span>Corte obligatorio (normativa vigente)</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#7FB069' }} />
+            <span className="chart-legend-swatch" style={{ background: C.bio }} />
             <span>Corte real (bio vendido al corte / ventas de gas oil)</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: 'rgba(198,123,92,0.5)' }} />
+            <span className="chart-legend-swatch" style={{ background: C.alertFill }} />
             <span>Déficit (obligatorio no cumplido)</span>
           </div>
         </div>

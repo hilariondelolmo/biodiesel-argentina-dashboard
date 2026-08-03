@@ -7,6 +7,7 @@ import empresasData from '../../data/empresas.json';
 import { fmt } from '../../lib/format.js';
 import { mesOffset, Delta } from './kpiHelpers.jsx';
 import './Mercado.css';
+import { useChartColors } from '../../lib/theme.jsx';
 
 /**
  * Análisis de cumplimiento de las asignaciones de biodiesel de la SE:
@@ -61,6 +62,7 @@ function ventana(serie, desde, hasta) {
 const conSigno = (v) => `${v >= 0 ? '+' : '−'}${fmt.int(Math.abs(v))}`;
 
 export default function AsignacionHoy() {
+  const C = useChartColors();
   const [grupo, setGrupo] = useState(TODOS);
   const [mesSel, setMesSel] = useState(null);
 
@@ -93,22 +95,22 @@ export default function AsignacionHoy() {
 
   const INDICADORES = [
     {
-      clave: 'cupo', titulo: 'Asignación biodiesel corte', color: '#4A8FA8',
+      clave: 'cupo', titulo: 'Asignación biodiesel corte', color: C.exp,
       valor: (v) => v && `${fmt.int(v.cupo)} ton`, corto: (v) => v && fmt.int(v.cupo),
       crudo: (v) => v?.cupo,
     },
     {
-      clave: 'vc', titulo: 'Ventas biodiesel corte', color: '#7FB069',
+      clave: 'vc', titulo: 'Ventas biodiesel corte', color: C.bio,
       valor: (v) => v && `${fmt.int(v.vc)} ton`, corto: (v) => v && fmt.int(v.vc),
       crudo: (v) => v?.vc,
     },
     {
-      clave: 'diff', titulo: 'Cumplimiento asignación (ton)', color: '#D4A574',
+      clave: 'diff', titulo: 'Cumplimiento asignación (ton)', color: C.oil,
       valor: (v) => v && `${conSigno(v.diff)} ton`, corto: (v) => v && conSigno(v.diff),
       crudo: (v) => v?.diff, barras: true,
     },
     {
-      clave: 'pct', titulo: '% cumplimiento asignación', color: '#E8ECF0',
+      clave: 'pct', titulo: '% cumplimiento asignación', color: C.ink,
       valor: (v) => v && fmt.pct(v.pct), corto: (v) => v && fmt.pct(v.pct),
       crudo: (v) => v?.pct,
     },
@@ -177,7 +179,7 @@ export default function AsignacionHoy() {
                     <YAxis hide domain={['dataMin', 'dataMax']} />
                     <Bar dataKey="diff" isAnimationActive={false}>
                       {d.spark.map((m) => (
-                        <Cell key={m.fecha} fill={m.diff >= 0 ? '#7FB069' : '#C67B5C'} />
+                        <Cell key={m.fecha} fill={m.diff >= 0 ? C.bio : C.alert} />
                       ))}
                     </Bar>
                   </BarChart>

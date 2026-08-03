@@ -6,6 +6,7 @@ import data from '../../data/dashboard.json';
 import { fmt } from '../../lib/format.js';
 import ChartTooltip from './ChartTooltip.jsx';
 import './Chart.css';
+import { useChartColors } from '../../lib/theme.jsx';
 
 const RANGES = [
   { id: '12m', label: '12m', months: 12 },
@@ -15,6 +16,7 @@ const RANGES = [
 ];
 
 export default function MonthlyChart() {
+  const C = useChartColors();
   const [range, setRange] = useState('5y');
 
   const series = useMemo(() => {
@@ -52,37 +54,37 @@ export default function MonthlyChart() {
           <AreaChart data={series} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="gradCorte" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#7FB069" stopOpacity={0.7} />
-                <stop offset="100%" stopColor="#7FB069" stopOpacity={0.15} />
+                <stop offset="0%" stopColor={C.bio} stopOpacity={0.7} />
+                <stop offset="100%" stopColor={C.bio} stopOpacity={0.15} />
               </linearGradient>
               <linearGradient id="gradFuera" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#4A8FA8" stopOpacity={0.7} />
-                <stop offset="100%" stopColor="#4A8FA8" stopOpacity={0.15} />
+                <stop offset="0%" stopColor={C.exp} stopOpacity={0.7} />
+                <stop offset="100%" stopColor={C.exp} stopOpacity={0.15} />
               </linearGradient>
               <linearGradient id="gradExport" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#D4A574" stopOpacity={0.7} />
-                <stop offset="100%" stopColor="#D4A574" stopOpacity={0.15} />
+                <stop offset="0%" stopColor={C.oil} stopOpacity={0.7} />
+                <stop offset="100%" stopColor={C.oil} stopOpacity={0.15} />
               </linearGradient>
             </defs>
-            <CartesianGrid stroke="#1E2832" strokeDasharray="3 3" vertical={false} />
+            <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />
             <XAxis
               dataKey="FECHA"
-              tick={{ fill: '#6B7680', fontSize: 11 }}
+              tick={{ fill: C.tick, fontSize: 11 }}
               tickFormatter={(v) => (v ? v.split('-')[0] : '')}
               interval={series.length > 60 ? 23 : 11}
-              stroke="#2A3340"
+              stroke={C.axis}
             />
             <YAxis
-              tick={{ fill: '#6B7680', fontSize: 11 }}
+              tick={{ fill: C.tick, fontSize: 11 }}
               tickFormatter={(v) => fmt.compact(v)}
-              stroke="#2A3340"
+              stroke={C.axis}
             />
             <Tooltip content={<ChartTooltip labelFormatter={fmt.monthShort} />} />
             <Area
               type="monotone"
               dataKey="Ventas_corte"
               stackId="1"
-              stroke="#7FB069"
+              stroke={C.bio}
               strokeWidth={1.5}
               fill="url(#gradCorte)"
               name="Ventas al corte"
@@ -91,7 +93,7 @@ export default function MonthlyChart() {
               type="monotone"
               dataKey="Ventas_fuera_corte"
               stackId="1"
-              stroke="#4A8FA8"
+              stroke={C.exp}
               strokeWidth={1.5}
               fill="url(#gradFuera)"
               name="Ventas fuera de corte"
@@ -100,7 +102,7 @@ export default function MonthlyChart() {
               type="monotone"
               dataKey="Exportaciones"
               stackId="1"
-              stroke="#D4A574"
+              stroke={C.oil}
               strokeWidth={1.5}
               fill="url(#gradExport)"
               name="Exportaciones"
@@ -109,15 +111,15 @@ export default function MonthlyChart() {
         </ResponsiveContainer>
         <div className="chart-legend">
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#7FB069' }} />
+            <span className="chart-legend-swatch" style={{ background: C.bio }} />
             <span>Ventas al corte obligatorio</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#4A8FA8' }} />
+            <span className="chart-legend-swatch" style={{ background: C.exp }} />
             <span>Ventas fuera de corte</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#D4A574' }} />
+            <span className="chart-legend-swatch" style={{ background: C.oil }} />
             <span>Exportaciones</span>
           </div>
         </div>

@@ -6,9 +6,11 @@ import mercado from '../../data/mercado.json';
 import { fmt } from '../../lib/format.js';
 import ChartTooltip from '../charts/ChartTooltip.jsx';
 import '../charts/Chart.css';
+import { useChartColors } from '../../lib/theme.jsx';
 
 /** Capacidad instalada activa por año vs producción efectiva → utilización. */
 export default function CapacidadChart() {
+  const C = useChartColors();
   const capPorAnio = new Map();
   for (const r of capacidad.serie) {
     if (r.condicion !== 'ON') continue;
@@ -43,34 +45,34 @@ export default function CapacidadChart() {
       <div className="chart-card-body">
         <ResponsiveContainer width="100%" height={340}>
           <ComposedChart data={serie} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-            <CartesianGrid stroke="#1E2832" strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="anio" tick={{ fill: '#6B7680', fontSize: 11 }} stroke="#2A3340" />
+            <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />
+            <XAxis dataKey="anio" tick={{ fill: C.tick, fontSize: 11 }} stroke={C.axis} />
             <YAxis
-              yAxisId="ton" tick={{ fill: '#6B7680', fontSize: 11 }}
-              tickFormatter={(v) => fmt.compact(v)} stroke="#2A3340"
+              yAxisId="ton" tick={{ fill: C.tick, fontSize: 11 }}
+              tickFormatter={(v) => fmt.compact(v)} stroke={C.axis}
             />
             <YAxis
-              yAxisId="pct" orientation="right" tick={{ fill: '#6B7680', fontSize: 11 }}
-              tickFormatter={(v) => fmt.pct(v, 0)} stroke="#2A3340" domain={[0, 100]}
+              yAxisId="pct" orientation="right" tick={{ fill: C.tick, fontSize: 11 }}
+              tickFormatter={(v) => fmt.pct(v, 0)} stroke={C.axis} domain={[0, 100]}
             />
-            <Tooltip content={<ChartTooltip />} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
-            <Bar yAxisId="ton" dataKey="Capacidad" name="Capacidad instalada" fill="#2F5668" />
-            <Bar yAxisId="ton" dataKey="Produccion" name="Producción" fill="#7FB069" />
+            <Tooltip content={<ChartTooltip />} cursor={{ fill: C.cursor }} />
+            <Bar yAxisId="ton" dataKey="Capacidad" name="Capacidad instalada" fill={C.expDim} />
+            <Bar yAxisId="ton" dataKey="Produccion" name="Producción" fill={C.bio} />
             <Line yAxisId="pct" dataKey="utilizacion" name="Utilización" unit="%"
-              stroke="#E8ECF0" strokeWidth={1.5} dot={{ r: 2 }} />
+              stroke={C.ink} strokeWidth={1.5} dot={{ r: 2 }} />
           </ComposedChart>
         </ResponsiveContainer>
         <div className="chart-legend">
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#2F5668' }} />
+            <span className="chart-legend-swatch" style={{ background: C.expDim }} />
             <span>Capacidad instalada (ton/año)</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#7FB069' }} />
+            <span className="chart-legend-swatch" style={{ background: C.bio }} />
             <span>Producción efectiva</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#E8ECF0' }} />
+            <span className="chart-legend-swatch" style={{ background: C.ink }} />
             <span>Utilización (eje derecho)</span>
           </div>
         </div>

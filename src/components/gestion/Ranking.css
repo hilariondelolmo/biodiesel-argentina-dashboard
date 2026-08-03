@@ -60,7 +60,7 @@
   top: 0;
   bottom: 0;
   width: 1px;
-  background: rgba(232, 236, 240, 0.35);
+  background: color-mix(in srgb, var(--ink) 40%, transparent);
 }
 
 .ranking-valor {

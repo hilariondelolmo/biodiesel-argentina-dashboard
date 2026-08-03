@@ -1,5 +1,6 @@
 import { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { ThemeProvider } from './lib/theme.jsx';
 import Nav from './components/Nav.jsx';
 import Home from './pages/Home.jsx';
 import mercadoData from './data/mercado.json';
@@ -18,7 +19,8 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
       <ScrollToTop />
       <Nav />
       <Suspense fallback={<div className="page-loading">Cargando…</div>}>
@@ -47,6 +49,7 @@ export default function App() {
           </p>
         </div>
       </footer>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }

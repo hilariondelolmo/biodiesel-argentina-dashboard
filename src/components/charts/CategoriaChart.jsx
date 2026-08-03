@@ -3,8 +3,10 @@ import data from '../../data/dashboard.json';
 import { fmt } from '../../lib/format.js';
 import ChartTooltip from './ChartTooltip.jsx';
 import './Chart.css';
+import { useChartColors } from '../../lib/theme.jsx';
 
 export default function CategoriaChart() {
+  const C = useChartColors();
   const series = data.categoria_anual.map((a) => ({
     AÑO: a.AÑO,
     Integradas: a.INTEGRADA || 0,
@@ -23,30 +25,30 @@ export default function CategoriaChart() {
       <div className="chart-card-body">
         <ResponsiveContainer width="100%" height={320}>
           <BarChart data={series} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-            <CartesianGrid stroke="#1E2832" strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="AÑO" tick={{ fill: '#6B7680', fontSize: 11 }} stroke="#2A3340" />
+            <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />
+            <XAxis dataKey="AÑO" tick={{ fill: C.tick, fontSize: 11 }} stroke={C.axis} />
             <YAxis
-              tick={{ fill: '#6B7680', fontSize: 11 }}
+              tick={{ fill: C.tick, fontSize: 11 }}
               tickFormatter={(v) => fmt.compact(v)}
-              stroke="#2A3340"
+              stroke={C.axis}
             />
-            <Tooltip content={<ChartTooltip />} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
-            <Bar dataKey="Integradas" stackId="a" name="Integradas" fill="#D4A574" />
-            <Bar dataKey="No_integradas" stackId="a" name="No integradas" fill="#7FB069" />
-            <Bar dataKey="Comercializadoras" stackId="a" name="Comercializadoras" fill="#8B9AAB" />
+            <Tooltip content={<ChartTooltip />} cursor={{ fill: C.cursor }} />
+            <Bar dataKey="Integradas" stackId="a" name="Integradas" fill={C.oil} />
+            <Bar dataKey="No_integradas" stackId="a" name="No integradas" fill={C.bio} />
+            <Bar dataKey="Comercializadoras" stackId="a" name="Comercializadoras" fill={C.neutral} />
           </BarChart>
         </ResponsiveContainer>
         <div className="chart-legend">
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#D4A574' }} />
+            <span className="chart-legend-swatch" style={{ background: C.oil }} />
             <span>Integradas (10 empresas, incluye Patagonia Bioenergía)</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#7FB069' }} />
+            <span className="chart-legend-swatch" style={{ background: C.bio }} />
             <span>No integradas (36 empresas · cupo interno)</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#8B9AAB' }} />
+            <span className="chart-legend-swatch" style={{ background: C.neutral }} />
             <span>Comercializadoras (6)</span>
           </div>
         </div>

@@ -6,15 +6,16 @@ import mercado from '../../data/mercado.json';
 import { fmt } from '../../lib/format.js';
 import ChartTooltip from '../charts/ChartTooltip.jsx';
 import '../charts/Chart.css';
-
-const COLORES = {
-  'NO INTEGRADA': '#7FB069',
-  INTEGRADA: '#D4A574',
-  COMERCIALIZADORA: '#8B9AAB',
-};
+import { useChartColors } from '../../lib/theme.jsx';
 
 /** Ventas al corte por categoría de empresa: absoluto o participación %. */
 export default function CategoriasComparadas() {
+  const C = useChartColors();
+  const COLORES = {
+    'NO INTEGRADA': C.bio,
+    INTEGRADA: C.oil,
+    COMERCIALIZADORA: C.neutral,
+  };
   const [vista, setVista] = useState('anual');
   const [modo, setModo] = useState('abs');
   const anual = vista === 'anual';
@@ -66,20 +67,20 @@ export default function CategoriasComparadas() {
       <div className="chart-card-body">
         <ResponsiveContainer width="100%" height={340}>
           <AreaChart data={serie} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-            <CartesianGrid stroke="#1E2832" strokeDasharray="3 3" vertical={false} />
+            <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />
             <XAxis
-              dataKey="x" tick={{ fill: '#6B7680', fontSize: 11 }} stroke="#2A3340"
+              dataKey="x" tick={{ fill: C.tick, fontSize: 11 }} stroke={C.axis}
               tickFormatter={anual ? undefined : (v) => fmt.monthShort(v)} minTickGap={30}
             />
             <YAxis
-              tick={{ fill: '#6B7680', fontSize: 11 }} stroke="#2A3340"
+              tick={{ fill: C.tick, fontSize: 11 }} stroke={C.axis}
               tickFormatter={modo === 'pct' ? (v) => fmt.pct(v, 0) : (v) => fmt.compact(v)}
               domain={modo === 'pct' ? [0, 100] : undefined}
             />
             <Tooltip
               content={<ChartTooltip unit={modo === 'pct' ? '%' : 'ton'} />}
               labelFormatter={anual ? undefined : (l) => fmt.monthShort(l)}
-              cursor={{ stroke: '#2A3340' }}
+              cursor={{ stroke: C.axis }}
             />
             {Object.entries(COLORES).map(([cat, color]) => (
               <Area key={cat} dataKey={cat} stackId="c" name={cat.toLowerCase()}

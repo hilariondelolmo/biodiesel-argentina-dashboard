@@ -6,6 +6,7 @@ import goSectores from '../../data/go_sectores.json';
 import { fmt } from '../../lib/format.js';
 import { mesOffset, Delta } from './kpiHelpers.jsx';
 import './Mercado.css';
+import { useChartColors } from '../../lib/theme.jsx';
 
 /**
  * KPIs del mercado interno replicando el tablero de referencia de explorarg:
@@ -119,6 +120,7 @@ function SectoresDropdown({ seleccion, onToggle }) {
 }
 
 export default function MercadoHoy() {
+  const C = useChartColors();
   const [petrolera, setPetrolera] = useState(TODAS);
   const [mesSel, setMesSel] = useState(null);
   const [sectores, setSectores] = useState(SECTORES_DEFAULT);
@@ -164,24 +166,24 @@ export default function MercadoHoy() {
     {
       clave: 'go',
       titulo: petrolera === TODAS ? 'Ventas de gas oil Nº2 y Nº3' : 'Ventas de gas oil de la petrolera',
-      color: '#D4A574',
+      color: C.oil,
       valor: (v) => v && `${fmt.int(v.go)} m³`, corto: (v) => v && fmt.int(v.go),
       crudo: (v) => v?.go,
     },
     {
       clave: 'bio',
       titulo: petrolera === TODAS ? 'Venta biodiesel corte obligatorio' : 'Biodiesel comprado al corte',
-      color: '#7FB069',
+      color: C.bio,
       valor: (v) => v && `${fmt.int(v.bio)} m³`, corto: (v) => v && fmt.int(v.bio),
       crudo: (v) => v?.bio,
     },
     {
-      clave: 'real', titulo: '% corte real', color: '#4A8FA8',
+      clave: 'real', titulo: '% corte real', color: C.exp,
       valor: (v) => v && fmt.pct(v.real * 100), corto: (v) => v && fmt.pct(v.real * 100),
       crudo: (v) => v?.real,
     },
     {
-      clave: 'cumplimiento', titulo: '% cumplimiento corte', color: '#E8ECF0',
+      clave: 'cumplimiento', titulo: '% cumplimiento corte', color: C.ink,
       valor: (v) => v && fmt.pct(v.cumplimiento * 100, 0),
       corto: (v) => v && fmt.pct(v.cumplimiento * 100, 0),
       crudo: (v) => v?.cumplimiento,

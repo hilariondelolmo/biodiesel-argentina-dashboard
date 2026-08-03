@@ -6,9 +6,11 @@ import mercado from '../../data/mercado.json';
 import { fmt } from '../../lib/format.js';
 import ChartTooltip from '../charts/ChartTooltip.jsx';
 import '../charts/Chart.css';
+import { useChartColors } from '../../lib/theme.jsx';
 
 /** Evolución de ventas por destino, apilada, con cupo como referencia. */
 export default function EvolucionVentas() {
+  const C = useChartColors();
   const [vista, setVista] = useState('anual');
   const anual = vista === 'anual';
 
@@ -37,44 +39,44 @@ export default function EvolucionVentas() {
       <div className="chart-card-body">
         <ResponsiveContainer width="100%" height={360}>
           <ComposedChart data={serie} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-            <CartesianGrid stroke="#1E2832" strokeDasharray="3 3" vertical={false} />
+            <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />
             <XAxis
-              dataKey="x" tick={{ fill: '#6B7680', fontSize: 11 }} stroke="#2A3340"
+              dataKey="x" tick={{ fill: C.tick, fontSize: 11 }} stroke={C.axis}
               tickFormatter={anual ? undefined : (v) => fmt.monthShort(v)} minTickGap={30}
             />
             <YAxis
-              tick={{ fill: '#6B7680', fontSize: 11 }}
-              tickFormatter={(v) => fmt.compact(v)} stroke="#2A3340"
+              tick={{ fill: C.tick, fontSize: 11 }}
+              tickFormatter={(v) => fmt.compact(v)} stroke={C.axis}
             />
             <Tooltip
-              content={<ChartTooltip />} cursor={{ stroke: '#2A3340' }}
+              content={<ChartTooltip />} cursor={{ stroke: C.axis }}
               labelFormatter={anual ? undefined : (l) => fmt.monthShort(l)}
             />
             <Area dataKey="Ventas_corte" name="Ventas al corte" stackId="v"
-              stroke="#7FB069" fill="rgba(127,176,105,0.55)" />
+              stroke={C.bio} fill={C.bioFillFuerte} />
             <Area dataKey="Fuera_de_corte" name="Fuera de corte" stackId="v"
-              stroke="#8B9AAB" fill="rgba(139,154,171,0.45)" />
+              stroke={C.neutral} fill={C.neutralFill} />
             <Area dataKey="Exportaciones" name="Exportaciones" stackId="v"
-              stroke="#D4A574" fill="rgba(212,165,116,0.5)" />
-            <Line dataKey="Cupo" name="Cupo asignado" stroke="#4A8FA8"
+              stroke={C.oil} fill={C.oilFillFuerte} />
+            <Line dataKey="Cupo" name="Cupo asignado" stroke={C.exp}
               strokeWidth={1.8} strokeDasharray="5 3" dot={false} />
           </ComposedChart>
         </ResponsiveContainer>
         <div className="chart-legend">
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#7FB069' }} />
+            <span className="chart-legend-swatch" style={{ background: C.bio }} />
             <span>Ventas al corte obligatorio</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#8B9AAB' }} />
+            <span className="chart-legend-swatch" style={{ background: C.neutral }} />
             <span>Mercado interno fuera de corte</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#D4A574' }} />
+            <span className="chart-legend-swatch" style={{ background: C.oil }} />
             <span>Exportaciones</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#4A8FA8' }} />
+            <span className="chart-legend-swatch" style={{ background: C.exp }} />
             <span>Cupo asignado (línea)</span>
           </div>
         </div>

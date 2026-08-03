@@ -69,11 +69,11 @@
 }
 .cat-integrada {
   color: var(--accent-oil);
-  border-color: rgba(212, 165, 116, 0.4);
+  border-color: color-mix(in srgb, var(--accent-oil) 45%, transparent);
 }
 .cat-no-integrada {
   color: var(--accent-bio);
-  border-color: rgba(127, 176, 105, 0.4);
+  border-color: color-mix(in srgb, var(--accent-bio) 45%, transparent);
 }
 .cat-comercializadora {
   color: var(--accent-neutral);

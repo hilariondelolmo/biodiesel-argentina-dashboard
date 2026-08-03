@@ -3,14 +3,16 @@ import data from '../../data/dashboard.json';
 import { fmt } from '../../lib/format.js';
 import ChartTooltip from './ChartTooltip.jsx';
 import './Chart.css';
+import { useChartColors } from '../../lib/theme.jsx';
 
-const colorByCategoria = (cat) => {
-  if (cat === 'INTEGRADA') return '#D4A574';
-  if (cat === 'NO INTEGRADA') return '#7FB069';
-  return '#8B9AAB';
+const colorByCategoria = (C, cat) => {
+  if (cat === 'INTEGRADA') return C.oil;
+  if (cat === 'NO INTEGRADA') return C.bio;
+  return C.neutral;
 };
 
 export default function EmpresasChart() {
+  const C = useChartColors();
   const top15 = data.top_empresas_12m.slice(0, 15).map((e) => ({
     nombre: fmt.truncate(e['EMPRESA ELABORADORA'], 30),
     Producción: Math.round(e['PRODUCTION [ton]']),
@@ -32,35 +34,35 @@ export default function EmpresasChart() {
             layout="vertical"
             margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
           >
-            <CartesianGrid stroke="#1E2832" strokeDasharray="3 3" horizontal={false} />
+            <CartesianGrid stroke={C.grid} strokeDasharray="3 3" horizontal={false} />
             <XAxis
               type="number"
-              tick={{ fill: '#6B7680', fontSize: 11 }}
+              tick={{ fill: C.tick, fontSize: 11 }}
               tickFormatter={(v) => fmt.compact(v)}
-              stroke="#2A3340"
+              stroke={C.axis}
             />
             <YAxis
               dataKey="nombre"
               type="category"
-              tick={{ fill: '#B8C2CC', fontSize: 11 }}
+              tick={{ fill: C.tick, fontSize: 11 }}
               width={200}
-              stroke="#2A3340"
+              stroke={C.axis}
             />
-            <Tooltip content={<ChartTooltip />} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
+            <Tooltip content={<ChartTooltip />} cursor={{ fill: C.cursor }} />
             <Bar dataKey="Producción" name="Producción">
               {top15.map((entry, i) => (
-                <Cell key={i} fill={colorByCategoria(entry.CATEGORIA)} />
+                <Cell key={i} fill={colorByCategoria(C, entry.CATEGORIA)} />
               ))}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
         <div className="chart-legend">
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#D4A574' }} />
+            <span className="chart-legend-swatch" style={{ background: C.oil }} />
             <span>Integrada</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#7FB069' }} />
+            <span className="chart-legend-swatch" style={{ background: C.bio }} />
             <span>No integrada</span>
           </div>
         </div>

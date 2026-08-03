@@ -6,9 +6,11 @@ import mercado from '../../data/mercado.json';
 import { fmt } from '../../lib/format.js';
 import ChartTooltip from '../charts/ChartTooltip.jsx';
 import '../charts/Chart.css';
+import { useChartColors } from '../../lib/theme.jsx';
 
 /** Cupo asignado vs. ventas al corte del sistema completo. */
 export default function CupoUso() {
+  const C = useChartColors();
   const [vista, setVista] = useState('anual');
   const anual = vista === 'anual';
 
@@ -36,40 +38,40 @@ export default function CupoUso() {
       <div className="chart-card-body">
         <ResponsiveContainer width="100%" height={340}>
           <ComposedChart data={serie} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-            <CartesianGrid stroke="#1E2832" strokeDasharray="3 3" vertical={false} />
+            <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />
             <XAxis
-              dataKey="x" tick={{ fill: '#6B7680', fontSize: 11 }} stroke="#2A3340"
+              dataKey="x" tick={{ fill: C.tick, fontSize: 11 }} stroke={C.axis}
               tickFormatter={anual ? undefined : (v) => fmt.monthShort(v)} minTickGap={30}
             />
             <YAxis
-              yAxisId="ton" tick={{ fill: '#6B7680', fontSize: 11 }}
-              tickFormatter={(v) => fmt.compact(v)} stroke="#2A3340"
+              yAxisId="ton" tick={{ fill: C.tick, fontSize: 11 }}
+              tickFormatter={(v) => fmt.compact(v)} stroke={C.axis}
             />
             <YAxis
-              yAxisId="pct" orientation="right" tick={{ fill: '#6B7680', fontSize: 11 }}
-              tickFormatter={(v) => fmt.pct(v, 0)} stroke="#2A3340"
+              yAxisId="pct" orientation="right" tick={{ fill: C.tick, fontSize: 11 }}
+              tickFormatter={(v) => fmt.pct(v, 0)} stroke={C.axis}
             />
             <Tooltip
-              content={<ChartTooltip />} cursor={{ fill: 'rgba(255,255,255,0.04)' }}
+              content={<ChartTooltip />} cursor={{ fill: C.cursor }}
               labelFormatter={anual ? undefined : (l) => fmt.monthShort(l)}
             />
-            <Bar yAxisId="ton" dataKey="Cupo" name="Cupo asignado" fill="#4A8FA8" />
-            <Bar yAxisId="ton" dataKey="Ventas_corte" name="Ventas al corte" fill="#7FB069" />
+            <Bar yAxisId="ton" dataKey="Cupo" name="Cupo asignado" fill={C.exp} />
+            <Bar yAxisId="ton" dataKey="Ventas_corte" name="Ventas al corte" fill={C.bio} />
             <Line yAxisId="pct" dataKey="cumplimiento" name="Cumplimiento" unit="%"
-              stroke="#E8ECF0" strokeWidth={1.5} dot={anual ? { r: 2 } : false} />
+              stroke={C.ink} strokeWidth={1.5} dot={anual ? { r: 2 } : false} />
           </ComposedChart>
         </ResponsiveContainer>
         <div className="chart-legend">
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#4A8FA8' }} />
+            <span className="chart-legend-swatch" style={{ background: C.exp }} />
             <span>Cupo asignado por la Secretaría de Energía</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#7FB069' }} />
+            <span className="chart-legend-swatch" style={{ background: C.bio }} />
             <span>Ventas al corte efectivas</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#E8ECF0' }} />
+            <span className="chart-legend-swatch" style={{ background: C.ink }} />
             <span>Cumplimiento (eje derecho)</span>
           </div>
         </div>

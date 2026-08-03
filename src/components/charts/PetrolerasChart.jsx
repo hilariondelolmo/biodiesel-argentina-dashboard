@@ -2,12 +2,13 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import data from '../../data/dashboard.json';
 import { fmt } from '../../lib/format.js';
 import './Chart.css';
+import { useChartColors } from '../../lib/theme.jsx';
 
-const PALETTE = [
-  '#4A8FA8', '#D4A574', '#7FB069', '#C67B5C', '#8B9AAB',
+const paleta = (C) => [
+  C.exp, C.oil, C.bio, C.alert, C.neutral,
   '#6B9BAB', '#BE9770', '#729E5E', '#B07058', '#7A8995',
   '#5C8A98', '#A88960', '#66945A', '#9A6450', '#6B7A86',
-  '#4E7A8A', '#9C7C5C', '#5F8451'
+  '#4E7A8A', '#9C7C5C', '#5F8451',
 ];
 
 function DoughnutTooltip({ active, payload }) {
@@ -31,6 +32,7 @@ function DoughnutTooltip({ active, payload }) {
 }
 
 export default function PetrolerasChart() {
+  const C = useChartColors();
   const ventas = data.ventas_petroleras_12m;
   const total = ventas.reduce((acc, v) => acc + v.TONELADAS, 0);
 
@@ -38,7 +40,7 @@ export default function PetrolerasChart() {
     name: v.PETROLERA.replace(/ S\.A\.$| C\.A\.P\.S\.A\.$/, ''),
     value: v.TONELADAS,
     total,
-    fill: PALETTE[i % PALETTE.length],
+    fill: paleta(C)[i % paleta(C).length],
   }));
 
   return (
@@ -61,7 +63,7 @@ export default function PetrolerasChart() {
               innerRadius={70}
               outerRadius={130}
               paddingAngle={1}
-              stroke="#0A0E12"
+              stroke="var(--bg-2)"
               strokeWidth={2}
             >
               {series.map((e, i) => (

@@ -2,7 +2,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(10, 14, 18, 0.82);
+  background: var(--nav-bg);
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   border-bottom: 1px solid var(--rule);
@@ -71,4 +71,21 @@
 @media (max-width: 560px) {
   .top-nav-inner { padding: 0.7rem 1rem; gap: 0.5rem; }
   .top-nav-links { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--ink-2);
+  font-size: 0.95rem;
+  line-height: 1;
+  padding: 0.4rem 0.6rem;
+  margin-left: 0.4rem;
+  transition: all 0.15s;
+}
+
+.theme-toggle:hover {
+  color: var(--ink);
+  background: var(--bg-3);
 }

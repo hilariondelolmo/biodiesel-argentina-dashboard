@@ -3,12 +3,14 @@ import empresasData from '../../data/empresas.json';
 import RankingCumplimiento from './RankingCumplimiento.jsx';
 import { fmt } from '../../lib/format.js';
 import '../charts/Chart.css';
+import { useChartColors } from '../../lib/theme.jsx';
 
 /**
  * Cumplimiento de cupo por elaboradora / grupo económico (últimos 12 meses).
  * serie: [fecha, prod, cupo, ventas_corte, xquota, exportaciones]
  */
 export default function ElaboradorasCumplimiento() {
+  const C = useChartColors();
   const [agrupar, setAgrupar] = useState('empresa');
 
   const ultimo = empresasData.ultimo_mes;
@@ -60,15 +62,15 @@ export default function ElaboradorasCumplimiento() {
         <RankingCumplimiento items={items} />
         <div className="chart-legend">
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#7FB069' }} />
+            <span className="chart-legend-swatch" style={{ background: C.bio }} />
             <span>≥ 95%</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#D4A574' }} />
+            <span className="chart-legend-swatch" style={{ background: C.oil }} />
             <span>80–95%</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: '#C67B5C' }} />
+            <span className="chart-legend-swatch" style={{ background: C.alert }} />
             <span>&lt; 80%</span>
           </div>
         </div>

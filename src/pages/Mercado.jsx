@@ -96,7 +96,7 @@ function PrincipalesIndicadores() {
 // Títulos editoriales propuestos; se revisan con HDO antes de publicar.
 const SECTIONS = [
   {
-    id: 'kpis', label: 'KPIs', title: 'Principales Indicadores',
+    id: 'kpis', label: 'KPIs', title: 'Principales Indicadores', root: true,
     intro: 'Los indicadores centrales del corte y de la asignación de cupos - en el mes elegido, el acumulado del año y los últimos doce meses.',
     Comp: PrincipalesIndicadores,
   },
@@ -147,14 +147,21 @@ const SECTIONS = [
   },
 ];
 
+// Partición para la nav "Dashboards": Principales Indicadores agrupa KPIs y
+// Evolución; Detalle de ventas agrupa el resto de las secciones del eje.
+const IDS_INDICADORES = ['kpis', 'evolucion'];
+const GRUPO_INDICADORES = SECTIONS.filter((s) => IDS_INDICADORES.includes(s.id));
+const GRUPO_DETALLE = SECTIONS.filter((s) => !IDS_INDICADORES.includes(s.id));
+
 export default function Mercado() {
   const { seccion } = useParams();
   const activa = SECTIONS.find((s) => s.id === seccion) || SECTIONS[0];
   const { id, title, intro, Comp } = activa;
+  const grupo = IDS_INDICADORES.includes(id) ? GRUPO_INDICADORES : GRUPO_DETALLE;
 
   return (
     <>
-      <SectionNav sections={SECTIONS} basePath="/mercado" />
+      <SectionNav sections={grupo} basePath="/mercado" />
       <section key={id} id={id} className="page-section">
         <div className="container">
           <p className="section-kicker">Mercado Interno</p>

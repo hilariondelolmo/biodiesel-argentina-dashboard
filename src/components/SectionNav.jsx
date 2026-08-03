@@ -17,11 +17,11 @@ export default function SectionNav({ sections, basePath }) {
     <nav className="section-nav" aria-label="Secciones de la página">
       <div className="section-nav-inner container">
         <ul>
-          {sections.map((s, i) => (
+          {sections.map((s) => (
             <li key={s.id}>
               {basePath ? (
                 <NavLink
-                  to={i === 0 ? basePath : `${basePath}/${s.id}`}
+                  to={s.root ? basePath : `${basePath}/${s.id}`}
                   end
                   className={({ isActive }) => (isActive ? 'active' : '')}
                 >

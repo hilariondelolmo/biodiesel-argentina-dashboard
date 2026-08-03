@@ -1,17 +1,19 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useTheme } from '../lib/theme.jsx';
 import './Nav.css';
 
-const ROUTES = [
-  { to: '/', label: 'Home', end: true },
-  { to: '/mercado', label: 'Mercado Interno' },
-  { to: '/gestion', label: 'Gestión y Cupo' },
-  { to: '/marco-legal', label: 'Marco Legal' },
-  { to: '/articulos', label: 'Artículos' },
+const DASHBOARDS = [
+  { to: '/mercado', label: 'Biodiesel - Principales Indicadores' },
+  { to: '/mercado/integradas', label: 'Biodiesel - Detalle de ventas' },
+  { to: '/gestion', label: 'Biodiesel - Cumplimiento Corte' },
+  { label: 'Biodiesel - Primas y Precios Relativos', disabled: true },
 ];
 
 export default function Nav() {
   const { theme, toggle } = useTheme();
+  const { pathname } = useLocation();
+  const enDashboards = pathname.startsWith('/mercado') || pathname.startsWith('/gestion');
+
   return (
     <nav className="top-nav">
       <div className="top-nav-inner container">
@@ -23,17 +25,58 @@ export default function Nav() {
           </span>
         </div>
         <ul className="top-nav-links">
-          {ROUTES.map((r) => (
-            <li key={r.to}>
-              <NavLink
-                to={r.to}
-                end={r.end}
-                className={({ isActive }) => (isActive ? 'active' : '')}
-              >
-                {r.label}
-              </NavLink>
-            </li>
-          ))}
+          <li>
+            <NavLink to="/" end className={({ isActive }) => (isActive ? 'active' : '')}>
+              Home
+            </NavLink>
+          </li>
+          <li className="nav-dropdown">
+            <button
+              type="button"
+              className={`nav-dropdown-trigger ${enDashboards ? 'active' : ''}`}
+              aria-haspopup="true"
+            >
+              Dashboards <span className="nav-dropdown-caret">▾</span>
+            </button>
+            <ul className="nav-dropdown-menu">
+              {DASHBOARDS.map((d) =>
+                d.disabled ? (
+                  <li key={d.label}>
+                    <span className="nav-dropdown-item deshabilitado" aria-disabled="true">
+                      {d.label}
+                    </span>
+                  </li>
+                ) : (
+                  <li key={d.label}>
+                    <NavLink
+                      to={d.to}
+                      className={({ isActive }) =>
+                        `nav-dropdown-item ${isActive ? 'active' : ''}`
+                      }
+                    >
+                      {d.label}
+                    </NavLink>
+                  </li>
+                )
+              )}
+            </ul>
+          </li>
+          <li>
+            <NavLink
+              to="/marco-legal"
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              Marco Legal
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/articulos"
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              Artículos
+            </NavLink>
+          </li>
           <li>
             <button
               type="button"

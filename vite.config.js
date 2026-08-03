@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: './', // rutas relativas para poder servir desde cualquier subdirectorio
+  base: '/', // raíz absoluta: requerido por BrowserRouter en producción (Vercel)
   build: {
     outDir: 'dist',
     assetsInlineLimit: 8192, // inline fonts pequeños

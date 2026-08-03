@@ -46,3 +46,8 @@ public/fonts/*.woff2
 public/fonts/*.woff
 public/fonts/*.otf
 public/fonts/*.ttf
+
+# Archivos de trabajo de la sesión (no publicar)
+HANDOFF_claude_code.md
+.claude/
+.vercel

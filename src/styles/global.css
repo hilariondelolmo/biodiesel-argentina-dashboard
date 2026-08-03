@@ -24,6 +24,12 @@
   --accent-alert: #DC2626;    /* Rojo alerta */
   --accent-neutral: #6B7280;
 
+  /* Marca explorarg (branding oficial: #3CDBC0 + #11111F, Sinkin Sans) */
+  --brand-teal: #3CDBC0;        /* turquesa puro: ícono y detalles sobre fondo oscuro */
+  --accent-brand: #0E8A76;      /* turquesa oscurecido: legible sobre fondo claro */
+  --brand-ink: #11111F;         /* wordmark EXPLORARG en tema claro */
+  --font-brand: 'Sinkin Sans', var(--font-display);
+
   --nav-bg: rgba(255, 255, 255, 0.85);
   --subnav-bg: rgba(249, 248, 246, 0.9);
   --sombra-panel: 0 12px 32px rgba(0, 0, 0, 0.12);
@@ -34,7 +40,7 @@
   /* Layout */
   --max-width: 1280px;
   --gutter: 2rem;
-  --nav-h: 44px; /* altura fija de la barra superior; la sub-nav se pega debajo */
+  --nav-h: 56px; /* altura fija de la barra superior; la sub-nav se pega debajo */
 }
 
 :root[data-theme='dark'] {
@@ -57,6 +63,10 @@
   --accent-exp-dim: #2F5668;
   --accent-alert: #C67B5C;
   --accent-neutral: #8B9AAB;
+
+  --brand-teal: #3CDBC0;
+  --accent-brand: #3CDBC0;      /* sobre fondo oscuro el turquesa puro rinde bien */
+  --brand-ink: #FFFFFF;         /* wordmark EXPLORARG en tema oscuro */
 
   --nav-bg: rgba(10, 14, 18, 0.82);
   --subnav-bg: rgba(17, 24, 32, 0.88);
@@ -107,7 +117,7 @@ a {
   text-decoration: none;
   transition: color 0.15s;
 }
-a:hover { color: var(--ink); }
+a:hover { color: var(--accent-brand); }
 
 code, .mono, .data {
   font-family: var(--font-display);
@@ -181,6 +191,28 @@ section {
 
 /* Modal open - bloquear scroll del body */
 body.modal-open { overflow: hidden; }
+
+/* Footer del sitio (se renderiza en App.jsx, en todas las páginas) */
+.site-footer {
+  padding: 3rem 0;
+  border-top: 1px solid var(--rule);
+  background: var(--bg-2);
+}
+
+.site-footer p {
+  font-size: 0.72rem;
+  color: var(--ink-2);
+  line-height: 1.6;
+  margin-bottom: 0.7rem;
+}
+
+.site-footer p:last-child {
+  margin-bottom: 0;
+}
+
+.site-footer strong {
+  color: var(--ink);
+}
 
 /* Estado de carga de páginas lazy */
 .page-loading {

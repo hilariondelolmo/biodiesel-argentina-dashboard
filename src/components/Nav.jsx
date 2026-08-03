@@ -3,7 +3,7 @@ import { useTheme } from '../lib/theme.jsx';
 import './Nav.css';
 
 const ROUTES = [
-  { to: '/', label: 'Portada', end: true },
+  { to: '/', label: 'Home', end: true },
   { to: '/mercado', label: 'Mercado Interno' },
   { to: '/gestion', label: 'Gestión y Cupo' },
   { to: '/marco-legal', label: 'Marco Legal' },
@@ -16,9 +16,11 @@ export default function Nav() {
     <nav className="top-nav">
       <div className="top-nav-inner container">
         <div className="top-nav-brand">
-          <span className="brand-mark">◆</span>
-          <span className="brand-text">Biodiesel Argentina</span>
-          <span className="brand-sub">· Tablero</span>
+          <img src="/brand/explorarg-icon.png" alt="explorarg" className="brand-icon" />
+          <span className="brand-lockup">
+            <span className="brand-name">EXPLORARG</span>
+            <span className="brand-tag">Marketscan</span>
+          </span>
         </div>
         <ul className="top-nav-links">
           {ROUTES.map((r) => (

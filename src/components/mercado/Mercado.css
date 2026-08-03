@@ -326,6 +326,34 @@
   color: var(--ink);
 }
 
+/* Botón que despliega el cuadro de demanda por petrolera */
+.mh-detalle-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.55rem 1rem;
+  margin-bottom: 1.4rem;
+  color: var(--accent-exp);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.mh-detalle-toggle:hover {
+  color: var(--accent-brand);
+  border-color: var(--accent-brand);
+  background: var(--bg-3);
+}
+
+.mh-detalle-toggle-flecha {
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
 .mh-conclusiones-sintesis {
   border-top: 1px solid var(--rule-soft);
   padding-top: 1rem;

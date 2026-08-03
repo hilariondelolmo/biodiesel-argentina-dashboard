@@ -70,28 +70,6 @@
   line-height: 1.5;
 }
 
-/* Footer del sitio */
-.site-footer {
-  padding: 3rem 0;
-  border-top: 1px solid var(--rule);
-  background: var(--bg-2);
-}
-
-.site-footer p {
-  font-size: 0.82rem;
-  color: var(--ink-2);
-  line-height: 1.6;
-  margin-bottom: 0.7rem;
-}
-
-.site-footer p:last-child {
-  margin-bottom: 0;
-}
-
-.site-footer strong {
-  color: var(--ink);
-}
-
 @media (max-width: 720px) {
   .sources-grid { grid-template-columns: 1fr; }
   .source-card.full { grid-column: 1; }

@@ -41,7 +41,7 @@
 
 .section-nav a.active {
   color: var(--ink);
-  border-bottom-color: var(--accent-exp);
+  border-bottom-color: var(--accent-brand);
 }
 
 @media (max-width: 560px) {

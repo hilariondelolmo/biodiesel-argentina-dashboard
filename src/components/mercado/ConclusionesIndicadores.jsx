@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import corte from '../../data/corte.json';
 import mercado from '../../data/mercado.json';
 import { fmt } from '../../lib/format.js';
@@ -41,6 +42,7 @@ function stats(rows) {
 }
 
 export default function ConclusionesIndicadores({ mes, children }) {
+  const [verDetalle, setVerDetalle] = useState(false);
   const hastaMes = mes && CM.some((r) => r.fecha === mes) ? mes : CM.at(-1).fecha;
   const filas = CM.filter((r) => r.fecha <= hastaMes);
   const anio = hastaMes.slice(0, 4);
@@ -99,12 +101,20 @@ export default function ConclusionesIndicadores({ mes, children }) {
             su volumen requería en los últimos doce meses
             {topCriticas.length ? ` (entre ellas ${topCriticas.join(', ')})` : ''}: acumularon{' '}
             {fmt.int(goCriticas)} m³ de gas oil con {fmt.int(faltanteCriticas)} ton de
-            biodiesel sin demandar. El detalle, empresa por empresa, en el cuadro
-            siguiente.
+            biodiesel sin demandar.
           </li>
         )}
       </ul>
-      {children}
+      <button
+        type="button"
+        className="mh-detalle-toggle"
+        aria-expanded={verDetalle}
+        onClick={() => setVerDetalle((v) => !v)}
+      >
+        <span className="mh-detalle-toggle-flecha">{verDetalle ? '▾' : '▸'}</span>
+        Detalle de ventas de GO y compras de Bio por petrolera
+      </button>
+      {verDetalle && children}
       <p className="mh-conclusiones-sintesis">
         El incumplimiento del corte tiene origen administrativo antes que industrial: la
         asignación de cupos de la Secretaría de Energía cubre el {fmt.pct(ytd.coberturaAsig, 0)}{' '}

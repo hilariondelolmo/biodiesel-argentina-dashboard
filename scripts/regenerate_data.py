@@ -66,6 +66,56 @@ CORTE_ESSO_AXION = "2018-03"  # último mes imputado a ESSO S.A.P.A.
 NOMBRE_AXION = "AXION ENERGY ARGENTINA S.A."
 NOMBRE_ESSO = "ESSO S.A.P.A."
 
+# El hyper de detalle trae a estas aceiteras como NO INTEGRADA en toda su
+# historia; decisión HDO (2026-08-03, coincide con su workbook Tableau):
+# son INTEGRADAS.
+CATEGORIA_OVERRIDE = {
+    "VICENTÍN S.A.I.C.": "INTEGRADA",
+    "NOBLE ARGENTINA S.A.": "INTEGRADA",
+}
+
+# Nombres de exhibición de elaboradoras (lista HDO 2026-08-04). Se aplican en
+# TODAS las fuentes que traen el nombre (detalle, capacidad, holding, cámaras)
+# para que los joins internos sigan cerrando.
+ALIAS_EMPRESAS = {
+    "MOLINOS RÍO DE LA PLATA S.A.": "MOLINOS S.A.",
+    "ACEITE GENERAL DEHEZA S.A.": "AGD S.A.",
+    "NOBLE ARGENTINA S.A.": "NOBLE S.A.",
+    "PATAGONIA BIOENERGIA S.A.": "PATAGONIA S.A.",
+    "ADVANCED ORGANIC MATERIALS S.A.": "AOM S.A.",
+    "ENERGÍA RENOVABLE S.A.": "ENRESA",
+    "ENERGÍAS RENOVABLES ARGENTINA S.A.": "ERA S.A.",
+    "DOBLE L BIOENERGIAS S.A.": "DOBLE L S.A.",
+}
+
+
+def alias_empresa(nombre):
+    return ALIAS_EMPRESAS.get(nombre, nombre)
+
+
+# Correcciones de grupo económico sobre el hyper (decisiones HDO 2026-08-03/04):
+# - Biomadero no pertenece al GRUPO BOJANICH, queda independiente.
+# - Bio Nogoya y Héctor A. Bolzan y Cía. constituyen el GRUPO BOLZÁN.
+GRUPO_OVERRIDE = {
+    "BIOMADERO S.A.": "BIOMADERO S.A.",
+    "BIO NOGOYA S.A.": "GRUPO BOLZÁN",
+    "HÉCTOR A. BOLZAN Y CÍA. S.R.L.": "GRUPO BOLZÁN",
+}
+
+# Renombres de grupos económicos (decisión HDO 2026-08-04)
+ALIAS_GRUPOS = {
+    "GRUPO ROSARIO BIO": "GRUPO PUCCIARIELLO",
+}
+
+# Holdings de holdings (decisión HDO 2026-08-04): el GRUPO ESSENTIAL ENERGY
+# está conformado por dos grupos - GRUPO PUCCIARIELLO (ex Rosario Bio) y
+# GRUPO BOLZÁN.
+SUPERGRUPOS = {
+    "GRUPO PUCCIARIELLO": "GRUPO ESSENTIAL ENERGY",
+    "GRUPO BOLZÁN": "GRUPO ESSENTIAL ENERGY",
+}
+
+
 def alias_petrolera(nombre, fecha=None):
     nombre = ALIAS_PETROLERAS.get(nombre, nombre)
     if fecha is not None:
@@ -155,8 +205,13 @@ def extraer_detalle(hy):
     registros = []
     for r in rows:
         fecha = ym(r[0])
+        empresa = nfc(r[1])  # nombre crudo: clave de los overrides
+        grupo = alias_empresa(GRUPO_OVERRIDE.get(empresa, nfc(r[3])))
+        grupo = ALIAS_GRUPOS.get(grupo, grupo)
         d = dict(
-            fecha=fecha, empresa=nfc(r[1]), categoria=r[2], grupo=nfc(r[3]),
+            fecha=fecha, empresa=alias_empresa(empresa),
+            categoria=CATEGORIA_OVERRIDE.get(empresa, r[2]),
+            grupo=grupo, supergrupo=SUPERGRUPOS.get(grupo),
             provincia=r[4], localidad=r[5], explora=(r[6] == "Y"),
             prod=r[7] or 0, cupo=r[8] or 0, vc=r[9] or 0,
             xq=r[10] or 0, cotab=r[11] or 0, exp=r[12] or 0,
@@ -350,7 +405,7 @@ def extraer_cumpli_petro(hy):
 
 def extraer_capacidad():
     rows = leer_excel(SRC["maestro"], "PROD CAPACITY")
-    serie = [dict(fecha=ym(r[0]), empresa=nfc(str(r[1]).strip()),
+    serie = [dict(fecha=ym(r[0]), empresa=alias_empresa(nfc(str(r[1]).strip())),
                   capacidad=float(r[2]), condicion=r[3])
              for r in rows[1:] if r and r[0] and r[1] and r[2] is not None]
     hrows = leer_excel(SRC["maestro"], "HOLDING")
@@ -360,7 +415,8 @@ def extraer_capacidad():
             continue
         lat, lng = r[6], r[7]
         plantas.append(dict(
-            empresa=nfc(str(r[0]).strip()), holding=nfc(str(r[1]).strip()) if r[1] else None,
+            empresa=alias_empresa(nfc(str(r[0]).strip())),
+            holding=alias_empresa(nfc(str(r[1]).strip())) if r[1] else None,
             capacidad=float(r[2]) if r[2] is not None else None,
             segmento=r[3], grupo=r[4],
             lat=float(lat) if lat not in (None, "") else None,
@@ -374,7 +430,7 @@ def extraer_camaras():
     out = {}
     for r in rows[1:]:
         if r and r[0] and r[1]:
-            out[(ym(r[0]), nfc(str(r[1]).strip()))] = dict(
+            out[(ym(r[0]), alias_empresa(nfc(str(r[1]).strip())))] = dict(
                 camara=r[2], camara_actual=r[5] if len(r) > 5 else None)
     return out
 
@@ -464,10 +520,11 @@ def agregar_empresas(registros, camaras):
         cam = camaras.get((last["fecha"], nombre)) or {}
         empresas.append(dict(
             empresa=nombre, categoria=last["categoria"], grupo=last["grupo"],
+            supergrupo=last["supergrupo"],
             provincia=last["provincia"], localidad=last["localidad"],
             explora=last["explora"], camara=cam.get("camara_actual") or cam.get("camara"),
             serie=[[d["fecha"], r1(d["prod"]), r1(d["cupo"]), r1(d["vc"]),
-                    r1(d["xq"]), r1(d["exp"])] for d in rows],
+                    r1(d["xq"]), r1(d["exp"]), r1(d["cotab"])] for d in rows],
         ))
     return empresas
 

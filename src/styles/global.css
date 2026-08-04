@@ -30,8 +30,10 @@
   --brand-ink: #11111F;         /* wordmark EXPLORARG en tema claro */
   --font-brand: 'Sinkin Sans', var(--font-display);
 
-  --nav-bg: rgba(255, 255, 255, 0.85);
-  --subnav-bg: rgba(249, 248, 246, 0.9);
+  /* Barras opacas: con fondo translúcido, las tablas densas se
+     transparentan al scrollear (muy visible en Safari) */
+  --nav-bg: #FFFFFF;
+  --subnav-bg: #F9F8F6;
   --sombra-panel: 0 12px 32px rgba(0, 0, 0, 0.12);
 
   /* Tipografía */
@@ -68,8 +70,8 @@
   --accent-brand: #3CDBC0;      /* sobre fondo oscuro el turquesa puro rinde bien */
   --brand-ink: #FFFFFF;         /* wordmark EXPLORARG en tema oscuro */
 
-  --nav-bg: rgba(10, 14, 18, 0.82);
-  --subnav-bg: rgba(17, 24, 32, 0.88);
+  --nav-bg: #0A0E12;
+  --subnav-bg: #111820;
   --sombra-panel: 0 12px 32px rgba(0, 0, 0, 0.5);
 }
 

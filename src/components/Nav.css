@@ -92,6 +92,7 @@
   border: none;
   color: var(--ink-2);
   font-size: 0.95rem;
+  line-height: inherit; /* los <button> traen line-height:normal y desalinean la baseline */
   border-radius: 2px;
   cursor: pointer;
   transition: all 0.15s;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import SectionNav from '../components/SectionNav.jsx';
 import corte from '../data/corte.json';
@@ -8,6 +8,7 @@ import AsignacionHoy from '../components/mercado/AsignacionHoy.jsx';
 import ConclusionesIndicadores from '../components/mercado/ConclusionesIndicadores.jsx';
 import DemandaPetroleras from '../components/mercado/DemandaPetroleras.jsx';
 import EvolucionVentas from '../components/mercado/EvolucionVentas.jsx';
+import MatrizHistorica from '../components/mercado/MatrizHistorica.jsx';
 import CategoriasComparadas from '../components/mercado/CategoriasComparadas.jsx';
 import CapacidadChart from '../components/mercado/CapacidadChart.jsx';
 import CupoUso from '../components/mercado/CupoUso.jsx';
@@ -25,11 +26,27 @@ const MESES_ANALISIS = corte.mensual
 
 // El mes de análisis gobierna TODA la sección: los dos análisis (en tabs
 // estilo Tablero v16), las conclusiones y el cuadro de demanda por petrolera.
-function PrincipalesIndicadores() {
+// Desde el encabezado hasta la fila de filtros del tab activo queda fijo al
+// scrollear (dos capas sticky; --pi-tope mide la altura de la primera).
+function PrincipalesIndicadores({ seccion }) {
   const [mes, setMes] = useState(MESES_ANALISIS.at(-1));
   const [analisis, setAnalisis] = useState('corte');
+  const stickyRef = useRef(null);
+  const [tope, setTope] = useState(210);
+  useEffect(() => {
+    const el = stickyRef.current;
+    if (!el) return undefined;
+    const ro = new ResizeObserver(() => setTope(el.offsetHeight));
+    ro.observe(el);
+    setTope(el.offsetHeight);
+    return () => ro.disconnect();
+  }, []);
   return (
-    <>
+    <div className="pi-seccion" style={{ '--pi-tope': `${tope}px` }}>
+      <div className="pi-sticky" ref={stickyRef}>
+      <p className="section-kicker">Mercado Interno</p>
+      <h2>{seccion?.title ?? 'Principales Indicadores'}</h2>
+      {seccion?.intro && <p className="section-intro">{seccion.intro}</p>}
       <div className="empresa-selector-row">
         <label htmlFor="mes-analisis">Mes de análisis</label>
         <select
@@ -71,6 +88,7 @@ function PrincipalesIndicadores() {
           Ver en Tableau
         </button>
       </div>
+      </div>
       {analisis === 'corte' && <MercadoHoy mes={mes} />}
       {analisis === 'asignacion' && <AsignacionHoy mes={mes} />}
       {analisis === 'conclusiones' && (
@@ -88,7 +106,7 @@ function PrincipalesIndicadores() {
           src="https://sd-3088058-w.ferozo.com/tableau/02MARKETINDUSTRY-MERCADOINTERNOBIODIESEL/MERCADOINTERNOIntroExplorarg"
         />
       )}
-    </>
+    </div>
   );
 }
 
@@ -97,6 +115,7 @@ function PrincipalesIndicadores() {
 const SECTIONS = [
   {
     id: 'kpis', label: 'KPIs', title: 'Principales Indicadores', root: true,
+    encabezadoPropio: true, // fija su encabezado y filtros al scrollear
     intro: 'Los indicadores centrales del corte y de la asignación de cupos - en el mes elegido, el acumulado del año y los últimos doce meses.',
     Comp: PrincipalesIndicadores,
   },
@@ -104,6 +123,12 @@ const SECTIONS = [
     id: 'evolucion', label: 'Evolución', title: 'Evolución de ventas',
     intro: 'Producción vendida por destino desde 2008: corte obligatorio, mercado voluntario y exportación.',
     Comp: EvolucionVentas,
+  },
+  {
+    id: 'matriz', label: 'Matriz histórica', title: 'Ventas por empresa, año por año',
+    intro: 'La matriz completa del mercado: cada empresa elaboradora contra cada año desde el inicio del régimen, con la métrica que elijas y comparación de períodos.',
+    Comp: MatrizHistorica,
+    encabezadoPropio: true, // la matriz fija su encabezado junto a los controles
   },
   {
     id: 'integradas', label: 'Categorías', title: 'Dos industrias en una',
@@ -162,12 +187,19 @@ export default function Mercado() {
   return (
     <>
       <SectionNav sections={grupo} basePath="/mercado" />
-      <section key={id} id={id} className="page-section">
+      <section
+        key={id} id={id}
+        className={`page-section${activa.encabezadoPropio ? ' page-section-compacta' : ''}`}
+      >
         <div className="container">
-          <p className="section-kicker">Mercado Interno</p>
-          <h2>{title}</h2>
-          <p className="section-intro">{intro}</p>
-          <Comp />
+          {!activa.encabezadoPropio && (
+            <>
+              <p className="section-kicker">Mercado Interno</p>
+              <h2>{title}</h2>
+              <p className="section-intro">{intro}</p>
+            </>
+          )}
+          <Comp seccion={activa} />
         </div>
       </section>
     </>

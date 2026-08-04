@@ -6,7 +6,7 @@ import './Nav.css';
 
 const DASHBOARDS = [
   { to: '/mercado', label: 'Biodiesel - Principales Indicadores' },
-  { to: '/mercado/integradas', label: 'Biodiesel - Detalle de ventas' },
+  { to: '/mercado/matriz', label: 'Biodiesel - Detalle de ventas' },
   { to: '/gestion', label: 'Biodiesel - Cumplimiento Corte' },
   { label: 'Biodiesel - Primas y Precios Relativos', disabled: true },
 ];

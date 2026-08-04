@@ -1,7 +1,9 @@
 .section-nav {
   position: sticky;
   top: var(--nav-h); /* pegada debajo de .top-nav, sin hueco */
-  z-index: 90;
+  /* Por encima de los bloques fijos de sección (94/95): sus box-shadow
+     de solape no deben tapar el subrayado del ítem activo */
+  z-index: 96;
   background: var(--subnav-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);

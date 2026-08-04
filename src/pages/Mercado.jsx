@@ -44,7 +44,7 @@ function PrincipalesIndicadores({ seccion }) {
   return (
     <div className="pi-seccion" style={{ '--pi-tope': `${tope}px` }}>
       <div className="pi-sticky" ref={stickyRef}>
-      <p className="section-kicker">Mercado Interno</p>
+      <p className="section-kicker">Mercado Biodiesel</p>
       <h2>{seccion?.title ?? 'Principales Indicadores'}</h2>
       {seccion?.intro && <p className="section-intro">{seccion.intro}</p>}
       <div className="empresa-selector-row">
@@ -125,10 +125,15 @@ const SECTIONS = [
     Comp: EvolucionVentas,
   },
   {
-    id: 'matriz', label: 'Matriz histórica', title: 'Ventas por empresa, año por año',
+    id: 'matriz', label: 'Detalle de ventas', title: 'Detalle de ventas',
     intro: 'La matriz completa del mercado: cada empresa elaboradora contra cada año desde el inicio del régimen, con la métrica que elijas y comparación de períodos.',
     Comp: MatrizHistorica,
     encabezadoPropio: true, // la matriz fija su encabezado junto a los controles
+  },
+  {
+    id: 'empresa', label: 'por Grupo Económico / Empresa', title: 'Ficha por elaboradora',
+    intro: 'Elegí cualquier empresa del registro para ver su cupo, sus ventas y su cumplimiento, año por año o mes a mes.',
+    Comp: EmpresaFicha,
   },
   {
     id: 'integradas', label: 'Categorías', title: 'Dos industrias en una',
@@ -144,11 +149,6 @@ const SECTIONS = [
     id: 'cupo', label: 'Cupo', title: 'Cumplimiento y uso del cupo',
     intro: 'El cupo que la Secretaría de Energía asigna y lo que efectivamente se vende contra él.',
     Comp: CupoUso,
-  },
-  {
-    id: 'empresa', label: 'Por empresa', title: 'Ficha por elaboradora',
-    intro: 'Elegí cualquier empresa del registro para ver su cupo, sus ventas y su cumplimiento, año por año o mes a mes.',
-    Comp: EmpresaFicha,
   },
   {
     id: 'participacion', label: 'Participación', title: 'Quién es quién en el mercado',
@@ -194,7 +194,7 @@ export default function Mercado() {
         <div className="container">
           {!activa.encabezadoPropio && (
             <>
-              <p className="section-kicker">Mercado Interno</p>
+              <p className="section-kicker">Mercado Biodiesel</p>
               <h2>{title}</h2>
               <p className="section-intro">{intro}</p>
             </>

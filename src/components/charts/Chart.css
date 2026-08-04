@@ -127,3 +127,16 @@
   height: 14px;
   border-radius: 1px;
 }
+
+/* Doble selector (vista + rango) en el encabezado de una chart-card */
+.ev-selectores {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.chart-range-selector button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

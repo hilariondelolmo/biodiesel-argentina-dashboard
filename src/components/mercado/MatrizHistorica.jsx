@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import empresasData from '../../data/empresas.json';
 import capacidadData from '../../data/capacidad.json';
 import { fmt } from '../../lib/format.js';
+import MatrizGraficos from './MatrizGraficos.jsx';
 import './Mercado.css';
 
 /**
@@ -75,7 +76,7 @@ const cap = (empresa, anio) => CAPACIDAD.get(empresa)?.[anio] || 0;
 export default function MatrizHistorica({ seccion }) {
   const [metricaId, setMetricaId] = useState('vc');
   const [catFiltro, setCatFiltro] = useState('TODAS');
-  const [modo, setModo] = useState('anual'); // 'anual' | 'mensual' | 'comparar'
+  const [modo, setModo] = useState('anual'); // 'anual' | 'mensual' | 'comparar' | 'graficos'
   const [expandidos, setExpandidos] = useState(() => new Set());
 
   const metrica = METRICAS.find((m) => m.id === metricaId);
@@ -179,6 +180,29 @@ export default function MatrizHistorica({ seccion }) {
       }
       return { ...c };
     };
+
+    // El tab Ver en Tableau no consume datos: solo el iframe del libro original
+    if (modo === 'tableau') {
+      return { cols: [], conDelta: false, gruposCat: [], total: [], anios: [] };
+    }
+
+    // Tab Gráficos (puntos 3-5 del libro): serie mensual del año elegido por
+    // empresa, con categoría y grupo para agregar por nivel en los charts
+    if (modo === 'graficos') {
+      const tope = anioSel === String(anioActual) ? Number(mesCorte) : 12;
+      const mesesChart = Array.from({ length: tope }, (_, i) =>
+        `${anioSel}-${String(i + 1).padStart(2, '0')}`);
+      const filasChart = porEmpresa
+        .map((e) => ({
+          empresa: e.empresa,
+          categoria: e.categoria,
+          grupo: e.supergrupo || e.grupo || e.empresa,
+          meses: mesesChart.map((k) => parMes(e, k, anioSel)),
+          anual: parAnio(e, anioSel),
+        }))
+        .filter((f) => Math.abs(f.anual.n) > 0.5 || f.anual.d > 0.5);
+      return { cols: [], conDelta: false, gruposCat: [], total: [], anios, filasChart, mesesChart };
+    }
 
     let cols;
     let conDelta = false;
@@ -423,16 +447,17 @@ export default function MatrizHistorica({ seccion }) {
     comparar: metrica.tipo === 'stock'
       ? 'Capacidad instalada de los últimos tres años, con su variación.'
       : `${metrica.label} acumulad${esRatio ? 'o' : 'as'} de enero a ${MESES_CORTOS[Number(mesCorte) - 1]} en cada año, con la variación contra el año anterior.`,
+    graficos: `${metrica.label} de ${anioSel} en gráficos: participación de mercado y evolución mensual, por categoría, grupo económico o empresa.`,
   }[modo];
 
   return (
     <div className="mh-cuadro mz">
       <div className="mz-controles-sticky">
-      <p className="section-kicker">Mercado Interno</p>
-      <h2>{seccion?.title ?? 'Ventas por empresa, año por año'}</h2>
+      <p className="section-kicker">Mercado Biodiesel</p>
+      <h2>{seccion?.title ?? 'Detalle de ventas'}</h2>
       {seccion?.intro && <p className="section-intro">{seccion.intro}</p>}
       <div className="mh-tabs" role="tablist">
-        {[['anual', 'Serie anual'], ['mensual', 'Apertura mensual'], ['comparar', 'Comparar períodos']].map(([id, label]) => (
+        {[['anual', 'Serie anual'], ['mensual', 'Apertura mensual'], ['comparar', 'Comparar períodos'], ['graficos', 'Gráficos']].map(([id, label]) => (
           <button
             key={id}
             type="button"
@@ -444,7 +469,17 @@ export default function MatrizHistorica({ seccion }) {
             {label}
           </button>
         ))}
+        <button
+          type="button"
+          role="tab"
+          aria-selected={modo === 'tableau'}
+          className={`mh-tab-derecha ${modo === 'tableau' ? 'active' : ''}`}
+          onClick={() => setModo('tableau')}
+        >
+          Ver en Tableau
+        </button>
       </div>
+      {modo !== 'tableau' && (
       <div className="empresa-selector-row mh-selectores">
         <label htmlFor="mz-metrica">Métrica</label>
         <select
@@ -465,7 +500,7 @@ export default function MatrizHistorica({ seccion }) {
             <option key={c} value={c}>{ETIQUETA_CAT[c]}</option>
           ))}
         </select>
-        {modo === 'mensual' && (
+        {(modo === 'mensual' || modo === 'graficos') && (
           <>
             <label htmlFor="mz-anio">Año</label>
             <select
@@ -479,8 +514,29 @@ export default function MatrizHistorica({ seccion }) {
           </>
         )}
       </div>
+      )}
       </div>
 
+      {modo === 'tableau' && (
+        <iframe
+          title="Tablero Tableau - MERCADO INTERNO Info Explorarg"
+          width="100%"
+          height="1200"
+          frameBorder="0"
+          style={{ margin: 0, padding: 0 }}
+          src="https://sd-3088058-w.ferozo.com/tableau/02MARKETINDUSTRY-MERCADOINTERNOBIODIESEL/MERCADOINTERNOInfoExplorarg"
+        />
+      )}
+      {modo === 'graficos' && (
+        <MatrizGraficos
+          filas={datos.filasChart}
+          meses={datos.mesesChart}
+          metrica={metrica}
+          anio={anioSel}
+        />
+      )}
+      {modo !== 'graficos' && modo !== 'tableau' && (
+      <>
       <div className="mz-header-flotante" ref={headerRef} aria-hidden="true">
         <table className="mh-tabla mz-tabla">
           <thead>{filaEncabezado}</thead>
@@ -512,9 +568,14 @@ export default function MatrizHistorica({ seccion }) {
           </tbody>
         </table>
       </div>
+      </>
+      )}
+      {modo !== 'tableau' && (
+      <>
       <p className="mz-leyenda">
-        {intro} Los grupos económicos muestran el total del holding: desplegalos para
-        ver sus empresas.
+        {intro}{modo !== 'graficos' && (
+          ' Los grupos económicos muestran el total del holding: desplegalos para ver sus empresas.'
+        )}
       </p>
       <p className="note">
         Fuente: Secretaría de Energía, reportes mensuales de biocombustibles; capacidad
@@ -522,6 +583,8 @@ export default function MatrizHistorica({ seccion }) {
         operaciones al mercado interno no imputadas al cupo asignado. En las métricas
         porcentuales, los agregados surgen de los volúmenes de cada conjunto.
       </p>
+      </>
+      )}
     </div>
   );
 }

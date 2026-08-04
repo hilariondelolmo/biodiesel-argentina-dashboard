@@ -8,13 +8,31 @@ import ChartTooltip from '../charts/ChartTooltip.jsx';
 import '../charts/Chart.css';
 import { useChartColors } from '../../lib/theme.jsx';
 
+// Ventana temporal elegible: años hacia atrás (en anual corta años; en
+// mensual, meses). "12m" solo tiene sentido en la vista mensual.
+const RANGOS = [
+  { id: '12m', label: '12m', anios: 1, soloMensual: true },
+  { id: '5y', label: '5 años', anios: 5 },
+  { id: '10y', label: '10 años', anios: 10 },
+  { id: 'todo', label: 'Todo', anios: null },
+];
+
 /** Evolución de ventas por destino, apilada, con cupo como referencia. */
 export default function EvolucionVentas() {
   const C = useChartColors();
   const [vista, setVista] = useState('anual');
+  const [rangoId, setRangoId] = useState('todo');
   const anual = vista === 'anual';
 
-  const serie = (anual ? mercado.anual : mercado.mensual.slice(-72)).map((r) => ({
+  // En anual, si quedó elegido 12m, se comporta como 5 años
+  const rango = RANGOS.find((r) => r.id === rangoId && !(anual && r.soloMensual))
+    || RANGOS.find((r) => r.id === '5y');
+
+  const base = anual ? mercado.anual : mercado.mensual;
+  const recorte = rango.anios === null
+    ? base
+    : base.slice(-(anual ? rango.anios : rango.anios * 12));
+  const serie = recorte.map((r) => ({
     x: anual ? String(r.anio) : r.fecha,
     Ventas_corte: r.vc,
     Fuera_de_corte: r.xq,
@@ -25,15 +43,24 @@ export default function EvolucionVentas() {
   return (
     <div className="chart-card">
       <div className="chart-card-header">
-        <div>
-          <span className="chart-card-title">Ventas por destino</span>
-          <span className="chart-card-subtitle">
-            apilado · {anual ? 'anual desde 2008' : 'mensual · últimos 6 años'} · línea: cupo asignado
-          </span>
-        </div>
-        <div className="chart-range-selector">
-          <button className={anual ? 'active' : ''} onClick={() => setVista('anual')}>Anual</button>
-          <button className={!anual ? 'active' : ''} onClick={() => setVista('mensual')}>Mensual</button>
+        <div className="ev-selectores">
+          <div className="chart-range-selector">
+            <button className={anual ? 'active' : ''} onClick={() => setVista('anual')}>Anual</button>
+            <button className={!anual ? 'active' : ''} onClick={() => setVista('mensual')}>Mensual</button>
+          </div>
+          <div className="chart-range-selector">
+            {RANGOS.map((r) => (
+              <button
+                key={r.id}
+                className={rango.id === r.id ? 'active' : ''}
+                disabled={anual && r.soloMensual}
+                title={anual && r.soloMensual ? 'Solo en vista mensual' : undefined}
+                onClick={() => setRangoId(r.id)}
+              >
+                {r.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
       <div className="chart-card-body">

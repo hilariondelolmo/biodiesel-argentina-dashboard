@@ -367,7 +367,9 @@ section.page-section-compacta {
   top: calc(var(--nav-h) + 40px); /* nav + alto de la sub-nav */
   z-index: 94;
   background: var(--bg);
-  padding-top: 0.5rem;
+  /* Mismo aire bajo la sub-nav que las secciones sin bloque fijo
+     (padding-top de .page-section), pero dentro del sticky opaco */
+  padding-top: 2.2rem;
   padding-bottom: 0.4rem;
 }
 
@@ -383,7 +385,7 @@ section.page-section-compacta {
   top: calc(var(--nav-h) + 40px);
   z-index: 94;
   background: var(--bg);
-  padding-top: 0.5rem;
+  padding-top: 2.2rem; /* mismo aire que .page-section bajo la sub-nav */
 }
 
 /* Tapa el px de redondeo entre cada capa fija y la anterior */
@@ -650,4 +652,19 @@ section.page-section-compacta {
 
 .mh-tabs .mh-tab-derecha {
   margin-left: auto;
+}
+
+/* Tab Gráficos de la matriz: fila de tipos de gráfico y respiro de la card */
+.mzg {
+  margin-top: 0.5rem;
+}
+
+.mzg-tipos {
+  margin-bottom: 1.1rem;
+  flex-wrap: wrap;
+}
+
+.mzg-tipos button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }

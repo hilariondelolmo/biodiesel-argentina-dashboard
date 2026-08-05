@@ -373,9 +373,14 @@ export default function MatrizHistorica({ seccion }) {
       const rect = wrap.getBoundingClientRect();
       const controles = document.querySelector('.mz-controles-sticky');
       const nav = document.querySelector('.section-nav');
+      const topeNav = nav ? nav.getBoundingClientRect().bottom : 96;
+      // En escritorio los controles son sticky y su base marca el tope; en
+      // celular scrollean fuera de pantalla y el encabezado de columnas se
+      // congela directo bajo la sub-nav (los bloques fijos se desactivan
+      // por media query en pantallas chicas)
       const tope = controles
-        ? controles.getBoundingClientRect().bottom
-        : nav ? nav.getBoundingClientRect().bottom : 96;
+        ? Math.max(controles.getBoundingClientRect().bottom, topeNav)
+        : topeNav;
       const visible = rect.top < tope && rect.bottom > tope + 80;
       head.style.display = visible ? 'block' : 'none';
       if (!visible) return;

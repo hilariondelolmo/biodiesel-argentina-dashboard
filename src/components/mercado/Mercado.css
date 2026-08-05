@@ -689,3 +689,16 @@ section.page-section-compacta {
   text-transform: uppercase;
   margin-bottom: 0.5rem;
 }
+
+/* En celular los bloques fijos se desactivan: el encabezado, los selectores
+   y los KPIs scrollean normalmente (fijos ocupaban casi toda la pantalla).
+   El encabezado de columnas de la matriz sigue congelándose, pero pegado a
+   la sub-nav (ver sincronizar() en MatrizHistorica). */
+@media (max-width: 720px) {
+  .mz-controles-sticky,
+  .pi-sticky,
+  .pi-seccion .mh-selectores {
+    position: static;
+    box-shadow: none;
+  }
+}

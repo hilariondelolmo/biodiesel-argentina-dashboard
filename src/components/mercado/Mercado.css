@@ -3,6 +3,7 @@
 .empresa-selector-row {
   display: flex;
   align-items: center;
+  flex-wrap: wrap; /* dos selectores con etiqueta entran o bajan de línea */
   gap: 0.8rem;
   margin-bottom: 1.4rem;
 }
@@ -667,4 +668,24 @@ section.page-section-compacta {
 .mzg-tipos button:disabled {
   opacity: 0.35;
   cursor: not-allowed;
+}
+
+/* Nombre de la elaboradora en la ficha: los nombres del registro vienen en
+   mayúsculas y "Todas las elaboradoras" no - se unifica todo en mayúsculas
+   tipográficas, negrita y cuerpo menor para que no grite */
+.empresa-titulo {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Período de los KPIs de la ficha: se enuncia una vez, sobre la grilla */
+.kpi-periodo {
+  color: var(--ink-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
 }

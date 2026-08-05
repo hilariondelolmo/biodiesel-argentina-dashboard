@@ -44,3 +44,22 @@
 .kpi-card.tone-neg .kpi-val { color: var(--accent-alert); }
 .kpi-card.tone-warn .kpi-val { color: var(--accent-oil); }
 .kpi-card.tone-info .kpi-val { color: var(--accent-exp); }
+
+/* Valores de texto (categoría, grupo económico): los nombres del registro
+   vienen en mayúsculas y los derivados no - se unifica en mayúsculas
+   tipográficas, negrita y cuerpo menor que el de las cifras */
+.kpi-val-texto {
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+}
+
+/* Unidad junto a la cifra ("ton"): cuerpo menor que el número */
+.kpi-unidad {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink-muted);
+  letter-spacing: 0;
+}

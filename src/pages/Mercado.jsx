@@ -131,9 +131,10 @@ const SECTIONS = [
     encabezadoPropio: true, // la matriz fija su encabezado junto a los controles
   },
   {
-    id: 'empresa', label: 'por Grupo Económico / Empresa', title: 'Ficha por elaboradora',
+    id: 'empresa', label: 'por Grupo Económico / Empresa', title: 'Detalle por Empresa y/o Grupo Económico',
     intro: 'Elegí cualquier empresa del registro para ver su cupo, sus ventas y su cumplimiento, año por año o mes a mes.',
     Comp: EmpresaFicha,
+    encabezadoPropio: true, // fija encabezado y selectores al scrollear
   },
   {
     id: 'integradas', label: 'Categorías', title: 'Dos industrias en una',

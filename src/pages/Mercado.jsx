@@ -137,8 +137,9 @@ const SECTIONS = [
     encabezadoPropio: true, // fija encabezado y selectores al scrollear
   },
   {
-    id: 'integradas', label: 'Categorías', title: 'Dos industrias en una',
-    intro: 'Integradas (aceiteras con biodiesel), no integradas (biodiesel como negocio principal) y comercializadoras. El mercado interno de cupo está reservado por ley a las no integradas; la exportación es territorio de las integradas.',
+    id: 'integradas', label: 'Categorías',
+    title: 'Un producto. Una industria. Dos categorías de productores. Dos formas de organización empresarial.',
+    intro: 'El biodiesel constituye un único producto elaborado por una única industria. Dentro de ella existen dos categorías de productores: integrados y no integrados. A su vez, estos pueden organizarse como empresas independientes o formar parte de grupos económicos. Comprender estas diferencias resulta esencial para diseñar un marco regulatorio que promueva la competencia, evite la concentración del mercado y garantice igualdad de oportunidades para todos los productores.',
     Comp: CategoriasComparadas,
   },
   {

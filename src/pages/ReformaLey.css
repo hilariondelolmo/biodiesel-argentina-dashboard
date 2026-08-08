@@ -1,0 +1,227 @@
+/* Artículo "Una desregulación contra el interés público y el mercado libre"
+   (Reforma Ley 27.640). Estilos del original scopeados bajo .articulo-reforma
+   y mapeados a los tokens del sitio: mismo fondo, tipografía y superficies
+   que el resto de la página, en ambos temas. */
+.articulo-reforma{--papel:var(--bg);--tinta:var(--ink);--gris:var(--ink-2);--linea:var(--rule);--coral6:#993C1D;--gris1:var(--bg-3)}
+.articulo-reforma *{box-sizing:border-box;margin:0;padding:0}
+.articulo-reforma{background:var(--papel);color:var(--tinta);font-family:inherit;line-height:1.65;font-size:16px}
+/* Mismo ancho de página que el resto del sitio; los diagramas conservan
+   su tamaño de lectura, centrados */
+.articulo-reforma .marco{max-width:var(--max-width);margin:0 auto;padding:40px var(--gutter) 64px}
+.articulo-reforma .kicker{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:10px}
+.articulo-reforma h1{font-family:inherit;font-weight:650;letter-spacing:-0.02em;font-size:1.45rem;line-height:1.3;margin-bottom:8px}
+.articulo-reforma .bajada{color:var(--gris);font-size:16px;margin-bottom:6px}
+.articulo-reforma .firma{font-size:13px;color:var(--gris);margin-bottom:0;padding-bottom:14px;border-bottom:1px solid var(--linea)}
+.articulo-reforma .ayuda{font-size:13px;color:var(--gris);margin:18px 0 10px;text-align:center}
+.articulo-reforma svg{width:100%;max-width:760px;height:auto;display:block;margin-left:auto;margin-right:auto}
+.articulo-reforma .blk{cursor:pointer}
+.articulo-reforma .blk rect{transition:stroke-width .15s ease}
+.articulo-reforma .blk:hover rect, .articulo-reforma .blk:focus-visible rect{stroke-width:2}
+.articulo-reforma .blk:focus-visible{outline:2px solid #534AB7;outline-offset:2px}
+.articulo-reforma .apertura{margin-top:30px}
+.articulo-reforma .apertura p{margin-bottom:13px;font-size:15.5px}
+.articulo-reforma .grupo{margin-top:44px;border-top:4px solid var(--acc,var(--gris));padding-top:18px;scroll-margin-top:16px}
+.articulo-reforma .grupo.resaltado{animation:brillo 1.2s ease}
+@keyframes brillo{0%{background:var(--acc-bg,#fff)}100%{background:transparent}}
+@media (prefers-reduced-motion:reduce){.articulo-reforma .grupo.resaltado{animation:none}}
+.articulo-reforma .grupo h2{font-family:inherit;font-weight:650;font-size:20px;color:var(--acc,var(--tinta));margin-bottom:12px}
+.articulo-reforma .grupo>p{margin-bottom:12px;font-size:15.5px}
+.articulo-reforma details{border:1px solid var(--linea);border-radius:8px;background:var(--bg-2);margin:10px 0}
+.articulo-reforma summary{cursor:pointer;list-style:none;padding:12px 16px;font-weight:600;font-size:15px;color:var(--acc,var(--tinta));display:flex;align-items:center;gap:10px}
+.articulo-reforma summary::before{content:"+";font-size:18px;line-height:1;color:var(--acc,var(--gris));width:14px;text-align:center;flex:0 0 auto}
+.articulo-reforma details[open] summary::before{content:"–"}
+.articulo-reforma summary::-webkit-details-marker{display:none}
+.articulo-reforma .cuerpo{padding:2px 18px 16px;border-top:1px solid var(--linea)}
+.articulo-reforma .cuerpo p{margin:12px 0;font-size:15px}
+.articulo-reforma .cuerpo ol, .articulo-reforma .cuerpo ul{margin:12px 0 12px 20px;font-size:15px}
+.articulo-reforma .cuerpo li{margin-bottom:8px}
+.articulo-reforma blockquote{font-style:italic;border-left:3px solid var(--acc,var(--linea));padding-left:14px;color:var(--gris);margin:14px 0}
+.articulo-reforma blockquote p{margin:0 0 8px}
+.articulo-reforma table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+.articulo-reforma th, .articulo-reforma td{border:1px solid var(--linea);padding:8px 10px;text-align:left;vertical-align:top}
+.articulo-reforma th{background:var(--gris1);font-weight:600}
+.articulo-reforma .mini{margin:16px 0 6px}
+.articulo-reforma .pie{margin-top:44px;padding-top:16px;border-top:1px solid var(--linea);font-size:13px;color:var(--gris)}
+.articulo-reforma text{font-family:inherit}
+.articulo-reforma .th{font-size:14px;font-weight:600}
+.articulo-reforma .ts{font-size:12px}
+
+/* Tema oscuro: los diagramas cambian a su paleta nocturna. Los colores
+   originales del SVG se mapean por selector de atributo (mismo tono,
+   invertida la claridad), sin tocar el markup. */
+[data-theme='dark'] .articulo-reforma svg rect[fill="#EEEDFE"] { fill: #23204A; }
+[data-theme='dark'] .articulo-reforma svg rect[stroke="#534AB7"] { stroke: #7A70E0; }
+[data-theme='dark'] .articulo-reforma svg text[fill="#3C3489"] { fill: #CDC9F5; }
+[data-theme='dark'] .articulo-reforma svg text[fill="#534AB7"] { fill: #ABA3EE; }
+
+[data-theme='dark'] .articulo-reforma svg rect[fill="#FAECE7"] { fill: #31211B; }
+[data-theme='dark'] .articulo-reforma svg rect[stroke="#993C1D"] { stroke: #C05A34; }
+[data-theme='dark'] .articulo-reforma svg text[fill="#712B13"] { fill: #F2C4AC; }
+[data-theme='dark'] .articulo-reforma svg text[fill="#993C1D"] { fill: #E09A76; }
+
+[data-theme='dark'] .articulo-reforma svg rect[fill="#F1EFE8"] { fill: #20262E; }
+[data-theme='dark'] .articulo-reforma svg rect[stroke="#5F5E5A"] { stroke: #7A848E; }
+[data-theme='dark'] .articulo-reforma svg text[fill="#444441"] { fill: #C2CAD2; }
+[data-theme='dark'] .articulo-reforma svg text[fill="#5F5E5A"] { fill: #98A2AC; }
+[data-theme='dark'] .articulo-reforma svg line[stroke="#5F5E5A"],
+[data-theme='dark'] .articulo-reforma svg path[stroke="#5F5E5A"] { stroke: #7A848E; }
+[data-theme='dark'] .articulo-reforma svg line[stroke="#D85A30"] { stroke: #E9835B; }
+
+[data-theme='dark'] .articulo-reforma svg rect[fill="#FBEAF0"] { fill: #33202A; }
+[data-theme='dark'] .articulo-reforma svg rect[stroke="#993556"] { stroke: #C46584; }
+[data-theme='dark'] .articulo-reforma svg text[fill="#72243E"] { fill: #F3BFD1; }
+[data-theme='dark'] .articulo-reforma svg text[fill="#993556"] { fill: #DA92AC; }
+
+[data-theme='dark'] .articulo-reforma svg rect[fill="#E1F5EE"] { fill: #172E26; }
+[data-theme='dark'] .articulo-reforma svg rect[stroke="#0F6E56"] { stroke: #37A488; }
+[data-theme='dark'] .articulo-reforma svg text[fill="#085041"] { fill: #ACE5D3; }
+[data-theme='dark'] .articulo-reforma svg text[fill="#0F6E56"] { fill: #83CFB9; }
+
+[data-theme='dark'] .articulo-reforma .grupo h2,
+[data-theme='dark'] .articulo-reforma summary {
+  color: color-mix(in srgb, var(--acc, var(--ink)) 55%, white);
+}
+
+/* Encabezado fijo (hasta la línea horizontal de la firma): patrón de bloque
+   fijo del sitio - en celular se desactiva y scrollea normal */
+.ar-sticky {
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 90;
+  background: var(--bg);
+}
+
+.ar-sticky .marco {
+  padding: 22px var(--gutter) 0;
+}
+
+.ar-contenido .marco {
+  padding-top: 16px;
+}
+
+@media (max-width: 720px) {
+  .ar-sticky {
+    position: static;
+  }
+}
+
+/* Botón para volver del capítulo filtrado al artículo completo */
+.articulo-reforma .ar-restaurar {
+  display: block;
+  margin: 14px auto 0;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--bg-3);
+  color: var(--ink-2);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.articulo-reforma .ar-restaurar:hover {
+  color: var(--ink);
+  border-color: var(--accent-exp);
+}
+
+/* El primer párrafo abre el artículo, antes del esquema: sin el margen
+   superior del bloque de apertura */
+.articulo-reforma .apertura-inicial {
+  margin-top: 0;
+}
+
+/* Link discreto a las notas al pie de la portada */
+.articulo-reforma .ar-notas-link {
+  display: block;
+  margin: 20px auto 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ink-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.articulo-reforma .ar-notas-link:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+/* El esquema principal ocupa el ancho completo del contenedor (los demás
+   SVG del artículo conservan su ancho de lectura); en celular se panea
+   horizontalmente en vez de achicar el texto */
+.ar-esquema-scroll {
+  overflow-x: auto;
+}
+
+.ar-esquema-scroll svg {
+  max-width: none;
+}
+
+@media (max-width: 720px) {
+  .ar-esquema-scroll svg {
+    min-width: 860px;
+  }
+}
+
+/* Cuerpos más grandes para el esquema principal (pedido HDO) */
+.ar-esquema-scroll .th {
+  font-size: 17px;
+}
+
+.ar-esquema-scroll .ts {
+  font-size: 14px;
+}
+
+/* Conectores del esquema ("El estándar que...", "La alternativa coherente
+   con...") en cuerpo mayor que el texto de los bloques */
+.ar-esquema-scroll .tc {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Encabezado con la descarga del documento a la derecha; la línea
+   horizontal cierra la fila completa */
+.ar-encabezado-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--linea);
+  padding-bottom: 14px;
+}
+
+/* La columna de texto cede espacio para que la descarga quede a la derecha */
+.ar-encabezado-fila > div {
+  flex: 1 1 0;
+  min-width: 260px;
+}
+
+.ar-sticky .firma {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.articulo-reforma .ar-descargar {
+  flex: 0 0 auto;
+  margin-top: 4px;
+  padding: 0.45rem 0.95rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--bg-3);
+  color: var(--ink-2);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.articulo-reforma .ar-descargar:hover {
+  color: var(--ink);
+  border-color: var(--accent-exp);
+}
+
+/* Todos los textos del artículo en formato justificado (pedido HDO) */
+.articulo-reforma p {
+  text-align: justify;
+}

@@ -118,6 +118,14 @@ export default function Nav() {
             </NavLink>
           </li>
           <li>
+            <NavLink
+              to="/reforma-ley-27640"
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              Reforma Ley 27.640
+            </NavLink>
+          </li>
+          <li>
             <button
               type="button"
               className="theme-toggle"

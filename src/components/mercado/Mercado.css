@@ -702,3 +702,8 @@ section.page-section-compacta {
     box-shadow: none;
   }
 }
+
+/* Categorías: la intro editorial va justificada (pedido HDO) */
+#integradas .section-intro {
+  text-align: justify;
+}

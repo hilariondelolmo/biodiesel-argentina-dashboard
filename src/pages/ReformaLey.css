@@ -10,8 +10,8 @@
 .articulo-reforma .marco{max-width:var(--max-width);margin:0 auto;padding:40px var(--gutter) 64px}
 .articulo-reforma .kicker{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:10px}
 .articulo-reforma h1{font-family:inherit;font-weight:650;letter-spacing:-0.02em;font-size:1.45rem;line-height:1.3;margin-bottom:8px}
-.articulo-reforma .bajada{color:var(--gris);font-size:16px;margin-bottom:6px}
-.articulo-reforma .firma{font-size:13px;color:var(--gris);margin-bottom:0;padding-bottom:14px;border-bottom:1px solid var(--linea)}
+.articulo-reforma .bajada{color:var(--gris);font-size:16px;margin-bottom:6px;text-align:justify}
+.articulo-reforma .firma{font-size:15px;color:var(--gris);margin-bottom:0;padding-bottom:14px;border-bottom:1px solid var(--linea);text-align:right}
 .articulo-reforma .ayuda{font-size:13px;color:var(--gris);margin:18px 0 10px;text-align:center}
 .articulo-reforma svg{width:100%;max-width:760px;height:auto;display:block;margin-left:auto;margin-right:auto}
 .articulo-reforma .blk{cursor:pointer}
@@ -182,19 +182,16 @@
 /* Encabezado con la descarga del documento a la derecha; la línea
    horizontal cierra la fila completa */
 .ar-encabezado-fila {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1.2rem;
-  flex-wrap: wrap;
+  position: relative;
   border-bottom: 1px solid var(--linea);
   padding-bottom: 14px;
 }
 
-/* La columna de texto cede espacio para que la descarga quede a la derecha */
-.ar-encabezado-fila > div {
-  flex: 1 1 0;
-  min-width: 260px;
+/* La descarga flota en la esquina superior derecha; kicker y título le dejan
+   lugar, y bajada y firma usan el ancho completo del texto del artículo */
+.ar-encabezado-fila .kicker,
+.ar-encabezado-fila h1 {
+  padding-right: 150px;
 }
 
 .ar-sticky .firma {
@@ -203,8 +200,9 @@
 }
 
 .articulo-reforma .ar-descargar {
-  flex: 0 0 auto;
-  margin-top: 4px;
+  position: absolute;
+  top: 4px;
+  right: 0;
   padding: 0.45rem 0.95rem;
   border: 1px solid var(--rule);
   border-radius: 3px;
@@ -219,6 +217,19 @@
 .articulo-reforma .ar-descargar:hover {
   color: var(--ink);
   border-color: var(--accent-exp);
+}
+
+/* Celular: la descarga vuelve al flujo debajo de la firma */
+@media (max-width: 720px) {
+  .articulo-reforma .ar-descargar {
+    position: static;
+    display: inline-block;
+    margin-top: 10px;
+  }
+  .ar-encabezado-fila .kicker,
+  .ar-encabezado-fila h1 {
+    padding-right: 0;
+  }
 }
 
 /* Todos los textos del artículo en formato justificado (pedido HDO) */

@@ -153,7 +153,7 @@ export default function ReformaLey() {
                 transición al biodiésel de segunda generación y concentrar el abastecimiento
                 no libera el mercado: condiciona el resultado antes de competir.
               </p>
-              <div className="firma">Hilarión Del Olmo — Presidente, Explora S.A.</div>
+              <div className="firma">Hilarión Del Olmo - Presidente, Explora S.A.</div>
             </div>
             <a
               className="ar-descargar"

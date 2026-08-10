@@ -23,7 +23,7 @@ export default function ReformaLey() {
   useEffect(() => {
     const raiz = ref.current;
     if (!raiz) return undefined;
-    const destinos = { art2: 'g-art2', b1: 'g-b1', b2: 'g-b2', b3: 'g-b3', conc: 'g-conc', ref: 'g-ref' };
+    const destinos = { art2: 'g-art2', b1: 'g-b1', b2: 'g-b2', b3: 'g-b3', conc: 'g-conc', b4: 'g-b4', ref: 'g-ref' };
 
     // El esquema principal llega a los bordes del contenedor; en celular
     // la envoltura permite paneo horizontal sin achicar el texto
@@ -149,9 +149,10 @@ export default function ReformaLey() {
               <div className="kicker">Análisis · Reforma de la Ley 27.640</div>
               <h1>Una desregulación contra el interés público y el mercado libre</h1>
               <p className="bajada">
-                Eliminar categorías por calendario, premiar al que reduce menos, frustrar la
-                transición al biodiésel de segunda generación y concentrar el abastecimiento
-                no libera el mercado: condiciona el resultado antes de competir.
+                Eliminar categorías por calendario, ignorar la reducción certificada de
+                emisiones, reconocer sustitutos sin medirlos y dejar el abastecimiento
+                sujeto a acuerdos sin adjudicación no libera el mercado: condiciona el
+                resultado antes de competir.
               </p>
               <div className="firma">Hilarión Del Olmo - Presidente, Explora S.A.</div>
             </div>

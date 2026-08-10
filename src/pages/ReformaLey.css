@@ -72,6 +72,11 @@
 [data-theme='dark'] .articulo-reforma svg text[fill="#72243E"] { fill: #F3BFD1; }
 [data-theme='dark'] .articulo-reforma svg text[fill="#993556"] { fill: #DA92AC; }
 
+[data-theme='dark'] .articulo-reforma svg rect[fill="#FAF1E2"] { fill: #2E2618; }
+[data-theme='dark'] .articulo-reforma svg rect[stroke="#8A5A19"] { stroke: #C08F45; }
+[data-theme='dark'] .articulo-reforma svg text[fill="#6E4712"] { fill: #F0D5A8; }
+[data-theme='dark'] .articulo-reforma svg text[fill="#8A5A19"] { fill: #D9B073; }
+
 [data-theme='dark'] .articulo-reforma svg rect[fill="#E1F5EE"] { fill: #172E26; }
 [data-theme='dark'] .articulo-reforma svg rect[stroke="#0F6E56"] { stroke: #37A488; }
 [data-theme='dark'] .articulo-reforma svg text[fill="#085041"] { fill: #ACE5D3; }

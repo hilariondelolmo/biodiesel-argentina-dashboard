@@ -1,0 +1,386 @@
+/* Propuesta de Ley S80926PL — texto con modificaciones + obleas de fundamentos */
+
+/* Mismo marco de página que el artículo Reforma 27.640 */
+.propuesta-ley .marco {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter) 64px;
+}
+
+/* Bloque fijo: encabezado + obleas de intro quedan pegados bajo la nav al
+   scrollear (patrón .ar-sticky de ReformaLey; en celular scrollea normal) */
+.pl-sticky {
+  position: sticky;
+  top: calc(var(--nav-h) + 38px); /* nav + sub-nav de sección (2px de solape: sin rendija al scrollear) */
+  z-index: 90;
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* Encabezado: ubicación, font y tamaños calcados de .articulo-reforma
+   (22px arriba como el sticky de Reforma) */
+.propuesta-ley .pl-encabezado {
+  padding: 22px var(--gutter) 0;
+}
+
+.propuesta-ley .pl-marco {
+  padding-top: 16px;
+}
+
+.propuesta-ley .pl-encabezado .kicker {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 10px;
+}
+
+.propuesta-ley .pl-encabezado h1 {
+  font-family: inherit;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  font-size: 1.45rem;
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+
+.propuesta-ley .pl-encabezado .bajada {
+  color: var(--ink-2);
+  font-size: 16px;
+  margin-bottom: 6px;
+  text-align: justify;
+}
+
+.propuesta-ley .pl-cuerpo {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+/* ── leyenda del hero ── */
+.propuesta-ley .pl-leyenda,
+.propuesta-ley .pl-cuerpo ins {
+  color: var(--accent-alert);
+  font-style: normal;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+/* ── obleas de la intro del informe (Objeto / Marco / Cuadro) ── */
+.pl-obleas-intro {
+  margin: 0.7rem 0 0;
+  padding-bottom: 14px;
+}
+
+.pl-oblea-intro {
+  border: 1.5px solid var(--rule);
+  color: var(--ink-2);
+}
+
+.pl-oblea-intro:hover {
+  background: var(--bg-4);
+  color: var(--ink);
+}
+
+.pl-cuadro-ayuda {
+  font-size: 0.82rem !important;
+  color: var(--ink-muted) !important;
+}
+
+/* ── cuadro de correspondencia ── */
+.pl-tabla-scroll {
+  overflow-x: auto;
+  margin: 0.6rem 0 1rem;
+}
+
+table.pl-cuadro,
+table.pl-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+table.pl-cuadro th,
+table.pl-tabla th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+table.pl-cuadro th,
+table.pl-cuadro td,
+table.pl-tabla th,
+table.pl-tabla td {
+  padding: 0.45rem 0.7rem;
+  border-bottom: 1px solid var(--rule-soft);
+  vertical-align: top;
+}
+
+table.pl-cuadro td p,
+table.pl-tabla td p,
+table.pl-tabla th p {
+  margin: 0;
+}
+
+/* celda combinada verticalmente (merge del docx): centrada en su bloque */
+table.pl-tabla td.pl-celda-merge,
+table.pl-cuadro td.pl-celda-merge {
+  vertical-align: middle;
+}
+
+/* tabla de cupos: las dos primeras columnas alineadas a la izquierda (HDO) */
+table.pl-tabla th.pl-c1,
+table.pl-tabla td.pl-c1,
+table.pl-tabla th.pl-c2,
+table.pl-tabla td.pl-c2 {
+  text-align: left;
+}
+
+table.pl-tabla td.pl-c1 p,
+table.pl-tabla td.pl-c2 p,
+table.pl-tabla th.pl-c1 p,
+table.pl-tabla th.pl-c2 p {
+  text-align: left;
+}
+
+tr.pl-cuadro-fila {
+  cursor: pointer;
+}
+
+tr.pl-cuadro-fila:hover td {
+  background: var(--bg-4);
+}
+
+tr.pl-cuadro-fila td:first-child {
+  font-weight: 600;
+  color: var(--accent-exp);
+  white-space: nowrap;
+}
+
+/* ── cuerpo de la ley ── */
+.pl-ley .pl-expediente {
+  text-align: right;
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+}
+
+.pl-ley .pl-rotulo {
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  font-size: 1.05rem;
+  margin: 1.2rem 0;
+}
+
+.pl-ley h2.pl-titulo {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 2.6rem 0 0.6rem;
+  color: var(--accent-exp);
+}
+
+.pl-ley h3.pl-capitulo {
+  font-size: 0.98rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 1.6rem 0 0.8rem;
+  color: var(--ink-2);
+}
+
+.pl-ley p {
+  margin: 0 0 0.85rem;
+  text-align: justify;
+}
+
+.pl-ley .pl-li {
+  padding-left: 2.1rem;
+  text-indent: -2.1rem;
+}
+
+.pl-ley .pl-inciso {
+  display: inline-block;
+  min-width: 1.7rem;
+  text-indent: 0;
+  font-weight: 600;
+}
+
+/* artículo: sin el padding global de section (5rem arriba y abajo era
+   muchísimo aire entre artículo y artículo); ancla con aire para la nav */
+section.pl-art {
+  padding: 0;
+  margin: 0 0 1.3rem;
+  scroll-margin-top: calc(var(--nav-h) + 24px);
+}
+
+section.pl-art-informe {
+  border-left: 3px solid var(--accent-exp-dim);
+  padding: 0 0 0 1.1rem;
+  margin: 0 0 1.6rem;
+}
+
+/* ── obleas ── */
+.pl-obleas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0.9rem 0 0.4rem;
+}
+
+.pl-oblea {
+  appearance: none;
+  border-radius: 999px;
+  padding: 0.42rem 1rem;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.pl-oblea-normas {
+  border: 1.5px solid var(--accent-alert);
+  color: var(--accent-alert);
+}
+
+.pl-oblea-normas:hover {
+  background: var(--accent-alert);
+  color: var(--bg);
+}
+
+.pl-oblea-just {
+  border: 1.5px solid var(--accent-exp);
+  color: var(--accent-exp);
+}
+
+.pl-oblea-just:hover {
+  background: var(--accent-exp);
+  color: var(--bg);
+}
+
+/* ── diálogo ── */
+.pl-dialog {
+  /* el reset global (* margin 0) pisa el centrado nativo del dialog */
+  margin: auto;
+  border: none;
+  border-radius: 12px;
+  padding: 0;
+  max-width: min(720px, calc(100vw - 2rem));
+  width: 100%;
+  max-height: min(80vh, 100%);
+  background: var(--bg-2);
+  color: var(--ink);
+  box-shadow: var(--sombra-panel);
+}
+
+.pl-dialog-ancho {
+  max-width: min(980px, calc(100vw - 2rem));
+}
+
+.pl-dialog::backdrop {
+  background: rgba(10, 14, 18, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.pl-dialog-marco {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+}
+
+.pl-dialog header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.4rem 0.9rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.pl-dialog-sub {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+
+.pl-dialog-normas .pl-dialog-sub {
+  color: var(--accent-alert);
+}
+
+.pl-dialog-just .pl-dialog-sub {
+  color: var(--accent-exp);
+}
+
+.pl-dialog header h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.pl-dialog-cerrar {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--ink-muted);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.2rem;
+}
+
+.pl-dialog-cerrar:hover {
+  color: var(--ink);
+}
+
+.pl-dialog-texto {
+  overflow-y: auto;
+  padding: 1rem 1.4rem 1.3rem;
+}
+
+.pl-dialog-texto p {
+  margin: 0 0 0.8rem;
+  line-height: 1.62;
+  font-size: 0.95rem;
+  text-align: justify;
+}
+
+/* dentro de tablas el justificado abre huecos: a la izquierda */
+.pl-dialog-texto th p,
+.pl-dialog-texto td p {
+  text-align: left;
+}
+
+/* ── celular ── */
+@media (max-width: 720px) {
+  .propuesta-ley .pl-cuerpo {
+    font-size: 0.95rem;
+  }
+
+  .pl-ley p {
+    text-align: left;
+  }
+
+  section.pl-art-informe {
+    padding-left: 0.8rem;
+  }
+
+  .propuesta-ley .pl-encabezado .bajada {
+    text-align: left;
+  }
+
+  /* como en Reforma: el bloque fijo se desactiva en celular */
+  .pl-sticky {
+    position: static;
+  }
+}

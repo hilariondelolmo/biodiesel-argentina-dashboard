@@ -6,12 +6,14 @@ import './SectionNav.css';
 /**
  * Sub-navegación de secciones, pegada debajo de la nav principal.
  * Dos modos:
- *  - con `basePath`: cada sección es una página propia (links de ruta);
+ *  - con `basePath` (o secciones con `to` absoluto): cada sección es una
+ *    página propia (links de ruta);
  *  - sin `basePath`: anclas dentro de la misma página, con scroll-spy.
  */
 export default function SectionNav({ sections, basePath }) {
   const ids = useMemo(() => sections.map((s) => s.id), [sections]);
-  const active = useActiveSection(basePath ? [] : ids);
+  const rutas = basePath || sections.some((s) => s.to);
+  const active = useActiveSection(rutas ? [] : ids);
 
   return (
     <nav className="section-nav" aria-label="Secciones de la página">
@@ -19,9 +21,9 @@ export default function SectionNav({ sections, basePath }) {
         <ul>
           {sections.map((s) => (
             <li key={s.id}>
-              {basePath ? (
+              {rutas ? (
                 <NavLink
-                  to={s.root ? basePath : `${basePath}/${s.id}`}
+                  to={s.to || (s.root ? basePath : `${basePath}/${s.id}`)}
                   end
                   className={({ isActive }) => (isActive ? 'active' : '')}
                 >

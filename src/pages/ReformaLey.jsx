@@ -1,4 +1,6 @@
 import { useEffect, useRef } from 'react';
+import SectionNav from '../components/SectionNav.jsx';
+import { SECCIONES_REFORMA } from '../lib/reforma.js';
 import contenido from '../content/reforma-ley-27640.html?raw';
 import './ReformaLey.css';
 
@@ -64,11 +66,12 @@ export default function ReformaLey() {
       linkNotas.style.display = '';
     };
 
-    // Altura ocupada arriba: nav + encabezado fijo (si está fijo)
+    // Altura ocupada arriba: nav + sub-nav de sección + encabezado fijo
     const topeSuperior = () => {
       const nav = document.querySelector('.top-nav');
+      const subnav = document.querySelector('.section-nav');
       const sticky = document.querySelector('.ar-sticky');
-      let tope = (nav?.offsetHeight || 56) + 16;
+      let tope = (nav?.offsetHeight || 56) + (subnav?.offsetHeight || 0) + 16;
       if (sticky && getComputedStyle(sticky).position === 'sticky') {
         tope += sticky.offsetHeight;
       }
@@ -142,6 +145,7 @@ export default function ReformaLey() {
 
   return (
     <div className="articulo-reforma">
+      <SectionNav sections={SECCIONES_REFORMA} />
       <div className="ar-sticky">
         <div className="marco ar-encabezado">
           <div className="ar-encabezado-fila">

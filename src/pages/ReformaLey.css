@@ -91,7 +91,7 @@
    fijo del sitio - en celular se desactiva y scrollea normal */
 .ar-sticky {
   position: sticky;
-  top: var(--nav-h);
+  top: calc(var(--nav-h) + 38px); /* nav + sub-nav de sección (2px de solape: sin rendija al scrollear) */
   z-index: 90;
   background: var(--bg);
 }

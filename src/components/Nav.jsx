@@ -11,16 +11,21 @@ const DASHBOARDS = [
   { label: 'Biodiesel - Primas y Precios Relativos', disabled: true },
 ];
 
+// Rutas de la sección Reforma (el link se marca activo en ambas; la
+// sub-barra de la sección vive en las páginas)
+const RUTAS_REFORMA = ['/reforma-ley-27640', '/propuesta-s0809-2026'];
+
 const MQ_ANGOSTO = '(max-width: 560px)';
 
 export default function Nav() {
   const { theme, toggle } = useTheme();
   const { pathname } = useLocation();
   const enDashboards = pathname.startsWith('/mercado') || pathname.startsWith('/gestion');
+  const enReforma = RUTAS_REFORMA.some((r) => pathname.startsWith(r));
 
   // En móvil no hay hover (y iOS no enfoca botones al tocar): el desplegable
   // se abre/cierra por estado. Se cierra al navegar o al tocar afuera.
-  const [abierto, setAbierto] = useState(false);
+  const [abierto, setAbierto] = useState(null);
   const dropdownRef = useRef(null);
 
   // En pantallas angostas el menú se monta en un portal sobre <body>:
@@ -37,22 +42,22 @@ export default function Nav() {
     return () => mq.removeEventListener('change', fn);
   }, []);
 
-  useEffect(() => setAbierto(false), [pathname]);
+  useEffect(() => setAbierto(null), [pathname]);
 
   useEffect(() => {
     if (!abierto) return undefined;
     const cerrar = (e) => {
       if (!e.target.closest('.nav-dropdown') && !e.target.closest('.nav-dropdown-menu')) {
-        setAbierto(false);
+        setAbierto(null);
       }
     };
     document.addEventListener('pointerdown', cerrar);
     return () => document.removeEventListener('pointerdown', cerrar);
   }, [abierto]);
 
-  const menu = (
+  const armarMenu = (items) => (
     <ul className="nav-dropdown-menu">
-      {DASHBOARDS.map((d) =>
+      {items.map((d) =>
         d.disabled ? (
           <li key={d.label}>
             <span className="nav-dropdown-item deshabilitado" aria-disabled="true">
@@ -72,6 +77,7 @@ export default function Nav() {
       )}
     </ul>
   );
+  const menuDash = armarMenu(DASHBOARDS);
 
   return (
     <nav className="top-nav">
@@ -89,17 +95,17 @@ export default function Nav() {
               Home
             </NavLink>
           </li>
-          <li className={`nav-dropdown ${abierto ? 'abierto' : ''}`} ref={dropdownRef}>
+          <li className={`nav-dropdown ${abierto === 'dash' ? 'abierto' : ''}`} ref={dropdownRef}>
             <button
               type="button"
               className={`nav-dropdown-trigger ${enDashboards ? 'active' : ''}`}
               aria-haspopup="true"
-              aria-expanded={abierto}
-              onClick={() => setAbierto((o) => !o)}
+              aria-expanded={abierto === 'dash'}
+              onClick={() => setAbierto((o) => (o === 'dash' ? null : 'dash'))}
             >
               Dashboards <span className="nav-dropdown-caret">▾</span>
             </button>
-            {angosto ? abierto && createPortal(menu, document.body) : menu}
+            {angosto ? abierto === 'dash' && createPortal(menuDash, document.body) : menuDash}
           </li>
           <li>
             <NavLink
@@ -120,7 +126,7 @@ export default function Nav() {
           <li>
             <NavLink
               to="/reforma-ley-27640"
-              className={({ isActive }) => (isActive ? 'active' : '')}
+              className={enReforma ? 'active' : ''}
             >
               Reforma Ley 27.640
             </NavLink>

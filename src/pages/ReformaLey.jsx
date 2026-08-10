@@ -144,8 +144,11 @@ export default function ReformaLey() {
   }, []);
 
   return (
-    <div className="articulo-reforma">
+    <>
+      {/* Fuera de .articulo-reforma: su reset global (* margin/padding 0)
+          pisa el centrado de la sub-barra */}
       <SectionNav sections={SECCIONES_REFORMA} />
+      <div className="articulo-reforma">
       <div className="ar-sticky">
         <div className="marco ar-encabezado">
           <div className="ar-encabezado-fila">
@@ -175,6 +178,7 @@ export default function ReformaLey() {
         ref={ref}
         dangerouslySetInnerHTML={{ __html: contenido }}
       />
-    </div>
+      </div>
+    </>
   );
 }

@@ -204,24 +204,27 @@
   padding-bottom: 0;
 }
 
+/* Mismo look que el botón de descarga de la página de la Propuesta
+   (pastilla sólida azul, HDO 2026-08-17) */
 .articulo-reforma .ar-descargar {
   position: absolute;
   top: 4px;
   right: 0;
-  padding: 0.45rem 0.95rem;
-  border: 1px solid var(--rule);
-  border-radius: 3px;
-  background: var(--bg-3);
-  color: var(--ink-2);
-  font-size: 0.8rem;
+  padding: 0.42rem 1rem;
+  border: 1.5px solid var(--accent-exp);
+  border-radius: 999px;
+  background: var(--accent-exp);
+  color: #fff;
+  font-size: 0.82rem;
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .articulo-reforma .ar-descargar:hover {
-  color: var(--ink);
-  border-color: var(--accent-exp);
+  background: transparent;
+  color: var(--accent-exp);
 }
 
 /* Celular: la descarga vuelve al flujo debajo de la firma */

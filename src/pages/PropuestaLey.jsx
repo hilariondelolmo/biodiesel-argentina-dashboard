@@ -5,11 +5,12 @@ import contenido from '../content/propuesta-s80926pl.html?raw';
 import './PropuestaLey.css';
 
 /**
- * Propuesta de Ley S80926PL (rev. v8 sobre la versión SE 260729 del
- * Proyecto S-0809/2026): texto completo con las modificaciones
- * incorporadas en rojo subrayado. En los 17 artículos fundamentados por
- * el informe, dos obleas abren un popup con "Normas que viola el
- * proyecto oficial" y "Justificación de la modificación".
+ * Propuesta de Ley S80926PL (rev. cc HDO del 11/08 sobre la versión
+ * SE 260729 del Proyecto S-0809/2026): texto completo con las
+ * modificaciones incorporadas en rojo subrayado. En los 21 artículos
+ * fundamentados por el informe del 11/08, dos obleas abren un popup con
+ * "Normas que viola el proyecto oficial" y "Justificación de la
+ * modificación".
  *
  * El blob (src/content/propuesta-s80926pl.html) se genera desde los dos
  * docx con generar_propuesta_html.py; los popups viajan ocultos dentro

@@ -1,41 +1,30 @@
 import { useRef, useState } from 'react';
 
 /**
- * Descarga de los documentos de la Propuesta con registro de email
- * (gate real: los archivos solo se entregan vía POST /api/descarga,
- * que valida y registra la dirección antes de responder el archivo).
+ * Descarga de los documentos de la Propuesta con registro de email.
+ * Gate real: el archivo solo se entrega vía POST /api/descarga, que valida
+ * y registra la dirección antes de responder. La descarga entrega SIEMPRE
+ * los dos documentos juntos (un ZIP con el Word de la propuesta y el PDF
+ * de fundamentos - decisión HDO 2026-08-17).
  */
-const DOCS = [
-  {
-    clave: 'propuesta',
-    titulo: 'Propuesta de ley con las modificaciones',
-    detalle: 'Word · texto completo con control de cambios',
-  },
-  {
-    clave: 'fundamentos',
-    titulo: 'Fundamentos jurídicos y respaldo en datos',
-    detalle: 'PDF · informe completo, artículo por artículo',
-  },
-];
-
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export default function DescargaDocs() {
   const dialogRef = useRef(null);
   const [email, setEmail] = useState('');
-  const [estado, setEstado] = useState({}); // clave -> 'bajando' | 'ok' | mensaje de error
+  const [estado, setEstado] = useState(null); // null | 'bajando' | 'ok' | mensaje de error
   const emailValido = EMAIL_RE.test(email.trim());
 
   const abrir = () => dialogRef.current?.showModal();
   const cerrar = () => dialogRef.current?.close();
 
-  const descargar = async (doc) => {
-    setEstado((e) => ({ ...e, [doc.clave]: 'bajando' }));
+  const descargar = async () => {
+    setEstado('bajando');
     try {
       const r = await fetch('/api/descarga', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim(), doc: doc.clave }),
+        body: JSON.stringify({ email: email.trim(), doc: 'ambos' }),
       });
       if (!r.ok) {
         const cuerpo = await r.json().catch(() => ({}));
@@ -44,16 +33,16 @@ export default function DescargaDocs() {
       const blob = await r.blob();
       const nombre = /filename="([^"]+)"/.exec(
         r.headers.get('Content-Disposition') || ''
-      )?.[1] || doc.clave;
+      )?.[1] || 'Documentos Propuesta S-0809-2026.zip';
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = nombre;
       a.click();
       URL.revokeObjectURL(url);
-      setEstado((e) => ({ ...e, [doc.clave]: 'ok' }));
+      setEstado('ok');
     } catch (err) {
-      setEstado((e) => ({ ...e, [doc.clave]: err.message || 'No se pudo descargar' }));
+      setEstado(err.message || 'No se pudo descargar');
     }
   };
 
@@ -81,41 +70,47 @@ export default function DescargaDocs() {
             </button>
           </header>
           <div className="pl-dialog-texto">
+            <p className="pl-desc-ayuda">El paquete incluye los dos documentos:</p>
+            <ul className="pl-desc-lista">
+              <li>
+                <strong>Propuesta de ley con las modificaciones</strong>
+                <span>Word · texto completo con control de cambios</span>
+              </li>
+              <li>
+                <strong>Fundamentos jurídicos y respaldo en datos</strong>
+                <span>PDF · informe completo, artículo por artículo</span>
+              </li>
+            </ul>
             <p className="pl-desc-ayuda">
-              Ingresá tu dirección de email para habilitar la descarga.
+              Ingresá tu dirección de email para descargarlos.
             </p>
-            <input
-              type="email"
-              className="pl-desc-email"
-              placeholder="tu@email.com"
-              value={email}
-              autoComplete="email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <div className="pl-desc-docs">
-              {DOCS.map((doc) => {
-                const st = estado[doc.clave];
-                return (
-                  <div key={doc.clave} className="pl-desc-doc">
-                    <div>
-                      <strong>{doc.titulo}</strong>
-                      <span>{doc.detalle}</span>
-                      {st && st !== 'bajando' && st !== 'ok' && (
-                        <span className="pl-desc-error">{st}</span>
-                      )}
-                    </div>
-                    <button
-                      type="button"
-                      className="pl-desc-boton"
-                      disabled={!emailValido || st === 'bajando'}
-                      onClick={() => descargar(doc)}
-                    >
-                      {st === 'bajando' ? 'Descargando…' : st === 'ok' ? 'Descargado ✓' : 'Descargar'}
-                    </button>
-                  </div>
-                );
-              })}
+            <div className="pl-desc-form">
+              <input
+                type="email"
+                className="pl-desc-email"
+                placeholder="tu@email.com"
+                value={email}
+                autoComplete="email"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (estado && estado !== 'bajando') setEstado(null);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && emailValido && estado !== 'bajando') descargar();
+                }}
+              />
+              <button
+                type="button"
+                className="pl-desc-boton"
+                disabled={!emailValido || estado === 'bajando'}
+                onClick={descargar}
+              >
+                {estado === 'bajando' ? 'Descargando…' : estado === 'ok' ? 'Descargado ✓' : 'Descargar'}
+              </button>
             </div>
+            {estado && estado !== 'bajando' && estado !== 'ok' && (
+              <p className="pl-desc-error">{estado}</p>
+            )}
             <p className="pl-desc-nota">
               Usamos tu email únicamente para saber quién consulta estos documentos.
             </p>

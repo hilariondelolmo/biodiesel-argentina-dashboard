@@ -15,6 +15,14 @@ import path from 'node:path';
  */
 
 const DOCS = {
+  // La descarga del sitio entrega SIEMPRE los dos documentos juntos
+  // (decisión HDO 2026-08-17). El zip se regenera a mano si cambian los
+  // archivos fuente (ver memoria del proyecto).
+  ambos: {
+    archivo: 'documentos-s0809-2026.zip',
+    nombre: 'Documentos Propuesta S-0809-2026.zip',
+    mime: 'application/zip',
+  },
   propuesta: {
     archivo: 'propuesta-ley-s0809-2026-modificaciones.docx',
     nombre: 'Propuesta de ley S-0809-2026 con modificaciones.docx',

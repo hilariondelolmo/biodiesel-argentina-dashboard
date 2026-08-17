@@ -91,14 +91,23 @@
   color: var(--ink-muted) !important;
 }
 
-/* ── descarga de documentos (oblea sólida + diálogo con email) ── */
-.pl-oblea-descarga {
-  border: 1.5px solid var(--accent-exp);
-  background: var(--accent-exp);
-  color: var(--bg);
+/* ── descarga de documentos (botón sólido arriba a la derecha + diálogo) ──
+   Doble clase para ganarle a la base .pl-oblea, que viene después en el
+   archivo y pisaba el fondo (la oblea quedaba "en blanco") */
+.propuesta-ley .pl-encabezado {
+  position: relative;
 }
 
-.pl-oblea-descarga:hover {
+.pl-oblea.pl-oblea-descarga {
+  position: absolute;
+  top: 22px;
+  right: var(--gutter);
+  border: 1.5px solid var(--accent-exp);
+  background: var(--accent-exp);
+  color: #fff;
+}
+
+.pl-oblea.pl-oblea-descarga:hover {
   background: transparent;
   color: var(--accent-exp);
 }
@@ -107,8 +116,41 @@
   color: var(--ink-2);
 }
 
+.pl-desc-lista {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0 0 1.1rem;
+  padding: 0;
+}
+
+.pl-desc-lista li {
+  background: var(--bg-3);
+  border: 1px solid var(--rule-soft);
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+}
+
+.pl-desc-lista strong {
+  display: block;
+  font-size: 0.92rem;
+}
+
+.pl-desc-lista span {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  margin-top: 0.15rem;
+}
+
+.pl-desc-form {
+  display: flex;
+  gap: 0.6rem;
+}
+
 .pl-desc-email {
-  width: 100%;
+  flex: 1;
   font-family: inherit;
   font-size: 0.95rem;
   padding: 0.55rem 0.8rem;
@@ -116,7 +158,6 @@
   border-radius: 8px;
   background: var(--bg);
   color: var(--ink);
-  margin-bottom: 1rem;
 }
 
 .pl-desc-email:focus {
@@ -124,37 +165,10 @@
   border-color: var(--accent-exp);
 }
 
-.pl-desc-docs {
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-}
-
-.pl-desc-doc {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  background: var(--bg-3);
-  border: 1px solid var(--rule-soft);
-  border-radius: 10px;
-  padding: 0.7rem 0.9rem;
-}
-
-.pl-desc-doc strong {
-  display: block;
-  font-size: 0.92rem;
-}
-
-.pl-desc-doc span {
-  display: block;
-  font-size: 0.78rem;
-  color: var(--ink-muted);
-  margin-top: 0.15rem;
-}
-
-.pl-desc-doc .pl-desc-error {
-  color: var(--accent-alert);
+.pl-desc-error {
+  margin-top: 0.6rem;
+  font-size: 0.82rem !important;
+  color: var(--accent-alert) !important;
 }
 
 .pl-desc-boton {
@@ -758,5 +772,13 @@ section.pl-art-informe {
   /* como en Reforma: el bloque fijo se desactiva en celular */
   .pl-sticky {
     position: static;
+  }
+
+  /* en celular el botón de descarga no cabe arriba a la derecha:
+     vuelve al flujo, antes del kicker */
+  .pl-oblea.pl-oblea-descarga {
+    position: static;
+    display: inline-block;
+    margin-bottom: 0.7rem;
   }
 }

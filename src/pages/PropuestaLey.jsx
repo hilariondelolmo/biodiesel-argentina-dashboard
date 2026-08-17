@@ -103,6 +103,7 @@ export default function PropuestaLey() {
       <SectionNav sections={SECCIONES_REFORMA} />
       <div className="pl-sticky" ref={stickyRef}>
         <div className="marco pl-encabezado">
+          <DescargaDocs />
           <div className="kicker">Análisis · Proyecto de Ley S-0809/2026</div>
           <h1>La propuesta, artículo por artículo</h1>
           <p className="bajada">
@@ -130,7 +131,6 @@ export default function PropuestaLey() {
                 {rotulo}
               </button>
             ))}
-            <DescargaDocs />
           </div>
         </div>
       </div>

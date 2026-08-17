@@ -91,6 +91,97 @@
   color: var(--ink-muted) !important;
 }
 
+/* ── descarga de documentos (oblea sólida + diálogo con email) ── */
+.pl-oblea-descarga {
+  border: 1.5px solid var(--accent-exp);
+  background: var(--accent-exp);
+  color: var(--bg);
+}
+
+.pl-oblea-descarga:hover {
+  background: transparent;
+  color: var(--accent-exp);
+}
+
+.pl-desc-ayuda {
+  color: var(--ink-2);
+}
+
+.pl-desc-email {
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.55rem 0.8rem;
+  border: 1.5px solid var(--rule);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+
+.pl-desc-email:focus {
+  outline: none;
+  border-color: var(--accent-exp);
+}
+
+.pl-desc-docs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.pl-desc-doc {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--bg-3);
+  border: 1px solid var(--rule-soft);
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+}
+
+.pl-desc-doc strong {
+  display: block;
+  font-size: 0.92rem;
+}
+
+.pl-desc-doc span {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  margin-top: 0.15rem;
+}
+
+.pl-desc-doc .pl-desc-error {
+  color: var(--accent-alert);
+}
+
+.pl-desc-boton {
+  appearance: none;
+  flex: none;
+  border: 1.5px solid var(--accent-exp);
+  border-radius: 999px;
+  background: var(--accent-exp);
+  color: var(--bg);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.45rem 1.1rem;
+  cursor: pointer;
+}
+
+.pl-desc-boton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pl-desc-nota {
+  margin-top: 1rem;
+  font-size: 0.75rem !important;
+  color: var(--ink-muted) !important;
+}
+
 /* ── cuadro de correspondencia ── */
 .pl-tabla-scroll {
   overflow-x: auto;

@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import SectionNav from '../components/SectionNav.jsx';
 import { SECCIONES_REFORMA } from '../lib/reforma.js';
 import { HECHOS_CHARTS } from '../components/propuesta/HechosCharts.jsx';
+import DescargaDocs from '../components/propuesta/DescargaDocs.jsx';
 import contenido from '../content/propuesta-s80926pl.html?raw';
 import './PropuestaLey.css';
 
@@ -129,6 +130,7 @@ export default function PropuestaLey() {
                 {rotulo}
               </button>
             ))}
+            <DescargaDocs />
           </div>
         </div>
       </div>

@@ -52,3 +52,5 @@ HANDOFF_claude_code.md
 .claude/
 .vercel
 __pycache__/
+.env*
+.vercel

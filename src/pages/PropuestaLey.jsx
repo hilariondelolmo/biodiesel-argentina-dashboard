@@ -87,13 +87,13 @@ export default function PropuestaLey() {
     if (fila) irAlArticulo(fila.dataset.art);
   };
 
-  // El cuadro de correspondencia vive dentro del popup: al clickear una
-  // fila se cierra el diálogo y se salta al artículo
+  // El cuadro de correspondencia y los chips de las confrontaciones viven
+  // dentro del popup: al clickearlos se cierra el diálogo y salta al artículo
   const alClickearDialogo = (e) => {
-    const fila = e.target.closest('.pl-cuadro-fila');
-    if (fila) {
+    const destino = e.target.closest('.pl-cuadro-fila, .pl-salto');
+    if (destino) {
       cerrar();
-      irAlArticulo(fila.dataset.art);
+      irAlArticulo(destino.dataset.art);
     }
   };
 
@@ -118,6 +118,7 @@ export default function PropuestaLey() {
               ['marco', 'Marco normativo de referencia'],
               ['cuadro', 'Cuadro de correspondencia'],
               ['cierre', 'Criterio para modificaciones'],
+              ['confronta', 'Sus fundamentos vs. su proyecto'],
             ].map(([clave, rotulo]) => (
               <button
                 key={clave}
@@ -144,8 +145,11 @@ export default function PropuestaLey() {
       <dialog
         ref={dialogRef}
         className={`pl-dialog pl-dialog-${
-          pop?.tipo === 'normas' ? 'normas' : pop?.tipo === 'hechos' ? 'hechos' : 'just'
-        }${pop?.tipo === 'cuadro' || pop?.tipo === 'hechos' ? ' pl-dialog-ancho' : ''}`}
+          pop?.tipo === 'normas' ? 'normas'
+            : pop?.tipo === 'hechos' ? 'hechos'
+              : pop?.tipo === 'confronta' ? 'confronta'
+                : 'just'
+        }${['cuadro', 'hechos', 'confronta'].includes(pop?.tipo) ? ' pl-dialog-ancho' : ''}`}
         onClick={(e) => {
           if (e.target === dialogRef.current) {
             cerrar();

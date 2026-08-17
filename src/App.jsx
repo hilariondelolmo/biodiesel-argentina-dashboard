@@ -12,6 +12,7 @@ const MarcoLegal = lazy(() => import('./pages/MarcoLegal.jsx'));
 const Articulos = lazy(() => import('./pages/Articulos.jsx'));
 const ReformaLey = lazy(() => import('./pages/ReformaLey.jsx'));
 const PropuestaLey = lazy(() => import('./pages/PropuestaLey.jsx'));
+const ExportGrafico = lazy(() => import('./pages/ExportGrafico.jsx'));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="/articulos" element={<Articulos />} />
           <Route path="/reforma-ley-27640" element={<ReformaLey />} />
           <Route path="/propuesta-s0809-2026" element={<PropuestaLey />} />
+          <Route path="/export-grafico/:id" element={<ExportGrafico />} />
         </Routes>
       </Suspense>
       <footer className="site-footer">

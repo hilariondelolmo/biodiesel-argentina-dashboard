@@ -73,9 +73,9 @@ function CorteSerie() {
         <YAxis {...ejeY(C, (v) => `${v}%`)} />
         <Tooltip content={<ChartTooltip unit="%" labelFormatter={fmt.monthShort} />}
                  cursor={{ stroke: C.cursorLinea }} />
-        <Line dataKey="Obligatorio" stroke={C.exp} dot={false} strokeWidth={2}
+        <Line isAnimationActive={false} dataKey="Obligatorio" stroke={C.exp} dot={false} strokeWidth={2}
               type="stepAfter" connectNulls />
-        <Line dataKey="Real" stroke={C.alert} dot={false} strokeWidth={1.6} connectNulls />
+        <Line isAnimationActive={false} dataKey="Real" stroke={C.alert} dot={false} strokeWidth={1.6} connectNulls />
       </LineChart>
     </Marco>
   );
@@ -98,8 +98,8 @@ function AsignacionVentas() {
         <XAxis dataKey="anio" {...ejeX(C)} />
         <YAxis {...ejeY(C, fmt.compact)} />
         <Tooltip content={<ChartTooltip unit="ton" />} cursor={{ fill: C.cursor }} />
-        <Bar dataKey="Asignado" fill={C.expDim} />
-        <Bar dataKey="Vendido" fill={C.bio} />
+        <Bar isAnimationActive={false} dataKey="Asignado" fill={C.expDim} />
+        <Bar isAnimationActive={false} dataKey="Vendido" fill={C.bio} />
       </BarChart>
     </Marco>
   );
@@ -123,8 +123,8 @@ function PrecioFormula() {
         <YAxis {...ejeY(C, fmt.compact)} />
         <Tooltip content={<ChartTooltip unit="$/ton" labelFormatter={fmt.monthShort} />}
                  cursor={{ stroke: C.cursorLinea }} />
-        <Line dataKey="Publicado" stroke={C.exp} dot={false} strokeWidth={2} connectNulls />
-        <Line dataKey="Fórmula 963/2023" stroke={C.alert} dot={false} strokeWidth={2}
+        <Line isAnimationActive={false} dataKey="Publicado" stroke={C.exp} dot={false} strokeWidth={2} connectNulls />
+        <Line isAnimationActive={false} dataKey="Fórmula 963/2023" stroke={C.alert} dot={false} strokeWidth={2}
               strokeDasharray="5 3" connectNulls />
       </LineChart>
     </Marco>
@@ -160,7 +160,7 @@ function ConcentracionCompradores() {
         <YAxis type="category" dataKey="nombre" width={168}
                tick={{ fill: C.tick, fontSize: 11 }} stroke={C.axis} />
         <Tooltip content={<ChartTooltip unit="%" />} cursor={{ fill: C.cursor }} />
-        <Bar dataKey="Participación">
+        <Bar isAnimationActive={false} dataKey="Participación">
           {top.map((d, i) => (
             <Cell key={d.nombre} fill={d.nombre === 'Resto' ? C.neutralFill : C.exp} />
           ))}
@@ -192,9 +192,9 @@ function Metanol() {
         <YAxis {...ejeY(C, fmt.int)} />
         <Tooltip content={<ChartTooltip unit="usd/ton" labelFormatter={fmt.monthShort} />}
                  cursor={{ stroke: C.cursorLinea }} />
-        <Line dataKey="Precio interno" stroke={C.alert} dot={false} strokeWidth={2} connectNulls />
-        <Line dataKey="Precio de exportación" stroke={C.exp} dot={false} strokeWidth={1.6} connectNulls />
-        <Line dataKey="Prima" stroke={C.bio} dot={false} strokeWidth={1.6}
+        <Line isAnimationActive={false} dataKey="Precio interno" stroke={C.alert} dot={false} strokeWidth={2} connectNulls />
+        <Line isAnimationActive={false} dataKey="Precio de exportación" stroke={C.exp} dot={false} strokeWidth={1.6} connectNulls />
+        <Line isAnimationActive={false} dataKey="Prima" stroke={C.bio} dot={false} strokeWidth={1.6}
               strokeDasharray="4 3" connectNulls />
       </LineChart>
     </Marco>
@@ -238,7 +238,7 @@ function AsimetriaEscala() {
         <XAxis dataKey="nombre" {...ejeX(C)} />
         <YAxis {...ejeY(C, fmt.compact)} />
         <Tooltip content={<ChartTooltip unit="ton" />} cursor={{ fill: C.cursor }} />
-        <Bar dataKey="Capacidad">
+        <Bar isAnimationActive={false} dataKey="Capacidad">
           <Cell fill={C.exp} />
           <Cell fill={C.bio} />
         </Bar>
@@ -268,8 +268,8 @@ function Retenciones() {
         <YAxis {...ejeY(C, (v) => `${v}%`)} />
         <Tooltip content={<ChartTooltip unit="%" labelFormatter={fmt.monthShort} />}
                  cursor={{ stroke: C.cursorLinea }} />
-        <Line dataKey="Aceite de soja" stroke={C.oil} dot={false} strokeWidth={2} connectNulls />
-        <Line dataKey="Biodiesel" stroke={C.bio} dot={false} strokeWidth={2} connectNulls />
+        <Line isAnimationActive={false} dataKey="Aceite de soja" stroke={C.oil} dot={false} strokeWidth={2} connectNulls />
+        <Line isAnimationActive={false} dataKey="Biodiesel" stroke={C.bio} dot={false} strokeWidth={2} connectNulls />
       </LineChart>
     </Marco>
   );
@@ -307,9 +307,9 @@ function Utilizacion() {
         <XAxis dataKey="anio" {...ejeX(C)} />
         <YAxis {...ejeY(C, fmt.compact)} />
         <Tooltip content={<ChartTooltip unit="ton" />} cursor={{ fill: C.cursor }} />
-        <Bar dataKey="Producción" fill={C.bioFillFuerte} />
-        <Line dataKey="Capacidad instalada" stroke={C.exp} dot={false} strokeWidth={2} />
-        <Line dataKey="Utilización" stroke="none" unit="%" dot={false} legendType="none" />
+        <Bar isAnimationActive={false} dataKey="Producción" fill={C.bioFillFuerte} />
+        <Line isAnimationActive={false} dataKey="Capacidad instalada" stroke={C.exp} dot={false} strokeWidth={2} />
+        <Line isAnimationActive={false} dataKey="Utilización" stroke="none" unit="%" dot={false} legendType="none" />
       </ComposedChart>
     </Marco>
   );

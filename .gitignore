@@ -51,3 +51,4 @@ public/fonts/*.ttf
 HANDOFF_claude_code.md
 .claude/
 .vercel
+__pycache__/

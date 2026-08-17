@@ -27,6 +27,13 @@ SALIDA = '/Users/hilariondelolmo/Explora_projects/Explorarg_Marketscan/src/conte
 
 ARTS_INFORME = [3, 5, 6, 10, 12, 13, 14, 15, 16, 17, 19, 20, 26, 28, 33, 36, 38, 39, 40, 41, 42]
 
+# Correcciones de texto dictadas por HDO sobre el docx (se aplican a todo
+# lo extraído). 2026-08-17: la transferencia por diferencial de retenciones
+# actualizada en el Word de Respaldo en datos (acumulado a 2025).
+CORRECCIONES = {
+    'USD 1.979 millones': 'USD 2.040 millones',
+}
+
 # Overrides dictados por HDO: pisan el texto del informe docx en el popup
 # indicado. Clave: (artículo, tipo) con tipo 'normas' | 'just' | 'hechos'.
 # Art. 3 hechos: el rev3 nombra a Explora S.A. y su planta; HDO pidió
@@ -83,7 +90,7 @@ HECHOS_DESTACADOS = {
         ('Ninguno', 'reconocimiento a esa diferencia bajo el régimen vigente'),
     ),
     5: _kpis(
-        ('USD 1.979 M', 'transferidos a las integradas por el diferencial de retenciones'),
+        ('USD 2.040 M', 'transferidos a las integradas por el diferencial de retenciones'),
         ('3,4 veces', 'la inversión total repagada por ese diferencial'),
         ('&gt;120%', 'derechos compensatorios y antidumping aplicados por EE.UU.'),
         ('6,3 a 1', 'escala de la integrada promedio frente a la no integrada'),
@@ -190,6 +197,165 @@ HECHOS_DESTACADOS = {
         ('Vacío de abastecimiento', 'la duración real del intervalo está documentada'),
     ),
 }
+
+# "Sus fundamentos, contra su propio proyecto" (encargo HDO 2026-08-17):
+# cada ítem cita TEXTUALMENTE los Fundamentos del proyecto oficial (sección
+# final del docx SE, firmada por Bullrich y otros seis), muestra la regla
+# del propio articulado que los contradecía y cómo queda con las
+# modificaciones. Redacción propia sobre el material del informe rev3 -
+# BORRADOR A REVISAR POR HDO. Los números ya están validados en la web.
+CONFRONTA_INTRO = (
+    'Los fundamentos que acompañan al proyecto oficial declaran objetivos '
+    'que el propio articulado desmentía. Cada punto cita textualmente esos '
+    'fundamentos, muestra la regla que los contradecía y qué queda de esa '
+    'contradicción con las modificaciones propuestas.')
+
+CONFRONTACIONES = [
+    dict(
+        cita='El proyecto establece que, cumplido el plazo de 12 meses desde su '
+             'sanción, deberán elevarse los porcentajes de corte obligatorio de '
+             'biocombustibles aplicables al gasoil y a las naftas.',
+        boicot='El mismo articulado otorgaba a la Autoridad la facultad de reducir '
+               'esos porcentajes por causales abiertas, sin piso, plazo ni orden de '
+               'afectación: la herramienta exacta con la que se vació el mandato '
+               'durante dieciséis años, con un déficit acumulado de 2,8 millones de '
+               'toneladas.',
+        corrige='La facultad queda tasada: solo reducción temporal por imposibilidad '
+                'técnica o insuficiencia física acreditada, mediante acto fundado y '
+                'sin afectar los mínimos. El aumento prometido queda; la puerta de '
+                'escape, no.',
+        arts=[12, 13]),
+    dict(
+        cita='Vemos necesario aumentar los porcentajes de mezcla obligatoria ... ya '
+             'que tiene un doble efecto positivo: por un lado, disminuye las '
+             'emisiones de gases de efecto invernadero y por otro se genera un '
+             'beneficio económico a la población.',
+        boicot='Cada tonelada de biodiesel no mezclado se sustituyó con gasoil '
+               'fósil -en parte importado-: USD 1.059 millones de ganancia para las '
+               'mezcladoras y el efecto inverso al declarado sobre emisiones y '
+               'balanza comercial. El texto base rehabilitaba ese mecanismo sin '
+               'consecuencia alguna por incumplir.',
+        corrige='El corte se protege con causales tasadas, la importación se limita '
+                'a comparaciones entre bienes equivalentes y el incumplimiento pasa '
+                'a estar tipificado y sancionado.',
+        arts=[12, 26, 33]),
+    dict(
+        cita='El presente proyecto tiene como uno de sus principales objetivos '
+             'garantizar la protección de los consumidores, definiendo '
+             'adecuadamente sus derechos.',
+        boicot='La experiencia del régimen que replicaba: diez resoluciones de '
+               'precio fuera de la metodología legal y dieciséis meses de precios '
+               'publicados por debajo de la propia fórmula. La intervención se '
+               'dictó invocando al consumidor, pero el ahorro en surtidor fue de '
+               'apenas $4,3 por litro: el beneficio directo quedó en el comprador '
+               'concentrado.',
+        corrige='Se prohíbe fijar, homologar o condicionar precios, las referencias '
+                'pasan a ser informativas y el cumplimiento se publica: la '
+                'protección del consumidor deja de ser el rótulo de un precio '
+                'administrado.',
+        arts=[14, 15, 17]),
+    dict(
+        cita='Busca transicionar hacia un mercado libre donde se genere una '
+             'verdadera competencia.',
+        boicot='Su mecanismo exigía "acuerdo mutuo" en un mercado donde cuatro '
+               'compañías concentran el 98% de la demanda y una sola cerca del '
+               '60%: consagraba el poder de veto del comprador dominante, no la '
+               'competencia.',
+        corrige='Subasta con adjudicación automática por orden de mérito, precio '
+                'único de cierre, demanda vinculante y límites por empresa y grupo '
+                'económico sobre la totalidad del mandato.',
+        arts=[14, 41]),
+    dict(
+        cita='Se instituye un sistema de comercialización electrónico, transparente '
+             'y trazable ... asegurando publicidad, concurrencia, registro de '
+             'operaciones y mayor eficiencia en la formación de precios.',
+        boicot='El registro del texto base no obligaba a publicar nada: el déficit '
+               'de mezcla, los quebrantos y la concentración de compras tuvieron '
+               'que reconstruirlos las empresas afectadas e intimarlos a la '
+               'Autoridad. Y el contrato a término bilateral quedaba fuera de toda '
+               'concurrencia.',
+        corrige='Publicación analítica obligatoria -demanda, adjudicaciones, '
+                'retiros, incumplimientos y concentración- y todo contrato a '
+                'término canalizado por el Mercado Electrónico mediante solicitud '
+                'pública.',
+        arts=[15, 16]),
+    dict(
+        cita='A partir de reglas orientadas a la competencia, la transparencia y la '
+             'libertad contractual, se busca potenciar el desarrollo de los '
+             'biocombustibles, facilitando así el acceso a mercados '
+             'internacionales.',
+        boicot='La promoción de exportaciones seguía siendo una cláusula '
+               'declarativa, con el acceso al cupo europeo de 1.200.000 toneladas '
+               'reservado de hecho a las mismas integradas cuya práctica motivó el '
+               'cierre de los mercados; las no integradas, sin mecanismo alguno.',
+        corrige='El inciso d) se vuelve un deber operativo: gestionar condiciones '
+                'de acceso abiertas y no discriminatorias, con certificación '
+                'oficial de sustentabilidad y trazabilidad para poder ejercerlas.',
+        arts=[5, 39]),
+    dict(
+        cita='El proyecto también prioriza la reducción de la huella de carbono del '
+             'sector energético ... que busca reducir efectivamente el nivel de '
+             'emisiones.',
+        boicot='Ni un objetivo ni un instrumento reconocía las reducciones '
+               'certificadas de 60% a 84% que el biodiesel argentino ya acredita; '
+               'y el coprocesado -de menor desempeño y sin certificación- recibía '
+               'cómputo contra el corte y exención fiscal por una magnitud que '
+               'nadie estaba obligado a medir.',
+        corrige='Objetivo expreso de segunda generación, umbral general del 60% '
+                'certificado, cómputo exclusivo del componente medido y '
+                'certificado, y exención limitada a esa magnitud.',
+        arts=[3, 12, 19, 36]),
+    dict(
+        cita='Se avanza hacia una definición ampliada de biocombustible ... siempre '
+             'y cuando se cumplan los requisitos de calidad y sostenibilidad.',
+        boicot='Las definiciones que sostienen el régimen -integrada, no integrada, '
+               'grupo económico- regían solo durante la transición: las '
+               'obligaciones permanentes quedaban sin sujeto determinable, y no '
+               'había definición de producto, umbral ni metodología.',
+        corrige='Las categorías estructurales pasan al régimen general con vigencia '
+                'plena y el grupo económico se ancla en el control y la realidad '
+                'económica: la fragmentación societaria ya documentada no se puede '
+                'repetir.',
+        arts=[6, 38]),
+    dict(
+        cita='El proyecto contempla un Período de Transición ... fundamental en pos '
+             'de asegurar una transición ordenada entre el esquema vigente y las '
+             'metas propuestas por esta ley.',
+        boicot='Derogaba la Ley 27.640 y toda su reglamentación al día siguiente de '
+               'la publicación, con el Mercado Electrónico, los registros y las '
+               'garantías todavía inexistentes: la única metodología de precios de '
+               'la 27.640 tardó tres años, tres meses y veintisiete días en '
+               'dictarse.',
+        corrige='La derogación difiere sus efectos hasta que la Autoridad declare '
+                'operativo el régimen sustituto: sucesión normativa sin vacío de '
+                'abastecimiento.',
+        arts=[42]),
+]
+
+
+def generar_confrontaciones():
+    partes = [f'<p class="pl-conf-intro">{html.escape(CONFRONTA_INTRO)}</p>']
+    for c in CONFRONTACIONES:
+        chips = ''.join(
+            f'<button type="button" class="pl-salto" data-art="{a}">Artículo {a}</button>'
+            for a in c['arts'])
+        partes.append(
+            '<div class="pl-conf">'
+            f'<blockquote class="pl-conf-cita">{html.escape(c["cita"])}'
+            '<cite>Fundamentos del proyecto oficial</cite></blockquote>'
+            '<div class="pl-conf-cols">'
+            '<div class="pl-conf-col pl-conf-boicot"><h5>Lo que hacía su articulado</h5>'
+            f'<p>{html.escape(c["boicot"])}</p></div>'
+            '<div class="pl-conf-col pl-conf-corrige"><h5>Con las modificaciones</h5>'
+            f'<p>{html.escape(c["corrige"])}</p></div>'
+            '</div>'
+            f'<div class="pl-conf-arts">{chips}</div>'
+            '</div>')
+    return ('<div class="pl-pop" data-art="intro" data-tipo="confronta" '
+            'data-titulo="Sus fundamentos, contra su propio proyecto" '
+            'data-sub="Proyecto oficial S-0809/2026">'
+            + ''.join(partes) + '</div>')
+
 
 # Imágenes estáticas del popup de hechos (infografías de HDO en
 # public/evidencia/). Van después del texto, antes de los gráficos.
@@ -335,7 +501,10 @@ def run_text(r):
         elif node.tag == W + 'br':
             parts.append('\n')
     # HDO (2026-08-17): guion simple en todos los textos, nunca rayas
-    return ''.join(parts).replace('—', '-').replace('–', '-')
+    texto = ''.join(parts).replace('—', '-').replace('–', '-')
+    for viejo, nuevo in CORRECCIONES.items():
+        texto = texto.replace(viejo, nuevo)
+    return texto
 
 def runs_de(p):
     runs = []
@@ -683,6 +852,7 @@ def generar_informe(bloques, ampliado):
 
     # popups por artículo
     pops = ['<div class="pl-popups" hidden>'] + pops_intro
+    pops.append(generar_confrontaciones())
     for nro, (titulo, texto) in JUST_SOLO.items():
         pops.append(f'<div class="pl-pop" data-art="{nro}" data-tipo="just" '
                     f'data-titulo="{html.escape(titulo)}" data-sub="Justificación de la modificación">'

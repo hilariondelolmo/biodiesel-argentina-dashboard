@@ -120,7 +120,7 @@ export default function PropuestaLey() {
               ['marco', 'Marco normativo de referencia'],
               ['cuadro', 'Cuadro de correspondencia'],
               ['cierre', 'Criterio para modificaciones'],
-              ['confronta', 'Sus fundamentos vs. su proyecto'],
+              ['confronta', 'Fundamentos vs. proyecto'],
             ].map(([clave, rotulo]) => (
               <button
                 key={clave}

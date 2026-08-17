@@ -59,6 +59,8 @@
 }
 
 /* ── leyenda del hero ── */
+/* Texto propuesto en rojo, a juego con la oblea de Justificación
+   (decisión HDO 2026-08-17 tras iterar violeta/verdes) */
 .propuesta-ley .pl-leyenda,
 .propuesta-ley .pl-cuerpo ins {
   color: var(--accent-alert);
@@ -246,23 +248,44 @@ section.pl-art-informe {
   transition: background 0.15s ease, color 0.15s ease;
 }
 
+/* Colores finales HDO 2026-08-17: Normas que viola en VIOLETA,
+   Justificación en ROJO (a juego con el texto propuesto subrayado),
+   Respaldo en datos en VERDE */
+.propuesta-ley {
+  --violeta: #6941c6;
+}
+
+[data-theme='dark'] .propuesta-ley {
+  --violeta: #a78bfa;
+}
+
 .pl-oblea-normas {
-  border: 1.5px solid var(--accent-alert);
-  color: var(--accent-alert);
+  border: 1.5px solid var(--violeta);
+  color: var(--violeta);
 }
 
 .pl-oblea-normas:hover {
-  background: var(--accent-alert);
+  background: var(--violeta);
   color: var(--bg);
 }
 
 .pl-oblea-just {
-  border: 1.5px solid var(--accent-exp);
-  color: var(--accent-exp);
+  border: 1.5px solid var(--accent-alert);
+  color: var(--accent-alert);
 }
 
 .pl-oblea-just:hover {
-  background: var(--accent-exp);
+  background: var(--accent-alert);
+  color: var(--bg);
+}
+
+.pl-oblea-hechos {
+  border: 1.5px solid var(--accent-bio);
+  color: var(--accent-bio);
+}
+
+.pl-oblea-hechos:hover {
+  background: var(--accent-bio);
   color: var(--bg);
 }
 
@@ -314,11 +337,15 @@ section.pl-art-informe {
 }
 
 .pl-dialog-normas .pl-dialog-sub {
-  color: var(--accent-alert);
+  color: var(--violeta);
 }
 
 .pl-dialog-just .pl-dialog-sub {
-  color: var(--accent-exp);
+  color: var(--accent-alert);
+}
+
+.pl-dialog-hechos .pl-dialog-sub {
+  color: var(--accent-bio);
 }
 
 .pl-dialog header h2 {
@@ -359,6 +386,151 @@ section.pl-art-informe {
 .pl-dialog-texto th p,
 .pl-dialog-texto td p {
   text-align: left;
+}
+
+/* ── cifras destacadas del popup "Respaldo en datos" ── */
+.pl-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 0.2rem 0 1.1rem;
+}
+
+.pl-kpi {
+  background: var(--bg-3);
+  border: 1px solid var(--rule-soft);
+  border-radius: 10px;
+  padding: 0.75rem 0.9rem 0.7rem;
+}
+
+.pl-kpi-valor {
+  display: block;
+  font-size: 1.7rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.pl-kpi-label {
+  display: block;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  color: var(--ink-muted);
+  margin-top: 0.3rem;
+}
+
+/* esquema causal: pasos encadenados con flechas */
+.pl-flujo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 1.2rem;
+}
+
+.pl-flujo-paso {
+  flex: 1;
+  background: var(--bg-3);
+  border: 1px solid var(--rule-soft);
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+}
+
+.pl-flujo-paso strong {
+  display: block;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+.pl-flujo-paso span {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  margin-top: 0.15rem;
+}
+
+.pl-flujo-flecha {
+  color: var(--ink-muted);
+  font-size: 1.1rem;
+  flex: none;
+}
+
+@media (max-width: 720px) {
+  .pl-flujo {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pl-flujo-flecha {
+    transform: rotate(90deg);
+    align-self: center;
+  }
+}
+
+/* ── infografías estáticas del popup de hechos ── */
+.pl-imagen {
+  margin: 1.1rem 0;
+}
+
+.pl-imagen img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule-soft);
+  border-radius: 10px;
+  /* la infografía tiene fondo blanco: en tema oscuro queda como lámina */
+  background: #fff;
+}
+
+.pl-imagen figcaption {
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  text-align: right;
+  margin-top: 0.3rem;
+}
+
+/* ── gráficos de evidencia (portals sobre .pl-chart) ── */
+.pl-chart {
+  margin: 1.1rem 0;
+  min-height: 240px; /* evita el salto mientras monta el portal */
+}
+
+.pl-chart-box {
+  margin: 0;
+}
+
+.pl-chart-box figcaption {
+  margin-bottom: 0.5rem;
+}
+
+.pl-chart-titulo {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.pl-chart-nota {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  margin-top: 0.1rem;
+}
+
+/* ── secciones del AMPLIADO fusionadas en popups existentes ── */
+.pl-pop-anexo {
+  margin-top: 1.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.pl-pop-anexo h4 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin: 0 0 0.7rem;
 }
 
 /* ── celular ── */

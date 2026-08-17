@@ -264,7 +264,7 @@ export default function EmpresaFicha({ seccion }) {
               : { tipo: 'empresa', empresa: e.target.value })
           }
         >
-          {sel.tipo === 'grupo' && <option value="" disabled hidden>—</option>}
+          {sel.tipo === 'grupo' && <option value="" disabled hidden>-</option>}
           <option value={TODAS}>Todas</option>
           {empresas.map((e) => (
             <option key={e.empresa} value={e.empresa}>
@@ -283,7 +283,7 @@ export default function EmpresaFicha({ seccion }) {
               : { tipo: 'todas' })
           }
         >
-          <option value="">—</option>
+          <option value="">-</option>
           {grupos.map(([g, miembros]) => (
             <option key={g} value={g}>
               {g} ({miembros.length})

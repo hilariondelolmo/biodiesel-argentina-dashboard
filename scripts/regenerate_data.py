@@ -47,6 +47,13 @@ SRC = {
     "derivados":   VOL / "EXP MKTS DATABASES/Revision Actual/Mercado Argentino Derivados Petroleo Table.hyper",
     "maestro":     VOL / "EXP MKTSCAN - MARKET ANALYSIS/BIODIESEL/Revision Actual/ARGENTINA BIODIESEL MARKET REV FINAL.xlsx",
     "corte_oblig": VOL / "EXP MKTSCAN - DATASOURCES/Revision Actual/Lineas para grafico corte obligatorio.xlsx",
+    # Evidencia fáctica de la Propuesta S80926PL (oblea "Los hechos hablan")
+    "precio_local": VOL / "EXP MKTS DATABASES/Revision Actual/Tableau Biodiesel Local Straight.hyper",
+    "precio_963":  VOL / "EXP MKTS DATABASES/Revision Actual/Precio Bio 963-2023.hyper",
+    "metanol_ypf": VOL / "EXP MKTS DATABASES/Revision Actual/Tableau Metanol YPF.hyper",
+    "metanol_exp": VOL / "EXP MKTS DATABASES/Revision Actual/Methanol Exports database.hyper",
+    "taxes":       VOL / "EXP MKTS DATABASES/Revision Actual/Tableau Taxes.hyper",
+    "sbo_sme":     VOL / "EXP MKTS DATABASES/Revision Actual/Tableau Local prices SBO SME 2.hyper",
 }
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "src" / "data"
@@ -68,10 +75,13 @@ NOMBRE_ESSO = "ESSO S.A.P.A."
 
 # El hyper de detalle trae a estas aceiteras como NO INTEGRADA en toda su
 # historia; decisión HDO (2026-08-03, coincide con su workbook Tableau):
-# son INTEGRADAS.
+# son INTEGRADAS. Patagonia confirmada por HDO el 2026-08-17 (la nota
+# "correccion_aplicada" del dashboard.json legacy lo decía pero el pipeline
+# no lo aplicaba).
 CATEGORIA_OVERRIDE = {
     "VICENTÍN S.A.I.C.": "INTEGRADA",
     "NOBLE ARGENTINA S.A.": "INTEGRADA",
+    "PATAGONIA BIOENERGIA S.A.": "INTEGRADA",
 }
 
 # Nombres de exhibición de elaboradoras (lista HDO 2026-08-04). Se aplican en
@@ -642,6 +652,128 @@ def generar_dashboard_legacy(registros):
     )
 
 
+# ------------------------------------------- evidencia fáctica (S80926PL)
+
+def _mensualizar(pares):
+    """[(date, valor)] diarios → {ym: promedio} ignorando None."""
+    acc = defaultdict(list)
+    for d, v in pares:
+        if d is not None and v is not None:
+            acc[ym(d)].append(v)
+    return {f: sum(vs) / len(vs) for f, vs in sorted(acc.items())}
+
+
+def extraer_evidencia(hy):
+    """Series para los gráficos de la oblea "Los hechos hablan" de la página
+    /propuesta-s0809-2026 (docx Evidencia fáctica rev3, 2026-08-17)."""
+    # Precio de biodiesel publicado por la SE, por categoría de elaboradora.
+    # La fuente es diaria con arrastre; el promedio mensual reconstruye el
+    # precio del mes (los meses con un solo precio publicado quedan exactos).
+    rows = hy.query("precio_local", '''
+        SELECT "Date", "GRANDE", "GRANDE NO INTEGRADA", "MEDIANA", "PEQUEÑA"
+        FROM "Extract"."Extract" WHERE "Date" IS NOT NULL ORDER BY "Date"''')
+    por_cat = {k: _mensualizar([(r[0], r[i]) for r in rows])
+               for i, k in ((1, "grande"), (2, "grande_ni"), (3, "mediana"), (4, "pequena"))}
+    formula = {ym(d): v for d, v in hy.query(
+        "precio_963",
+        'SELECT "DATE", "SE 963/2023" FROM "Extract"."Extract" ORDER BY "DATE"')
+        if d is not None and v is not None}
+    meses = sorted(set().union(*[m.keys() for m in por_cat.values()], formula.keys()))
+    precio_biodiesel = [
+        dict(fecha=f,
+             **{k: r1(por_cat[k][f]) for k in por_cat if f in por_cat[k]},
+             **({"formula_963": r1(formula[f])} if f in formula else {}))
+        for f in meses
+    ]
+
+    # Metanol YPF: precio interno (relevamiento propio, mensual) vs precio de
+    # exportación implícito en aduana (FOB total / kilos). Prima = interno - FOB.
+    interno = {ym(d): v for d, v in hy.query(
+        "metanol_ypf",
+        'SELECT "Date", "Metanol YPF (usd/ton)" FROM "Extract"."Extract" ORDER BY "Date"')
+        if d is not None and v is not None}
+    exp_rows = hy.query("metanol_exp", '''
+        SELECT "Date", SUM("FOB U$S"), SUM("Kilos Netos")
+        FROM "Extract"."Extract"
+        WHERE "Empresa Exportadora" LIKE 'YPF%' AND "Estado" <> 'ANUL'
+          AND "FOB U$S" > 0 AND "Kilos Netos" > 0
+        GROUP BY 1 ORDER BY 1''')
+    exp_mes = defaultdict(lambda: [0.0, 0.0])
+    for d, fob, kg in exp_rows:
+        m = exp_mes[ym(d)]
+        m[0] += fob
+        m[1] += kg
+    metanol = []
+    for f in sorted(set(interno) | set(exp_mes)):
+        fila = dict(fecha=f)
+        if f in interno:
+            fila["interno"] = r1(interno[f])
+        if f in exp_mes and exp_mes[f][1] > 0:
+            fila["fob_export"] = r1(exp_mes[f][0] / exp_mes[f][1] * 1000)
+            fila["vol_export_ton"] = r1(exp_mes[f][1] / 1000)
+        if "interno" in fila and "fob_export" in fila:
+            fila["prima"] = r1(fila["interno"] - fila["fob_export"])
+        metanol.append(fila)
+
+    # Derechos de exportación: aceite de soja (SBO) vs biodiesel (SME).
+    tax_rows = hy.query("taxes", '''
+        SELECT "Date", "ARGENTINA  SBO Export tax", "ARGENTINA  SME Export Tax"
+        FROM "Extract"."Extract" WHERE "Date" IS NOT NULL ORDER BY "Date"''')
+    sbo = _mensualizar([(r[0], r[1]) for r in tax_rows])
+    sme = _mensualizar([(r[0], r[2]) for r in tax_rows])
+    retenciones = [
+        dict(fecha=f,
+             **({"sbo": r4(sbo[f])} if f in sbo else {}),
+             **({"sme": r4(sme[f])} if f in sme else {}))
+        for f in sorted(set(sbo) | set(sme))
+    ]
+
+    # Aceite de soja: FAS MinAgri / FOB oficial / spot local (para el art. 20;
+    # el gráfico queda pendiente de la metodología de HDO, los datos ya viajan).
+    sbo_rows = hy.query("sbo_sme", '''
+        SELECT "Date", "FAS MinAgri", "FOB SAGYPYA SPOT SBO", "SBO ARG  SPOT MEAN"
+        FROM "Extract"."Extract" WHERE "Date" IS NOT NULL ORDER BY "Date"''')
+    fas = _mensualizar([(r[0], r[1]) for r in sbo_rows])
+    fob_sbo = _mensualizar([(r[0], r[2]) for r in sbo_rows])
+    spot = _mensualizar([(r[0], r[3]) for r in sbo_rows])
+    aceite = [
+        dict(fecha=f,
+             **({"fas_minagri": r1(fas[f])} if f in fas else {}),
+             **({"fob_oficial": r1(fob_sbo[f])} if f in fob_sbo else {}),
+             **({"spot_local": r1(spot[f])} if f in spot else {}))
+        for f in sorted(set(fas) | set(fob_sbo) | set(spot))
+    ]
+
+    return dict(precio_biodiesel=precio_biodiesel, metanol=metanol,
+                retenciones=retenciones, aceite=aceite)
+
+
+def validar_evidencia(ev):
+    formula = {p["fecha"]: p["formula_963"] for p in ev["precio_biodiesel"]
+               if "formula_963" in p}
+    check(len(formula) >= 30, f"Fórmula 963: solo {len(formula)} meses")
+    # Cifras ancla del informe Evidencia fáctica (docx 2026-08-17): la prima
+    # promedio ene-oct 2024 del metanol es ≈448 usd/ton y el volumen mensual
+    # promedio 2024 exportado por YPF ≈19.888 ton.
+    primas24 = [m["prima"] for m in ev["metanol"]
+                if m["fecha"] >= "2024-01" and m["fecha"] <= "2024-10" and "prima" in m]
+    check(primas24, "Metanol: sin primas ene-oct 2024")
+    prima_prom = sum(primas24) / len(primas24)
+    check(abs(prima_prom - 448) < 45,
+          f"Prima metanol ene-oct 2024 = {prima_prom:.0f} usd/ton, esperado ≈ 448")
+    vols24 = [m["vol_export_ton"] for m in ev["metanol"]
+              if m["fecha"].startswith("2024") and "vol_export_ton" in m]
+    vol_prom = sum(vols24) / len(vols24) if vols24 else 0
+    check(abs(vol_prom - 19888) / 19888 < 0.15,
+          f"Volumen export metanol 2024 = {vol_prom:.0f} ton/mes, esperado ≈ 19.888")
+    for p in ev["retenciones"]:
+        for k in ("sbo", "sme"):
+            if k in p:
+                check(0 <= p[k] <= 0.6, f"Retención {k} fuera de rango en {p['fecha']}: {p[k]}")
+    print(f"  ✓ Fórmula 963: {len(formula)} meses · prima metanol 2024 ≈ {prima_prom:.0f} usd/ton"
+          f" · export YPF ≈ {vol_prom:,.0f} ton/mes")
+
+
 # ---------------------------------------------------------------- validaciones
 
 def validar(agg, empresas):
@@ -712,6 +844,7 @@ def main():
         cumpli = extraer_cumpli_petro(hy)
         cap_serie, plantas = extraer_capacidad()
         camaras = extraer_camaras()
+        evidencia = extraer_evidencia(hy)
     finally:
         hy.close()
     print(f"  detalle: {len(registros)} filas empresa-mes · GO: {len(go_mensual)} meses · "
@@ -724,6 +857,7 @@ def main():
 
     print("Validando contra cifras ancla…")
     validar(agg, empresas)
+    validar_evidencia(evidencia)
 
     # Consistencia de la partición ESSO/AXION en todas las series con nombre+mes
     def _check_particion(series, origen):
@@ -788,6 +922,10 @@ def main():
     go_sectores["sectores_sin_corte"] = list(SECTORES_SIN_CORTE)
     escribir("go_sectores.json", go_sectores,
              ["Mercado Argentino Derivados Petroleo Table.hyper"], dry)
+    escribir("evidencia.json", evidencia,
+             ["Tableau Biodiesel Local Straight.hyper", "Precio Bio 963-2023.hyper",
+              "Tableau Metanol YPF.hyper", "Methanol Exports database.hyper",
+              "Tableau Taxes.hyper", "Tableau Local prices SBO SME 2.hyper"], dry)
     escribir("gestion.json", dict(
         secretarios=secretarios,
         subsecretarios=subsecretarios,

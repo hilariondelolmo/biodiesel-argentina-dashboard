@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
-"""Genera src/content/propuesta-s80926pl.html desde los docx del 11/08.
+"""Genera src/content/propuesta-s80926pl.html desde los docx de HDO.
 
 - Propuesta (control de cambios): texto final = orig + ins; los del se
   descartan. Las inserciones salen como <ins> (rojo subrayado vía CSS).
 - Numeración automática de Word resuelta desde numbering.xml (incisos a., b., ...).
-- Informe: intro (Objeto y método / Marco normativo / Cuadro) + popups
-  "Normas violadas" y "Justificación" por artículo + Cierre.
+- Informe (rev3 con Evidencia fáctica, 17/08): intro (Objeto y método / Marco
+  normativo / Cuadro) + popups "Normas violadas", "Justificación" y "Los
+  hechos hablan" por artículo + Cierre.
+- Informe AMPLIADO_DATOS: aporta las tablas de evidencia por artículo y las
+  secciones Método de prueba / Síntesis ejecutiva / Conclusión fáctica /
+  Anexo I, que se fusionan dentro de los popups existentes (decisión HDO
+  2026-08-17). Sus gráficos matplotlib se descartan: los reemplazan
+  componentes recharts montados sobre los placeholders .pl-chart.
 """
 import re, sys, zipfile, html
 import xml.etree.ElementTree as ET
@@ -14,14 +20,205 @@ W = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
 CARPETA = ('/Users/hilariondelolmo/Desktop/01. Notas, articulos/Ley Ejecutivo/'
            'Finales/Propuestas Secretaria de Energia/Ultima Version/')
 DOCX_PROP = CARPETA + '2026.08.11 Propuesta ley S80926PL SE_260729 cc HDO.docx'
-DOCX_INF = CARPETA + 'Informe_fundamentos_modificaciones_S80926PL_11-08-2026.docx'
+DOCX_INF = CARPETA + '2026_08_17_Informe_fundamentos_S80926PL_Evidencia_factica_rev3.docx'
+DOCX_AMPL = CARPETA + ('Informe_fundamentos_modificaciones_S80926PL_'
+                       '11-08-2026_AMPLIADO_DATOS.docx')
 SALIDA = '/Users/hilariondelolmo/Explora_projects/Explorarg_Marketscan/src/content/propuesta-s80926pl.html'
 
 ARTS_INFORME = [3, 5, 6, 10, 12, 13, 14, 15, 16, 17, 19, 20, 26, 28, 33, 36, 38, 39, 40, 41, 42]
 
 # Overrides dictados por HDO: pisan el texto del informe docx en el popup
-# indicado. Clave: (artículo, tipo) con tipo 'normas' | 'just'.
-OVERRIDES = {}
+# indicado. Clave: (artículo, tipo) con tipo 'normas' | 'just' | 'hechos'.
+# Art. 3 hechos: el rev3 nombra a Explora S.A. y su planta; HDO pidió
+# (2026-08-17) no decir nada de Explora en el art. 3 — redacción neutra
+# equivalente, PENDIENTE DE APROBACIÓN de HDO.
+OVERRIDES = {
+    (3, 'hechos'): (
+        '<p>El atributo que el texto base omitía no es una promesa tecnológica: '
+        'existe, se produce en el país y se certifica. La Argentina ya cuenta '
+        'con producción de biodiesel de segunda generación a partir de residuos '
+        'con certificación emitida bajo el esquema ISCC, verificable en el '
+        'registro público de certificados vigentes de ese organismo. Las '
+        'reducciones de emisiones certificadas conforme la metodología de la '
+        'Renewable Energy Directive difieren de manera sustancial según la '
+        'materia prima: 60% para aceite de soja con uso en transporte (62% si '
+        'el uso es en la Argentina), 81% a partir de oleína y 84% a partir de '
+        'residuos del procesamiento de aceites y grasas.</p>'
+        '<p>Bajo el régimen vigente todos esos litros reciben idéntico '
+        'tratamiento económico y regulatorio: las inversiones realizadas para '
+        'mejorar el desempeño ambiental del producto -instalaciones de '
+        'aprovechamiento de residuos operativas desde 2019- no obtuvieron '
+        'reconocimiento alguno. Un proyecto que declara la transición hacia '
+        'energías más limpias y vuelve a omitir toda pauta para valorar '
+        'reducciones certificadas no corrige esa situación: la consolida con '
+        'conocimiento del resultado.</p>'
+    ),
+}
+
+# Cifras destacadas y esquemas del popup "Respaldo en datos" (formato
+# aprobado por HDO 2026-08-17; los valores salen del propio texto del
+# informe rev3 - si el docx cambia, revisarlos). Van antes del texto.
+def _kpi(valor, label):
+    return ('<div class="pl-kpi"><span class="pl-kpi-valor">' + valor +
+            '</span><span class="pl-kpi-label">' + label + '</span></div>')
+
+def _paso(titulo, detalle):
+    return ('<div class="pl-flujo-paso"><strong>' + titulo + '</strong>'
+            '<span>' + detalle + '</span></div>')
+
+FLECHA = '<span class="pl-flujo-flecha" aria-hidden="true">→</span>'
+
+def _kpis(*pares):
+    return '<div class="pl-kpis">' + ''.join(_kpi(v, l) for v, l in pares) + '</div>'
+
+def _flujo(*pasos):
+    return ('<div class="pl-flujo">'
+            + FLECHA.join(_paso(t, d) for t, d in pasos) + '</div>')
+
+HECHOS_DESTACADOS = {
+    3: _kpis(
+        ('84%', 'de reducción certificada de emisiones con residuos'),
+        ('81%', 'a partir de oleína'),
+        ('60-62%', 'a partir de aceite de soja'),
+        ('Ninguno', 'reconocimiento a esa diferencia bajo el régimen vigente'),
+    ),
+    5: _kpis(
+        ('USD 1.979 M', 'transferidos a las integradas por el diferencial de retenciones'),
+        ('3,4 veces', 'la inversión total repagada por ese diferencial'),
+        ('&gt;120%', 'derechos compensatorios y antidumping aplicados por EE.UU.'),
+        ('6,3 a 1', 'escala de la integrada promedio frente a la no integrada'),
+    ) + _flujo(
+        ('Retenciones asimétricas', 'aceite 27-32% vs biodiesel 0-5%'),
+        ('Sanciones de EE.UU. y la UE', 'por la ventaja artificial: cierre de mercados'),
+        ('Acceso externo solo integrado', 'cupo UE de 1.200.000 t reservado a las firmantes'),
+    ),
+    6: _kpis(
+        ('4', 'no integradas registradas al iniciarse la obligación de mezcla (2010)'),
+        ('50.000 t', 'tope por empresa, eludido mediante fragmentación societaria'),
+        ('348.000 t', 'acumuladas por un grupo con siete plantas "independientes"'),
+    ),
+    10: _kpis(
+        ('3 años, 3 meses y 27 días', 'demoró la primera metodología de precios ordenada por la Ley 27.640'),
+    ),
+    12: _kpis(
+        ('2.825.578 t', 'déficit de mezcla acumulado desde 2010'),
+        ('USD 1.466 M', 'ganancia de las mezcladoras por incumplir'),
+        ('1,4%', 'corte real en el peor mes (dic. 2023)'),
+        ('58,6%', 'eficacia del mandato 2020-2023'),
+    ) + _flujo(
+        ('Biodiesel no incorporado', '2.825.578 t desde 2010'),
+        ('Sustituido por gasoil fósil', 'en parte importado'),
+        ('Ganancia de las mezcladoras', 'USD 1.059 M + USD 407 M por reducción del corte'),
+    ),
+    13: _kpis(
+        ('10% → 5%', 'la reducción del mandato de biodiesel que la Ley 27.640 consolidó'),
+        ('6% + 6%', 'mínimos de caña y maíz que la facultad abierta contradecía'),
+    ),
+    14: _kpis(
+        ('98%', 'de la demanda concentrada en cuatro compañías'),
+        ('≈60%', 'de las compras reunidas en un solo comprador'),
+        ('&gt;90%', 'del metanol provisto por ese mismo actor'),
+    ),
+    15: _kpis(
+        ('2.825.578 t', 'de déficit reconstruido por los privados, no publicado por el Estado'),
+        ('USD 53 M', 'de quebranto documentado mediante intimaciones'),
+        ('0', 'indicadores de cumplimiento publicados por el Estado'),
+    ),
+    16: _kpis(
+        ('5% → 7%', 'el corte elevado por la Res. 554/2010 a favor de las integradas'),
+        ('98%', 'de las compras concentradas en cuatro compañías'),
+    ),
+    17: _kpis(
+        ('USD 0,80/l', 'cuesta el rubro metanol e insumos en la Argentina'),
+        ('USD 0,10/l', 'el mismo rubro en EE.UU. y Brasil'),
+        ('&gt;90%', 'del metanol proviene de un único proveedor'),
+        ('10', 'resoluciones de precio dictadas fuera de la metodología legal'),
+    ),
+    19: _kpis(
+        ('84%', 'reducción certificada del biodiesel de residuos, auditada anualmente'),
+        ('Menor y sin verificar', 'la reducción que acredita el coprocesado'),
+        ('Solo refinadores', 'disponen de infraestructura para coprocesar'),
+    ),
+    20: _kpis(
+        ('&gt;75%', 'del costo del biodiesel es el aceite, comprado a competidores directos'),
+        ('&gt;90%', 'del metanol proviene de un único proveedor'),
+        ('3,4 veces', 'la inversión repagada por ventaja regulatoria'),
+        ('6,3 a 1', 'relación de escala entre integrada y no integrada promedio'),
+    ),
+    26: _kpis(
+        ('USD 1.059 M', 'ganó la sustitución del biodiesel con gasoil fósil importado'),
+        ('USD 1,10-1,15/l', 'costo del biodiesel argentino a fines de 2024, equivalente a EE.UU. y Brasil'),
+    ),
+    28: _kpis(
+        ('2.825.578 t', 'de déficit de mezcla sin sanción conocida'),
+        ('10', 'determinaciones de precio fuera de la ley sin consecuencia'),
+        ('16 meses', 'de fórmula incumplida, documentados por los propios administrados'),
+    ),
+    33: _kpis(
+        ('0', 'sanciones aplicadas pese al déficit, el no retiro y el apartamiento de la fórmula'),
+        ('Sin tipo expreso', 'las conductas más lesivas del sistema'),
+    ),
+    36: _kpis(
+        ('Ninguna', 'medición exigía el texto base a la porción exenta'),
+        ('100%', 'del biodiesel se mide, factura y certifica operación por operación'),
+    ),
+    38: _kpis(
+        ('50.000 t', 'plantas replicadas para eludir el tope de capacidad'),
+        ('2', 'espacios de indeterminación documentados que la modificación cierra'),
+    ),
+    39: _kpis(
+        ('3 de 5', 'umbrales de prórroga se verificarían hoy'),
+        ('≈60%', 'de las compras en un solo comprador (el umbral fija 50%)'),
+        ('43%', 'utilización de capacidad de las elaboradoras pequeñas en 2023'),
+        ('Sin acceso', 'de las No Integradas al cupo europeo (Decisión UE 2019/245)'),
+    ),
+    40: _kpis(
+        ('2,8 Mt', 'de déficit sin sanción bajo la obligación agregada'),
+        ('3', 'conceptos que la tabla separa: físico, certificado y crédito'),
+    ),
+    41: _kpis(
+        ('&gt;340.000 t', 'acumuladas por grupos vía plantas "independientes" de 50.000'),
+        ('≈60%', 'de las compras concentradas en el comprador dominante'),
+        ('2,8 Mt', 'acumuladas de faltante: bajo el régimen vigente fue la regla'),
+    ),
+    42: _kpis(
+        ('1 día', 'después de publicada, el texto base derogaba todo el régimen anterior'),
+        ('3 años, 3 meses y 27 días', 'demoró la única metodología ordenada por la Ley 27.640'),
+    ) + _flujo(
+        ('Derogación inmediata', 'al día siguiente de la publicación'),
+        ('Régimen sustituto inexistente', 'mercado, registros, metodologías y garantías por constituirse'),
+        ('Vacío de abastecimiento', 'la duración real del intervalo está documentada'),
+    ),
+}
+
+# Imágenes estáticas del popup de hechos (infografías de HDO en
+# public/evidencia/). Van después del texto, antes de los gráficos.
+# Click = abrir a tamaño completo en otra pestaña.
+IMAGENES = {
+    5: [('/evidencia/crecimiento-integradas.png',
+         'Evolución de la capacidad de producción de biodiesel de las '
+         'empresas integradas 2008-2025, con los ingresos por diferencial '
+         'de retenciones y por venta de aceite con premio')],
+    6: [('/evidencia/cronologia-normativa-2006-2010.png',
+         'Cronología normativa del biodiesel 2006-2010 en el mercado '
+         'interno: Ley 26.093, Decreto 109/2007, Resoluciones 6 y 7, '
+         '554/2010 y 1674/2010'),
+        ('/evidencia/crecimiento-no-integradas.png',
+         'Evolución de la capacidad de producción de biodiesel de las '
+         'empresas no integradas 2008-2025: plantas de 50.000 toneladas, '
+         'grupos económicos y capacidad total del segmento')],
+}
+
+# Gráficos de evidencia por artículo (ids del registro HECHOS_CHARTS en
+# src/components/propuesta/HechosCharts.jsx; se montan por portal sobre los
+# placeholders .pl-chart del popup). Datos: src/data/*.json del dashboard.
+CHARTS = {
+    5: ['asimetria-escala', 'retenciones'],
+    12: ['corte-serie', 'asignacion-ventas'],
+    14: ['precio-formula', 'concentracion-compradores'],
+    17: ['metanol'],
+    39: ['utilizacion'],
+}
 
 # Artículos con modificaciones que no violan norma alguna: llevan solo la
 # oblea de Justificación, con texto dictado por HDO (2026-08-10).
@@ -137,7 +334,8 @@ def run_text(r):
             parts.append('\t')
         elif node.tag == W + 'br':
             parts.append('\n')
-    return ''.join(parts)
+    # HDO (2026-08-17): guion simple en todos los textos, nunca rayas
+    return ''.join(parts).replace('—', '-').replace('–', '-')
 
 def runs_de(p):
     runs = []
@@ -297,6 +495,8 @@ def generar_ley(bloques):
                 'Normas que viola el proyecto oficial</button>'
                 f'<button type="button" class="pl-oblea pl-oblea-just" data-art="{seccion}" data-tipo="just">'
                 'Justificación de la modificación</button>'
+                f'<button type="button" class="pl-oblea pl-oblea-hechos" data-art="{seccion}" data-tipo="hechos">'
+                'Respaldo en datos</button>'
                 '</div>')
         elif seccion in JUST_SOLO:
             out.append(
@@ -375,8 +575,9 @@ def strip_lead(parrafos, lead):
         out.append(render_p(b) if b['tipo'] == 'p' else render_tabla(b))
     return ''.join(out)
 
-def generar_informe(bloques):
-    secciones = {}   # titulo -> lista de bloques
+def seccionar(bloques):
+    """{titulo Heading2 -> bloques} + orden de aparición."""
+    secciones = {}
     orden = []
     actual = None
     for b in bloques:
@@ -389,6 +590,46 @@ def generar_informe(bloques):
             continue
         if actual is not None:
             secciones[actual].append(b)
+    return secciones, orden
+
+
+# Secciones nuevas del AMPLIADO_DATOS → popup de la intro que las absorbe
+# (decisión HDO 2026-08-17: dentro de las obleas existentes, sin obleas nuevas)
+AMPL_EN_POPUP = {
+    'objeto': ['Método de prueba y estándar de afirmación'],
+    'cuadro': ['Síntesis ejecutiva de la evidencia'],
+    'cierre': ['Conclusión fáctica', 'Anexo I'],
+}
+
+
+def render_seccion_ampl(secciones_ampl, prefijo):
+    """Sección del AMPLIADO (por prefijo del título) como bloque anexo con
+    su subtítulo. Los párrafos vacíos y las imágenes ya no existen a esta
+    altura (extraer() ignora los drawings)."""
+    titulo = next((t for t in secciones_ampl if t.startswith(prefijo)), None)
+    if titulo is None:
+        sys.exit(f'ERROR: el AMPLIADO no tiene la sección "{prefijo}…"')
+    cuerpo = ''.join(render_p(b) if b['tipo'] == 'p' else render_tabla(b)
+                     for b in secciones_ampl[titulo])
+    return f'<div class="pl-pop-anexo"><h4>{html.escape(titulo)}</h4>{cuerpo}</div>'
+
+
+def tablas_evidencia_ampl(secciones_ampl, nro):
+    """Tablas de la sección del artículo en el AMPLIADO (solo la zona de
+    evidencia las tiene). Se anexan al popup de hechos. El título se busca
+    por número por si difiere en algo del rev3."""
+    titulo = next((t for t in secciones_ampl
+                   if re.match(rf'Art[ií]culo\s+{nro}\b', t)), None)
+    out = []
+    for b in secciones_ampl.get(titulo, []):
+        if b['tipo'] == 'tabla':
+            out.append(render_tabla(b))
+    return ''.join(out)
+
+
+def generar_informe(bloques, ampliado):
+    secciones, orden = seccionar(bloques)
+    secciones_ampl, _ = seccionar(ampliado)
 
     # popups de la intro (Objeto / Marco / Cuadro); las obleas que los abren
     # viven en el JSX, dentro del encabezado fijo
@@ -434,6 +675,8 @@ def generar_informe(bloques):
                     filas.append(f'<tr{attr}>' + celdas + '</tr>')
                 cuerpo.append('<div class="pl-tabla-scroll"><table class="pl-cuadro">'
                               + ''.join(filas) + '</table></div>')
+        for prefijo in AMPL_EN_POPUP.get(clave, []):
+            cuerpo.append(render_seccion_ampl(secciones_ampl, prefijo))
         pops_intro.append(f'<div class="pl-pop" data-art="intro" data-tipo="{clave}" '
                           f'data-titulo="{html.escape(rotulo)}" data-sub="Informe de fundamentos">'
                           + ''.join(cuerpo) + '</div>')
@@ -453,7 +696,7 @@ def generar_informe(bloques):
             # el texto dictado por HDO reemplaza por completo a la sección
             # del informe (p.ej. art. 40: no hay violación normativa)
             continue
-        normas, just = [], []
+        normas, just, hechos = [], [], []
         balde = None
         for b in secciones[titulo]:
             if b['tipo'] != 'p':
@@ -464,17 +707,34 @@ def generar_informe(bloques):
                 balde = normas
             elif txt.startswith('Justificación de la modificación'):
                 balde = just
+            elif txt.startswith('Evidencia fáctica'):
+                balde = hechos
             if balde is not None:
                 balde.append(b)
         tit = html.escape(titulo.replace('- ', ' · ', 1))
         html_normas = OVERRIDES.get((nro, 'normas')) or strip_lead(normas, 'Normas violadas.')
         html_just = OVERRIDES.get((nro, 'just')) or strip_lead(just, 'Justificación de la modificación.')
+        html_hechos = OVERRIDES.get((nro, 'hechos')) or strip_lead(hechos, 'Evidencia fáctica.')
+        if not html_hechos.strip():
+            sys.exit(f'ERROR: artículo {nro} sin párrafos de Evidencia fáctica')
+        html_hechos = HECHOS_DESTACADOS.get(nro, '') + html_hechos
+        html_hechos += ''.join(
+            f'<figure class="pl-imagen"><a href="{src}" target="_blank" rel="noopener">'
+            f'<img src="{src}" alt="{html.escape(alt)}" loading="lazy"/></a>'
+            '<figcaption>Click para ampliar</figcaption></figure>'
+            for src, alt in IMAGENES.get(nro, []))
+        html_hechos += ''.join(f'<div class="pl-chart" data-chart="{c}"></div>'
+                               for c in CHARTS.get(nro, []))
+        html_hechos += tablas_evidencia_ampl(secciones_ampl, nro)
         pops.append(f'<div class="pl-pop" data-art="{nro}" data-tipo="normas" '
                     f'data-titulo="{tit}" data-sub="Normas que viola el proyecto oficial">'
                     + html_normas + '</div>')
         pops.append(f'<div class="pl-pop" data-art="{nro}" data-tipo="just" '
                     f'data-titulo="{tit}" data-sub="Justificación de la modificación">'
                     + html_just + '</div>')
+        pops.append(f'<div class="pl-pop" data-art="{nro}" data-tipo="hechos" '
+                    f'data-titulo="{tit}" data-sub="Respaldo en datos">'
+                    + html_hechos + '</div>')
     pops.append('</div>')
 
     return '\n'.join(pops)
@@ -504,10 +764,12 @@ def fusionar_encabezados(bloques):
 def main():
     prop = fusionar_encabezados(extraer(DOCX_PROP))
     inf = extraer(DOCX_INF)
-    pops = generar_informe(inf)
+    ampl = extraer(DOCX_AMPL)
+    pops = generar_informe(inf, ampl)
     ley = generar_ley(prop)
     doc = (
-        '<!-- Generado desde los docx del 11/08 (propuesta cc HDO + informe de fundamentos).\n'
+        '<!-- Generado desde los docx de HDO (propuesta cc 11/08 + informe\n'
+        '     Evidencia fáctica rev3 del 17/08 + AMPLIADO_DATOS).\n'
         '     Script: scripts/generar_propuesta_html.py — no editar a mano\n'
         '     los textos legales; regenerar desde el docx. -->\n'
         f'<div class="pl-ley">\n{ley}\n</div>\n{pops}\n'
@@ -516,7 +778,9 @@ def main():
         f.write(doc)
     ins_n = doc.count('<ins>')
     print(f'OK → {SALIDA}')
-    print(f'  <ins>: {ins_n} · obleas: {doc.count("pl-oblea ")} · popups: {doc.count("pl-pop ")}')
+    print(f'  <ins>: {ins_n} · obleas: {doc.count("pl-oblea ")} · '
+          f'popups: {doc.count(chr(34) + "pl-pop" + chr(34))} · '
+          f'charts: {doc.count("pl-chart")}')
 
 if __name__ == '__main__':
     main()

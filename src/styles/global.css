@@ -19,6 +19,7 @@
 
   --accent-bio: #4D8B31;      /* Verde biodiesel */
   --accent-oil: #B45309;      /* Ámbar petróleo */
+  --accent-warn: #EAB308;     /* Amarillo semáforo (tono "medio") */
   --accent-exp: #1E3A8A;      /* Azul marino primario */
   --accent-exp-dim: #B9C7E4;
   --accent-alert: #DC2626;    /* Rojo alerta */
@@ -61,6 +62,7 @@
 
   --accent-bio: #7FB069;
   --accent-oil: #D4A574;
+  --accent-warn: #F2C744;
   --accent-exp: #4A8FA8;
   --accent-exp-dim: #2F5668;
   --accent-alert: #C67B5C;

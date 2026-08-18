@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import petroleras from '../../data/petroleras.json';
 import corte from '../../data/corte.json';
 import RankingCumplimiento from './RankingCumplimiento.jsx';
@@ -6,18 +7,22 @@ import '../charts/Chart.css';
 
 const DENSIDAD = corte.densidad_bio;
 
+// Ventanas elegibles (meses hacia atrás; 0 = serie completa)
+const VENTANAS = [['1m', 1], ['6m', 6], ['1a', 12], ['5a', 60], ['10a', 120], ['Todo', 0]];
+
 /**
- * Cumplimiento del corte por petrolera (últimos 12 meses con dato de GO):
+ * Cumplimiento del corte por petrolera en la ventana elegida (default 1 año):
  * bio recibido de elaboradoras (m3) / (GO G2+G3 vendido × % corte obligatorio).
  */
 export default function PetrolerasCumplimiento() {
+  const [meses, setMeses] = useState(12);
   const oblig = new Map(corte.mensual.map((m) => [m.fecha, m.obligatorio]));
   const goMeses = petroleras.go_mensual.filter((r) => oblig.get(r.fecha) != null);
-  const ult12 = goMeses.slice(-12);
-  const fechas = new Set(ult12.map((r) => r.fecha));
+  const ventana = meses ? goMeses.slice(-meses) : goMeses;
+  const fechas = new Set(ventana.map((r) => r.fecha));
 
   const requerido = new Map(); // petrolera → bio m3 requerido
-  for (const row of ult12) {
+  for (const row of ventana) {
     for (const [pet, go] of Object.entries(row)) {
       if (pet === 'fecha') continue;
       requerido.set(pet, (requerido.get(pet) || 0) + go * oblig.get(row.fecha));
@@ -51,8 +56,8 @@ export default function PetrolerasCumplimiento() {
     }))
     .sort((a, b) => b.valor - a.valor);
 
-  const desde = ult12[0]?.fecha;
-  const hasta = ult12.at(-1)?.fecha;
+  const desde = ventana[0]?.fecha;
+  const hasta = ventana.at(-1)?.fecha;
 
   return (
     <div className="chart-card">
@@ -60,9 +65,22 @@ export default function PetrolerasCumplimiento() {
         <div>
           <span className="chart-card-title">Cumplimiento del corte por petrolera</span>
           <span className="chart-card-subtitle">
-            bio comprado / bio requerido por sus ventas de gas oil · {fmt.monthShort(desde)} →{' '}
-            {fmt.monthShort(hasta)}
+            bio comprado / bio requerido por sus ventas de gas oil ·{' '}
+            {desde === hasta
+              ? fmt.monthShort(desde)
+              : `${fmt.monthShort(desde)} → ${fmt.monthShort(hasta)}`}
           </span>
+        </div>
+        <div className="chart-range-selector" style={{ marginLeft: 'auto' }}>
+          {VENTANAS.map(([rotulo, m]) => (
+            <button
+              key={rotulo}
+              className={meses === m ? 'active' : ''}
+              onClick={() => setMeses(m)}
+            >
+              {rotulo}
+            </button>
+          ))}
         </div>
       </div>
       <div className="chart-card-body">

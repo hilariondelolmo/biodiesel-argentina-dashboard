@@ -66,7 +66,7 @@ export default function ElaboradorasCumplimiento() {
             <span>≥ 95%</span>
           </div>
           <div className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: C.oil }} />
+            <span className="chart-legend-swatch" style={{ background: C.warn }} />
             <span>80–95%</span>
           </div>
           <div className="chart-legend-item">

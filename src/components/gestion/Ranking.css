@@ -52,7 +52,7 @@
 }
 
 .ranking-barra-fill.ok { background: var(--accent-bio); }
-.ranking-barra-fill.medio { background: var(--accent-oil); }
+.ranking-barra-fill.medio { background: var(--accent-warn); }
 .ranking-barra-fill.bajo { background: var(--accent-alert); }
 
 .ranking-umbral {
@@ -70,7 +70,7 @@
 }
 
 .ranking-valor.ok { color: var(--accent-bio); }
-.ranking-valor.medio { color: var(--accent-oil); }
+.ranking-valor.medio { color: var(--accent-warn); }
 .ranking-valor.bajo { color: var(--accent-alert); }
 
 .ranking-detalle {

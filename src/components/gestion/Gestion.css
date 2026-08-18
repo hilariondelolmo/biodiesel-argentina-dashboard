@@ -13,6 +13,8 @@
   border: 1px solid var(--rule);
   border-radius: 4px;
   padding: 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .gestion-card-nombre {
@@ -32,10 +34,13 @@
   font-weight: 700;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
+  /* misma línea base en todas las tarjetas aunque el nombre/período ocupe
+     distinta cantidad de líneas */
+  margin-top: auto;
 }
 
 .gestion-card-valor.ok { color: var(--accent-bio); }
-.gestion-card-valor.medio { color: var(--accent-oil); }
+.gestion-card-valor.medio { color: var(--accent-warn); }
 .gestion-card-valor.bajo { color: var(--accent-alert); }
 
 .gestion-card-detalle {
@@ -59,7 +64,7 @@
 
 .gestion-barra-fill { height: 100%; border-radius: 2px; }
 .gestion-barra-fill.ok { background: var(--accent-bio); }
-.gestion-barra-fill.medio { background: var(--accent-oil); }
+.gestion-barra-fill.medio { background: var(--accent-warn); }
 .gestion-barra-fill.bajo { background: var(--accent-alert); }
 
 /* --- Línea de tiempo de secretarios --- */

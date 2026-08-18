@@ -47,6 +47,7 @@ export const PALETAS = {
   light: {
     bio: '#4d8b31',        // verde biodiesel
     oil: '#b45309',        // ámbar gas oil / exportaciones
+    warn: '#eab308',       // amarillo semáforo (tono "medio")
     exp: '#1e3a8a',        // azul marino cupo / primario
     expDim: '#b9c7e4',
     neutral: '#6b7280',    // gris comercializadoras / acumulados
@@ -70,6 +71,7 @@ export const PALETAS = {
   dark: {
     bio: '#7FB069',
     oil: '#D4A574',
+    warn: '#F2C744',
     exp: '#4A8FA8',
     expDim: '#2F5668',
     neutral: '#8B9AAB',

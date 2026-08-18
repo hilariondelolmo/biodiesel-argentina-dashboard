@@ -35,7 +35,7 @@ export default function EficaciaGestiones() {
           </div>
           <div
             className={`gestion-card-valor ${
-              g.cumplimiento >= 95 ? 'ok' : g.cumplimiento >= 80 ? 'medio' : 'bajo'
+              g.cumplimiento >= 90 ? 'ok' : g.cumplimiento >= 80 ? 'medio' : 'bajo'
             }`}
           >
             {fmt.pct(g.cumplimiento)}
@@ -47,7 +47,7 @@ export default function EficaciaGestiones() {
           <div className="gestion-barra">
             <div
               className={`gestion-barra-fill ${
-                g.cumplimiento >= 95 ? 'ok' : g.cumplimiento >= 80 ? 'medio' : 'bajo'
+                g.cumplimiento >= 90 ? 'ok' : g.cumplimiento >= 80 ? 'medio' : 'bajo'
               }`}
               style={{ width: `${Math.min(100, g.cumplimiento)}%` }}
             />

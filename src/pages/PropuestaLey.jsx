@@ -21,11 +21,40 @@ import './PropuestaLey.css';
  * evidencia se montan por portal sobre los placeholders .pl-chart del
  * popup abierto (el HTML estático no puede traer componentes).
  */
+// Conmutador de la sección FUNDAMENTOS: colorea las 9 citas encapsuladas
+// y define qué lado de la confrontación abre el click en cada una
+const FUND_ESTADOS = ['inicial', 'articulado', 'cambios', 'fundprop'];
+const FUND_ROTULOS = {
+  inicial: 'Estado inicial',
+  articulado: 'Proyecto Bullrich / SE',
+  cambios: 'Propuesta de cambios',
+  fundprop: 'Fundamentos propuesta de cambios',
+};
+const FUND_LEYENDAS = {
+  inicial: 'Oprimir para confrontar estos fundamentos con el articulado',
+  articulado: 'Cada frase resaltada abre su inconsistencia con el articulado oficial',
+  cambios: 'Cada frase resaltada muestra cómo queda con las modificaciones',
+  fundprop: 'Fundamentos redactados para la propuesta de cambios · oprimir para volver',
+};
+
 export default function PropuestaLey() {
   const raizRef = useRef(null);
   const dialogRef = useRef(null);
   const [pop, setPop] = useState(null); // {titulo, sub, tipo, html}
   const [nodosChart, setNodosChart] = useState([]);
+  const [fundEstado, setFundEstado] = useState('inicial');
+
+  // El conmutador vive dentro del blob estático: rótulo y estado se
+  // actualizan a mano (React no reconcilia el innerHTML inyectado)
+  useEffect(() => {
+    const toggle = raizRef.current?.querySelector('.pl-fund-toggle');
+    if (toggle) {
+      toggle.dataset.estado = fundEstado;
+      toggle.textContent = FUND_ROTULOS[fundEstado];
+    }
+    const leyenda = raizRef.current?.querySelector('.pl-fund-leyenda');
+    if (leyenda) leyenda.textContent = FUND_LEYENDAS[fundEstado];
+  }, [fundEstado]);
 
   // El contenido del diálogo entra por innerHTML: recién después del
   // render existen los placeholders donde van los gráficos
@@ -79,6 +108,16 @@ export default function PropuestaLey() {
   };
 
   const alClickear = (e) => {
+    const toggle = e.target.closest('.pl-fund-toggle');
+    if (toggle) {
+      setFundEstado((v) => FUND_ESTADOS[(FUND_ESTADOS.indexOf(v) + 1) % FUND_ESTADOS.length]);
+      return;
+    }
+    const cita = e.target.closest('.pl-fund-cita');
+    if (cita) {
+      if (fundEstado !== 'inicial') abrirPop(`conf-${cita.dataset.conf}`, fundEstado);
+      return;
+    }
     const oblea = e.target.closest('.pl-oblea');
     if (oblea) {
       abrirPop(oblea.dataset.art, oblea.dataset.tipo);
@@ -138,6 +177,7 @@ export default function PropuestaLey() {
       <div className="marco pl-marco">
         <div
           className="pl-cuerpo"
+          data-fund={fundEstado}
           ref={raizRef}
           onClick={alClickear}
           dangerouslySetInnerHTML={{ __html: contenido }}
@@ -147,8 +187,8 @@ export default function PropuestaLey() {
       <dialog
         ref={dialogRef}
         className={`pl-dialog pl-dialog-${
-          pop?.tipo === 'normas' ? 'normas'
-            : pop?.tipo === 'hechos' ? 'hechos'
+          ['normas', 'articulado'].includes(pop?.tipo) ? 'normas'
+            : ['hechos', 'cambios'].includes(pop?.tipo) ? 'hechos'
               : pop?.tipo === 'confronta' ? 'confronta'
                 : 'just'
         }${['cuadro', 'hechos', 'confronta'].includes(pop?.tipo) ? ' pl-dialog-ancho' : ''}`}

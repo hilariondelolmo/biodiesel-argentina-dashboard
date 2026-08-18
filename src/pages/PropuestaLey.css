@@ -529,6 +529,127 @@ section.pl-art-informe {
   white-space: nowrap;
 }
 
+/* ── sección FUNDAMENTOS: cápsulas de las 9 citas confrontadas ──
+   Estado inicial: resaltado neutro sin interacción. El conmutador junto al
+   título pasa a violeta (articulado) o verde (cambios) y habilita el click. */
+.pl-fund-cita {
+  background: var(--bg-3);
+  border: 1px solid var(--rule-soft);
+  border-radius: 6px;
+  padding: 0.06em 0.3em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.pl-cuerpo[data-fund='articulado'] .pl-fund-cita {
+  background: color-mix(in srgb, var(--violeta) 12%, transparent);
+  border-color: color-mix(in srgb, var(--violeta) 45%, transparent);
+  cursor: pointer;
+}
+
+.pl-cuerpo[data-fund='articulado'] .pl-fund-cita:hover {
+  background: color-mix(in srgb, var(--violeta) 22%, transparent);
+}
+
+.pl-cuerpo[data-fund='cambios'] .pl-fund-cita {
+  background: color-mix(in srgb, var(--accent-bio) 13%, transparent);
+  border-color: color-mix(in srgb, var(--accent-bio) 50%, transparent);
+  cursor: pointer;
+}
+
+.pl-cuerpo[data-fund='cambios'] .pl-fund-cita:hover {
+  background: color-mix(in srgb, var(--accent-bio) 24%, transparent);
+}
+
+/* título FUNDAMENTOS a la izquierda, conmutador y leyenda a la derecha */
+.pl-ley h2.pl-fund-titulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+  text-align: left;
+}
+
+.pl-fund-ctrl {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+}
+
+.pl-fund-toggle {
+  font-size: 0.76rem;
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+
+.pl-fund-leyenda {
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--ink-muted);
+  max-width: 340px;
+  text-align: right;
+  line-height: 1.35;
+}
+
+.pl-fund-toggle[data-estado='inicial'] {
+  border: 1.5px solid var(--rule);
+  color: var(--ink-muted);
+}
+
+.pl-fund-toggle[data-estado='inicial']:hover {
+  background: var(--bg-3);
+  color: var(--ink);
+}
+
+.pl-fund-toggle[data-estado='articulado'] {
+  border: 1.5px solid var(--violeta);
+  color: var(--violeta);
+}
+
+.pl-fund-toggle[data-estado='articulado']:hover {
+  background: var(--violeta);
+  color: var(--bg);
+}
+
+.pl-fund-toggle[data-estado='cambios'] {
+  border: 1.5px solid var(--accent-bio);
+  color: var(--accent-bio);
+}
+
+.pl-fund-toggle[data-estado='cambios']:hover {
+  background: var(--accent-bio);
+  color: var(--bg);
+}
+
+.pl-fund-toggle[data-estado='fundprop'] {
+  border: 1.5px solid var(--accent-exp);
+  color: var(--accent-exp);
+}
+
+.pl-fund-toggle[data-estado='fundprop']:hover {
+  background: var(--accent-exp);
+  color: var(--bg);
+}
+
+/* cuarto estado: los fundamentos propuestos por HDO reemplazan al texto
+   oficial completo */
+.pl-fund-propuesta {
+  display: none;
+}
+
+.pl-cuerpo[data-fund='fundprop'] .pl-fund-oficial {
+  display: none;
+}
+
+.pl-cuerpo[data-fund='fundprop'] .pl-fund-propuesta {
+  display: block;
+}
+
 /* tarjetas de eficacia por gestión (reusadas de /gestion) compactadas para
    que las 4 entren en una fila dentro del popup */
 .pl-dialog .gestion-cards {

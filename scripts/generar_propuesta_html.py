@@ -377,6 +377,276 @@ CONFRONTACIONES = [
 ]
 
 
+# Pasajes de la sección FUNDAMENTOS (texto oficial al final de la página)
+# que corresponden a cada confrontación, EN EL MISMO ORDEN que
+# CONFRONTACIONES. Se encapsulan como .pl-fund-cita: en estado inicial son
+# resaltado neutro; el conmutador junto al título los pasa a violeta
+# (articulado) o verde (cambios) y el click abre el popup del lado elegido
+# (encargo HDO 2026-08-18). Si el docx cambia y un pasaje no matchea, el
+# generador corta con error.
+FUND_PASAJES = [
+    'Asimismo, el proyecto establece que, cumplido el plazo de 12 meses '
+    'desde su sanción, deberán elevarse los porcentajes de corte '
+    'obligatorio de biocombustibles aplicables al gasoil y a las naftas.',
+
+    'Por otra parte, vemos necesario aumentar los porcentajes de mezcla '
+    'obligatoria de biocombustibles con combustibles fósiles, ya que tiene '
+    'un doble efecto positivo, por un lado, disminuye las emisiones de '
+    'gases de efecto invernadero y por otro se genera un beneficio '
+    'económico a la población contribuyendo a diversificar la oferta '
+    'energética y moderar la exposición del precio final de los '
+    'combustibles a la volatilidad internacional de los hidrocarburos.',
+
+    'El presente proyecto tiene como uno de sus principales objetivos '
+    'garantizar la protección de los consumidores, definiendo '
+    'adecuadamente sus derechos y permitiendo el acceso a biocombustibles '
+    'con estándares de calidad.',
+
+    'Si bien el proyecto respeta determinados parámetros para la '
+    'asignación de los volúmenes de corte, busca transicionar hacia un '
+    'mercado libre donde se genere una verdadera competencia.',
+
+    'Con el fin de dotar de mayor dinamismo al sector, se instituye un '
+    'sistema de comercialización electrónico, transparente y trazable, '
+    'destinado a ordenar las operaciones entre productores y mezcladores. '
+    'Este mecanismo procura sustituir progresivamente esquemas '
+    'administrativos poco flexibles por herramientas de mercado, '
+    'asegurando publicidad, concurrencia, registro de operaciones y mayor '
+    'eficiencia en la formación de precios.',
+
+    'A partir de reglas orientadas a la competencia, la transparencia y la '
+    'libertad contractual, se busca potenciar el desarrollo de los '
+    'biocombustibles, facilitando así el acceso a mercados '
+    'internacionales.',
+
+    'Asimismo, el proyecto también prioriza la reducción de la huella de '
+    'carbono del sector energético a través del desarrollo de '
+    'biocombustibles, apuntando a una movilidad sostenible que busca '
+    'reducir efectivamente el nivel de emisiones.',
+
+    'Por otra parte, se avanza hacia una definición ampliada de '
+    'biocombustible, que incluye los generados a partir de procesos '
+    'agropecuarios, agroindustriales, residuos orgánicos y hasta '
+    'combustibles sintéticos, siempre y cuando se cumplan los requisitos '
+    'de calidad y sostenibilidad.',
+
+    'El proyecto contempla un Período de Transición para el sector de '
+    'biodiesel dirigido a conciliar el régimen vigente de la Ley N° 27.640 '
+    'con los objetivos del nuevo marco regulatorio. Esto es fundamental en '
+    'pos de asegurar una transición ordenada entre el esquema vigente y '
+    'las metas propuestas por esta ley.',
+]
+
+
+# Fundamentos alternativos redactados por HDO (2026-08-18) para el cuarto
+# estado del conmutador ("Fundamentos propuesta de cambios"): reemplazan por
+# completo al texto oficial mientras ese estado está activo.
+FUND_PROPUESTA = [
+    'Señora Presidenta:',
+    'Los biocombustibles cumplen una función estratégica para la seguridad '
+    'energética, la diversificación de la matriz de combustibles, el '
+    'desarrollo productivo federal y la transición hacia fuentes de energía '
+    'con menores emisiones de gases de efecto invernadero. Por esas razones, '
+    'las actividades reguladas por la presente iniciativa revisten interés '
+    'público y requieren un marco normativo que combine previsibilidad, '
+    'inversión, eficiencia, protección de los consumidores y competencia '
+    'efectiva.',
+    'La declaración de interés público no supone sustituir la iniciativa '
+    'privada ni conferir a la Administración facultades para determinar '
+    'discrecionalmente los resultados económicos del sector. Significa '
+    'reconocer que el abastecimiento, la calidad, el precio y el desempeño '
+    'ambiental de los biocombustibles incorporados obligatoriamente a los '
+    'combustibles fósiles no resultan indiferentes para el Estado.',
+    'En el mercado correspondiente al corte obligatorio, la demanda no surge '
+    'exclusivamente de decisiones voluntarias de compradores y consumidores. '
+    'Es creada por la ley al imponer la incorporación de determinados '
+    'porcentajes de biocombustibles al gasoil y a las naftas. Aunque la '
+    'obligación operativa recaiga sobre las empresas encargadas de realizar '
+    'la mezcla, el consumidor adquiere y paga el biocombustible como parte '
+    'inseparable del combustible final.',
+    'Por consiguiente, el Estado que crea esa demanda no puede desentenderse '
+    'de las condiciones bajo las cuales será abastecida. Debe procurar que '
+    'los volúmenes obligatorios se adjudiquen mediante mecanismos '
+    'competitivos, que los precios se formen de manera transparente, que se '
+    'asegure la calidad del producto y que la estructura del mercado no '
+    'permita trasladar al consumidor los efectos de posiciones dominantes, '
+    'integraciones verticales o concentraciones de la oferta y de la '
+    'demanda.',
+    'Este deber encuentra sustento en el artículo 42 de la Constitución '
+    'Nacional, que reconoce el derecho de los consumidores a la protección '
+    'de su salud, su seguridad y sus intereses económicos, y encomienda a '
+    'las autoridades la defensa de la competencia contra toda forma de '
+    'distorsión de los mercados. En un régimen donde el consumo de '
+    'biocombustibles resulta indirectamente obligatorio, esas '
+    'responsabilidades adquieren particular relevancia.',
+    'La iniciativa parte, por ello, de una distinción fundamental entre '
+    'mercado libre, libre competencia y libertad contractual.',
+    'Un mercado enteramente libre presupone que las partes puedan decidir si '
+    'compran o venden, en qué cantidades lo hacen y bajo qué condiciones. '
+    'Esa situación no se configura plenamente en el mercado del corte '
+    'obligatorio, porque la existencia y el volumen inicial de la demanda '
+    'son determinados por la regulación.',
+    'La libre competencia, en cambio, consiste en asegurar que los actores '
+    'habilitados puedan disputar esa demanda en condiciones objetivas, '
+    'transparentes y no discriminatorias. La libertad contractual permite '
+    'posteriormente instrumentar las operaciones y celebrar contratos, pero '
+    'no puede sustituir las condiciones competitivas que deben existir antes '
+    'de la contratación.',
+    'En mercados caracterizados por una fuerte concentración de la demanda, '
+    'diferencias de integración vertical y un acceso desigual a materias '
+    'primas e insumos esenciales, el acuerdo privado no constituye por sí '
+    'mismo una garantía de competencia. Puede reflejar una negociación '
+    'equilibrada, pero también puede expresar el poder económico de una de '
+    'las partes. Por ello, la protección de la libertad contractual debe '
+    'complementarse con reglas que preserven el acceso al mercado, eviten '
+    'conductas exclusorias y aseguren una concurrencia real entre '
+    'oferentes.',
+    'Con esa finalidad, el proyecto impulsa un sistema de comercialización '
+    'electrónico, transparente y trazable para los volúmenes destinados al '
+    'corte obligatorio. El sistema deberá garantizar publicidad, '
+    'concurrencia, igualdad de acceso, comparabilidad de las ofertas, '
+    'identificación de los grupos económicos participantes y registro '
+    'íntegro de las operaciones.',
+    'La utilización de procedimientos competitivos de selección, incluidas '
+    'las subastas, no implica que el Estado determine administrativamente '
+    'quién debe resultar adjudicatario. Su función consiste en establecer '
+    'reglas generales, previas e impersonales para que el resultado sea '
+    'definido por la competencia entre los oferentes y no por decisiones '
+    'discrecionales ni por el poder de negociación derivado de la '
+    'concentración económica.',
+    'El mecanismo deberá procurar el abastecimiento de los volúmenes '
+    'obligatorios al menor precio resultante de una competencia efectiva, '
+    'compatible con la calidad exigida, la continuidad del suministro y los '
+    'objetivos ambientales del régimen. La eficiencia no se alcanza '
+    'mediante la simple ausencia de intervención, sino mediante '
+    'procedimientos que permitan comparar ofertas y seleccionar aquellas '
+    'que satisfagan del mejor modo los objetivos públicos establecidos.',
+    'La regulación deberá asimismo reconocer las diferencias estructurales '
+    'existentes entre los participantes. Un producto puede ser homogéneo en '
+    'su especificación técnica sin que sean homogéneos los actores que lo '
+    'producen. La integración vertical, el control de la materia prima, la '
+    'pertenencia a un mismo grupo económico, la vinculación con los '
+    'compradores y el acceso privilegiado a insumos esenciales pueden '
+    'modificar sustancialmente la capacidad de competir.',
+    'Las categorías regulatorias no deben mantenerse por privilegio ni '
+    'eliminarse únicamente por el transcurso del tiempo. Deben conservarse '
+    'mientras subsistan las diferencias objetivas que justificaron su '
+    'existencia y revisarse cuando esas condiciones se modifiquen. La fecha '
+    'de un calendario puede establecer una instancia de evaluación, pero no '
+    'puede convertir por sí sola en equivalentes a actores que continúan '
+    'ocupando posiciones económicas diferentes.',
+    'El régimen también debe promover una transición energética '
+    'ambientalmente verificable. La incorporación de un combustible a la '
+    'definición legal de biocombustible o el cumplimiento de una '
+    'especificación de calidad no demuestran, por sí solos, una reducción '
+    'efectiva de emisiones. Los beneficios ambientales deberán evaluarse '
+    'mediante criterios objetivos, metodologías reconocidas y '
+    'certificaciones que consideren el ciclo de vida de cada producto y '
+    'proceso.',
+    'Este criterio permitirá distinguir y valorar adecuadamente a los '
+    'biocombustibles que acrediten mayores reducciones de gases de efecto '
+    'invernadero, incluidos los obtenidos mediante materias primas '
+    'residuales, procesos avanzados o tecnologías de segunda generación. La '
+    'regulación debe evitar que productos con diferente desempeño ambiental '
+    'reciban el mismo tratamiento cuando esa equiparación desaliente '
+    'inversiones destinadas a reducir emisiones.',
+    'Del mismo modo, cualquier incremento de los porcentajes obligatorios '
+    'de mezcla deberá considerar conjuntamente la disponibilidad de '
+    'producto, la capacidad instalada, su incidencia sobre el precio final, '
+    'la seguridad de abastecimiento y la reducción certificada de '
+    'emisiones. El aumento del corte no constituye un fin autónomo, sino un '
+    'instrumento para alcanzar objetivos energéticos, económicos y '
+    'ambientales que deben ser comprobables.',
+    'La ampliación de la definición de biocombustibles permitirá incorporar '
+    'nuevas materias primas, procesos y tecnologías, siempre que cumplan '
+    'requisitos verificables de calidad, sostenibilidad y desempeño '
+    'ambiental. Asimismo, se promoverá el desarrollo del biogás, el '
+    'biometano, los combustibles sostenibles de aviación y otras '
+    'alternativas capaces de contribuir a la descarbonización del '
+    'transporte y a la valorización de recursos productivos regionales.',
+    'El proyecto habilita también la comercialización voluntaria de '
+    'combustibles con porcentajes de biocombustibles superiores a los '
+    'obligatorios. En ese segmento, donde el consumidor puede elegir entre '
+    'distintas alternativas, la libertad contractual y la iniciativa '
+    'privada podrán desplegarse con mayor amplitud, sujetas únicamente a '
+    'las exigencias de calidad, seguridad, información y protección de la '
+    'competencia.',
+    'La promoción de las exportaciones constituye otro objetivo relevante '
+    'para ampliar la escala productiva, generar divisas e integrar a la '
+    'Argentina en los mercados internacionales de energías renovables. Sin '
+    'embargo, ese objetivo deberá armonizarse con la seguridad energética y '
+    'con el abastecimiento interno. La expansión exportadora no puede '
+    'comprometer el cumplimiento eficiente de la demanda obligatoria ni '
+    'trasladar al consumidor local costos derivados de una insuficiencia '
+    'artificial de oferta.',
+    'La autoridad de aplicación tendrá a su cargo implementar y fiscalizar '
+    'el régimen, verificar el cumplimiento de las condiciones técnicas y '
+    'ambientales, garantizar la transparencia del sistema de '
+    'comercialización y prevenir distorsiones que afecten el abastecimiento '
+    'o la competencia. Sus facultades deberán ejercerse con arreglo a '
+    'criterios objetivos, públicos y controlables, evitando tanto la '
+    'discrecionalidad administrativa como la apropiación privada de la '
+    'demanda creada por la ley.',
+    'El período de transición deberá permitir la adaptación progresiva de '
+    'los participantes sin alterar abruptamente las condiciones de '
+    'abastecimiento ni excluir actores por la sola llegada de una fecha. Su '
+    'evolución deberá apoyarse en evaluaciones periódicas de la estructura '
+    'del mercado, el grado de concentración, el acceso a materias primas e '
+    'insumos, la participación de los distintos grupos económicos y la '
+    'existencia de competencia efectiva.',
+    'La finalidad de la transición no es sustituir un régimen regulado por '
+    'un espacio carente de reglas. Es avanzar desde mecanismos '
+    'administrativos discrecionales hacia una regulación competitiva, '
+    'apoyada en procedimientos transparentes y resultados verificables. El '
+    'Estado no debe elegir a los ganadores, pero tampoco puede permitir que '
+    'la estructura económica los determine antes de que comience la '
+    'competencia.',
+    'En síntesis, la iniciativa propone un régimen moderno y previsible que '
+    'reconoce la naturaleza de interés público de los biocombustibles, '
+    'protege a los consumidores, promueve inversiones y exportaciones, '
+    'impulsa reducciones certificadas de emisiones y garantiza que la '
+    'demanda obligatoria sea abastecida mediante competencia efectiva.',
+    'No se trata de optar entre regulación y libertad. Se trata de '
+    'establecer una regulación que haga posible la competencia allí donde '
+    'la propia ley crea la demanda y donde la concentración económica '
+    'impide presumir que los acuerdos privados producirán, por sí solos, '
+    'resultados eficientes y equitativos.',
+    'Por los motivos expuestos, solicitamos a nuestros pares el '
+    'acompañamiento y la aprobación del presente proyecto de ley.',
+]
+
+
+def marcar_fundamentos(ley):
+    """Encapsula los 9 pasajes citados, agrega el conmutador al título y
+    deja el cuerpo oficial y el propuesto como variantes intercambiables."""
+    h2 = '<h2 class="pl-titulo">FUNDAMENTOS </h2>'
+    if ley.count(h2) != 1:
+        sys.exit('ERROR: no encontré el título FUNDAMENTOS para el conmutador')
+    h2_nuevo = ('<h2 class="pl-titulo pl-fund-titulo"><span>FUNDAMENTOS</span>'
+                '<span class="pl-fund-ctrl">'
+                '<button type="button" class="pl-oblea pl-fund-toggle" '
+                'data-estado="inicial">Estado inicial</button>'
+                '<span class="pl-fund-leyenda">Oprimir para confrontar estos '
+                'fundamentos con el articulado</span>'
+                '</span></h2>')
+    ley = ley.replace(h2, h2_nuevo)
+    for n, pasaje in enumerate(FUND_PASAJES, 1):
+        esc = html.escape(pasaje, quote=False)
+        if ley.count(esc) != 1:
+            sys.exit(f'ERROR: pasaje {n} de FUNDAMENTOS no matchea el docx '
+                     f'(¿cambió el texto?): {pasaje[:60]}...')
+        ley = ley.replace(
+            esc, f'<span class="pl-fund-cita" data-conf="{n}">{esc}</span>')
+    # variantes: el texto oficial (con cápsulas) vs. los fundamentos
+    # propuestos por HDO; el CSS muestra una según data-fund del cuerpo
+    corte = ley.find(h2_nuevo) + len(h2_nuevo)
+    propuesta = '\n'.join(
+        f'<p>{html.escape(p, quote=False)}</p>' for p in FUND_PROPUESTA)
+    return (ley[:corte]
+            + '\n<div class="pl-fund-oficial">' + ley[corte:] + '\n</div>'
+            + '\n<div class="pl-fund-propuesta">\n' + propuesta + '\n</div>')
+
+
 def generar_confrontaciones():
     partes = [f'<p class="pl-conf-intro">{html.escape(CONFRONTA_INTRO)}</p>']
     for c in CONFRONTACIONES:
@@ -395,10 +665,29 @@ def generar_confrontaciones():
             '</div>'
             f'<div class="pl-conf-arts">{chips}</div>'
             '</div>')
-    return ('<div class="pl-pop" data-art="intro" data-tipo="confronta" '
+    pops = ('<div class="pl-pop" data-art="intro" data-tipo="confronta" '
             'data-titulo="Sus fundamentos, contra su propio proyecto" '
             'data-sub="Proyecto oficial S-0809/2026">'
             + ''.join(partes) + '</div>')
+    # popups por confrontación para las cápsulas de la sección FUNDAMENTOS:
+    # un lado por estado del conmutador (articulado=violeta / cambios=verde)
+    for n, c in enumerate(CONFRONTACIONES, 1):
+        chips = ''.join(
+            f'<button type="button" class="pl-salto" data-art="{a}">Artículo {a}</button>'
+            for a in c['arts'])
+        for tipo, campo, sub, titulo in (
+                ('articulado', 'boicot', 'Inconsistencia',
+                 'Con el articulado del proyecto oficial NO CUMPLE CON EL '
+                 'FUNDAMENTO QUE DECLARA'),
+                ('cambios', 'corrige', 'Fundamentos · Proyecto oficial S-0809/2026',
+                 'Con las modificaciones propuestas al articulado CUMPLE CON '
+                 'LOS FUNDAMENTOS PROPUESTOS POR EL PROYECTO DE BULLRICH')):
+            pops += (
+                f'<div class="pl-pop" data-art="conf-{n}" data-tipo="{tipo}" '
+                f'data-titulo="{titulo}" data-sub="{sub}">'
+                f'<p>{html.escape(c[campo])}</p>'
+                f'<div class="pl-conf-arts">{chips}</div></div>')
+    return pops
 
 
 # Imágenes estáticas del popup de hechos (infografías de HDO en
@@ -982,7 +1271,7 @@ def main():
     inf = extraer(DOCX_INF)
     ampl = extraer(DOCX_AMPL)
     pops = generar_informe(inf, ampl)
-    ley = generar_ley(prop)
+    ley = marcar_fundamentos(generar_ley(prop))
     doc = (
         '<!-- Generado desde los docx de HDO (propuesta cc 11/08 + informe\n'
         '     Evidencia fáctica rev3 del 17/08 + AMPLIADO_DATOS).\n'

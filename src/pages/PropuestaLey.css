@@ -517,6 +517,61 @@ section.pl-art-informe {
   color: var(--ink);
 }
 
+/* déficits / incumplimientos destacados en rojo */
+.pl-kpi-neg .pl-kpi-valor {
+  color: var(--accent-alert);
+}
+
+/* valores largos: tipografía menor para que no partan en dos líneas */
+.pl-kpi-compacto .pl-kpi-valor {
+  font-size: 1.4rem;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+/* tarjetas de eficacia por gestión (reusadas de /gestion) compactadas para
+   que las 4 entren en una fila dentro del popup */
+.pl-dialog .gestion-cards {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 0.2rem 0 1.1rem;
+}
+
+.pl-dialog .gestion-card {
+  padding: 0.75rem 0.85rem;
+  border-radius: 10px;
+  border-color: var(--rule-soft);
+  background: var(--bg-3);
+}
+
+.pl-dialog .gestion-card-nombre {
+  font-size: 0.85rem;
+  min-height: 2.4em; /* 2 líneas: "C. Fernández de Kirchner" parte en dos */
+}
+
+.pl-dialog .gestion-card-periodo {
+  font-size: 0.7rem;
+  margin: 0.1rem 0 0.55rem;
+  min-height: 2.5em; /* 2 líneas: "... · CAMBIEMOS" parte en dos */
+}
+
+.pl-dialog .gestion-card-valor {
+  font-size: 1.5rem;
+}
+
+.pl-dialog .gestion-card-detalle,
+.pl-dialog .gestion-card-deficit {
+  font-size: 0.72rem;
+  margin-bottom: 0.5rem;
+}
+
+/* el "Déficit: ..." ocupa 1 o 2 líneas según la gestión: reservar siempre 2
+   (line-height ~1.47 → 2 líneas ≈ 2.94em) para que los % de arriba
+   compartan línea base */
+.pl-dialog .gestion-card-deficit {
+  min-height: 3em;
+}
+
 .pl-kpi-label {
   display: block;
   font-size: 0.85rem;

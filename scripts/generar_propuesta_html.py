@@ -32,6 +32,9 @@ ARTS_INFORME = [3, 5, 6, 10, 12, 13, 14, 15, 16, 17, 19, 20, 26, 28, 33, 36, 38,
 # actualizada en el Word de Respaldo en datos (acumulado a 2025).
 CORRECCIONES = {
     'USD 1.979 millones': 'USD 2.040 millones',
+    # 2026-08-18: déficit acumulado conciliado con el pipeline (corte.json a
+    # 2026-06); el rev3 traía 2.825.578 (aparece en Cierre y arts. 15 y 28)
+    '2.825.578': '2.581.105',
 }
 
 # Overrides dictados por HDO: pisan el texto del informe docx en el popup
@@ -60,13 +63,53 @@ OVERRIDES = {
         'reducciones certificadas no corrige esa situación: la consolida con '
         'conocimiento del resultado.</p>'
     ),
+    # Art. 12 hechos: cifras conciliadas con el pipeline del sitio (corte.json
+    # a 2026-06) por orden de HDO 2026-08-18 — el rev3 traía otro universo
+    # (déficit 2.825.578 t, eficacias 91,7/88,5/58,6, peor mes dic. 2023).
+    # El docx se alineará en una rev posterior al cierre de esta revisión.
+    (12, 'hechos'): (
+        '<p>La facultad abierta de reducir el corte y la ausencia de '
+        'consecuencias por su incumplimiento no son riesgos a prevenir: son '
+        'el mecanismo documentado con el que se vació el mandato durante '
+        'dieciséis años. Desde marzo de 2010 el déficit acumulado de mezcla '
+        'asciende a 2.581.105 toneladas de biodiesel no incorporado, y el '
+        'corte obligatorio se cumplió en solo 3 de los 16 años completos de '
+        'la serie. El corte real promedio de 2023 fue de 4,6% frente al 7,5% '
+        'obligatorio, con un piso histórico de 0,0% en noviembre de 2020, '
+        'cuando la obligación vigente era del 10%.</p>'
+        '<div class="pl-chart" data-chart="corte-serie"></div>'
+        '<p>El grado de cumplimiento es función de cada gestión, no de una '
+        'imposibilidad física: 92,3% y 93,7% de eficacia en los períodos '
+        '2010-2015 y 2015-2019, 65,2% en 2019-2023 -la gestión a la que '
+        'corresponde casi la mitad del déficit acumulado: 1.243.459 '
+        'toneladas- y 82,2% desde diciembre de 2023. En junio de 2026 el '
+        'corte real alcanzó 7,6%, por encima del obligatorio: cuando la '
+        'autoridad administra el mandato, el mandato se cumple.</p>'
+        '<div class="pl-chart" data-chart="eficacia-gestiones"></div>'
+        '<p>El incumplimiento tuvo beneficiarios identificables y '
+        'cuantificados: las mezcladoras acumularon USD 1.059 millones por '
+        'sustituir el biodiesel no incorporado con gasoil fósil -en parte '
+        'importado- y USD 407 millones adicionales por la reducción del '
+        'corte que la Ley 27.640 consolidó al bajar el mandato del 10% al '
+        '5%: USD 1.466 millones en total. Cada tonelada del déficit implicó '
+        'reemplazar un producto nacional renovable por combustible fósil, en '
+        'una porción relevante importado, con el efecto inverso al declarado '
+        'sobre emisiones y balanza comercial. Un texto que reproduce la '
+        'facultad discrecional sin piso, causal tasada ni plazo no regula '
+        'ese comportamiento: lo habilita nuevamente con el resultado a la '
+        'vista.</p>'
+    ),
 }
 
 # Cifras destacadas y esquemas del popup "Respaldo en datos" (formato
 # aprobado por HDO 2026-08-17; los valores salen del propio texto del
 # informe rev3 - si el docx cambia, revisarlos). Van antes del texto.
-def _kpi(valor, label):
-    return ('<div class="pl-kpi"><span class="pl-kpi-valor">' + valor +
+def _kpi(valor, label, tono=None):
+    # tono: 'neg' pinta el valor de rojo (déficits / incumplimientos);
+    # 'compacto' achica la tipografía (valores largos que partirían en dos
+    # líneas). Se pueden combinar: 'neg compacto'.
+    clase = 'pl-kpi' + ''.join(' pl-kpi-' + t for t in (tono or '').split())
+    return ('<div class="' + clase + '"><span class="pl-kpi-valor">' + valor +
             '</span><span class="pl-kpi-label">' + label + '</span></div>')
 
 def _paso(titulo, detalle):
@@ -76,7 +119,7 @@ def _paso(titulo, detalle):
 FLECHA = '<span class="pl-flujo-flecha" aria-hidden="true">→</span>'
 
 def _kpis(*pares):
-    return '<div class="pl-kpis">' + ''.join(_kpi(v, l) for v, l in pares) + '</div>'
+    return '<div class="pl-kpis">' + ''.join(_kpi(*p) for p in pares) + '</div>'
 
 def _flujo(*pasos):
     return ('<div class="pl-flujo">'
@@ -108,14 +151,15 @@ HECHOS_DESTACADOS = {
         ('3 años, 3 meses y 27 días', 'demoró la primera metodología de precios ordenada por la Ley 27.640'),
     ),
     12: _kpis(
-        ('2.825.578 t', 'déficit de mezcla acumulado desde 2010'),
-        ('USD 1.466 M', 'ganancia de las mezcladoras por incumplir'),
-        ('1,4%', 'corte real en el peor mes (dic. 2023)'),
-        ('58,6%', 'eficacia del mandato 2020-2023'),
+        ('2,6 Mt', 'déficit de mezcla acumulado 2010-2026: 2.581.105 toneladas', 'neg'),
+        ('3 de 16', 'años con el corte cumplido desde 2010', 'neg'),
+        ('0,0%', 'corte real en el peor mes (nov. 2020, con 10% obligatorio)', 'neg'),
+        ('65,2%', 'eficacia en la peor gestión (2019-2023)', 'neg'),
+        ('1.466 M usd', 'ganancia de las mezcladoras por incumplir', 'compacto'),
     ) + _flujo(
-        ('Biodiesel no incorporado', '2.825.578 t desde 2010'),
+        ('Biodiesel no incorporado', '2.581.105 t desde 2010'),
         ('Sustituido por gasoil fósil', 'en parte importado'),
-        ('Ganancia de las mezcladoras', 'USD 1.059 M + USD 407 M por reducción del corte'),
+        ('Ganancia de las mezcladoras', '1.059 M usd + 407 M usd por reducción del corte'),
     ),
     13: _kpis(
         ('10% → 5%', 'la reducción del mandato de biodiesel que la Ley 27.640 consolidó'),
@@ -127,7 +171,7 @@ HECHOS_DESTACADOS = {
         ('&gt;90%', 'del metanol provisto por ese mismo actor'),
     ),
     15: _kpis(
-        ('2.825.578 t', 'de déficit reconstruido por los privados, no publicado por el Estado'),
+        ('2.581.105 t', 'de déficit reconstruido por los privados, no publicado por el Estado', 'compacto'),
         ('USD 53 M', 'de quebranto documentado mediante intimaciones'),
         ('0', 'indicadores de cumplimiento publicados por el Estado'),
     ),
@@ -157,7 +201,7 @@ HECHOS_DESTACADOS = {
         ('USD 1,10-1,15/l', 'costo del biodiesel argentino a fines de 2024, equivalente a EE.UU. y Brasil'),
     ),
     28: _kpis(
-        ('2.825.578 t', 'de déficit de mezcla sin sanción conocida'),
+        ('2.581.105 t', 'de déficit de mezcla sin sanción conocida', 'compacto'),
         ('10', 'determinaciones de precio fuera de la ley sin consecuencia'),
         ('16 meses', 'de fórmula incumplida, documentados por los propios administrados'),
     ),
@@ -380,7 +424,9 @@ IMAGENES = {
 # placeholders .pl-chart del popup). Datos: src/data/*.json del dashboard.
 CHARTS = {
     5: ['asimetria-escala', 'retenciones'],
-    12: ['corte-serie', 'asignacion-ventas'],
+    # corte-serie y eficacia-gestiones van inline en el override (después de
+    # los párrafos 1 y 2); acá solo lo que cierra el popup
+    12: ['petroleras-cumplimiento'],
     14: ['precio-formula', 'concentracion-compradores'],
     17: ['metanol'],
     39: ['utilizacion'],

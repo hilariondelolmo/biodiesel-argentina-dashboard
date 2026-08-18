@@ -1,6 +1,6 @@
 import {
-  Bar, BarChart, Cell, ComposedChart, Line, LineChart, Tooltip, XAxis, YAxis,
-  ResponsiveContainer,
+  Area, Bar, BarChart, Cell, ComposedChart, Line, LineChart,
+  Tooltip, XAxis, YAxis, ResponsiveContainer,
 } from 'recharts';
 import corte from '../../data/corte.json';
 import dashboard from '../../data/dashboard.json';
@@ -10,6 +10,8 @@ import empresas from '../../data/empresas.json';
 import petroleras from '../../data/petroleras.json';
 import { fmt } from '../../lib/format.js';
 import ChartTooltip from '../charts/ChartTooltip.jsx';
+import EficaciaGestionesCards from '../gestion/EficaciaGestiones.jsx';
+import PetrolerasCumplimiento from '../gestion/PetrolerasCumplimiento.jsx';
 import { useChartColors } from '../../lib/theme.jsx';
 
 /**
@@ -57,15 +59,21 @@ const ticksAnuales = (serie) =>
 /* ── art. 12: corte obligatorio vs corte real, serie completa ── */
 function CorteSerie() {
   const C = useChartColors();
-  const serie = corte.mensual.map((m) => ({
-    fecha: m.fecha,
-    Obligatorio: m.obligatorio == null ? null : +(m.obligatorio * 100).toFixed(2),
-    Real: m.real == null ? null : +(m.real * 100).toFixed(2),
-  }));
+  const serie = corte.mensual.map((m) => {
+    const real = m.real == null ? null : +(m.real * 100).toFixed(2);
+    const oblig = m.obligatorio == null ? null : +(m.obligatorio * 100).toFixed(2);
+    return {
+      fecha: m.fecha,
+      Obligatorio: oblig,
+      Real: real,
+      Déficit: oblig != null && real != null && oblig > real
+        ? +(oblig - real).toFixed(2) : 0,
+    };
+  });
   return (
     <Marco titulo="Corte obligatorio y corte real de biodiesel en gasoil"
-           nota="mensual, % - fuente: SE / dashboard explorarg">
-      <LineChart data={serie} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+           nota="mensual, % - el área sombreada es el déficit - fuente: SE / dashboard explorarg">
+      <ComposedChart data={serie} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
         <XAxis dataKey="fecha" {...ejeX(C, {
           ticks: ticksAnuales(serie),
           tickFormatter: (f) => f.slice(0, 4),
@@ -73,11 +81,30 @@ function CorteSerie() {
         <YAxis {...ejeY(C, (v) => `${v}%`)} />
         <Tooltip content={<ChartTooltip unit="%" labelFormatter={fmt.monthShort} />}
                  cursor={{ stroke: C.cursorLinea }} />
+        <Area isAnimationActive={false} dataKey="Real" stackId="corte"
+              stroke={C.alert} strokeWidth={1.6} fill={C.bioFill} connectNulls />
+        <Area isAnimationActive={false} dataKey="Déficit" stackId="corte"
+              stroke="none" fill={C.alertFill} />
         <Line isAnimationActive={false} dataKey="Obligatorio" stroke={C.exp} dot={false} strokeWidth={2}
               type="stepAfter" connectNulls />
-        <Line isAnimationActive={false} dataKey="Real" stroke={C.alert} dot={false} strokeWidth={1.6} connectNulls />
-      </LineChart>
+      </ComposedChart>
     </Marco>
+  );
+}
+
+/* ── art. 12: eficacia por gestión y petroleras, reusados del eje /gestion
+      tal como se ven en el dashboard (pedido HDO 2026-08-18) ── */
+function EficaciaGestiones() {
+  return (
+    <figure className="pl-chart-box">
+      <figcaption>
+        <span className="pl-chart-titulo">Eficacia de la Autoridad de Aplicación por gestión</span>
+        <span className="pl-chart-nota">
+          biodiesel cortado / requerido por la norma vigente · 2010 → jun. 2026 - fuente: SE / dashboard explorarg
+        </span>
+      </figcaption>
+      <EficaciaGestionesCards />
+    </figure>
   );
 }
 
@@ -317,6 +344,8 @@ function Utilizacion() {
 
 export const HECHOS_CHARTS = {
   'corte-serie': CorteSerie,
+  'eficacia-gestiones': EficaciaGestiones,
+  'petroleras-cumplimiento': PetrolerasCumplimiento,
   'asignacion-ventas': AsignacionVentas,
   'precio-formula': PrecioFormula,
   'concentracion-compradores': ConcentracionCompradores,

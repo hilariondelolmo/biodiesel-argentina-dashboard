@@ -130,12 +130,12 @@ HECHOS_DESTACADOS = {
         ('84%', 'de reducción certificada de emisiones con residuos'),
         ('81%', 'a partir de oleína'),
         ('60-62%', 'a partir de aceite de soja'),
-        ('Ninguno', 'reconocimiento a esa diferencia bajo el régimen vigente'),
+        ('Ninguno', 'reconocimiento a esa diferencia bajo el régimen vigente', 'neg'),
     ),
     5: _kpis(
-        ('USD 2.040 M', 'transferidos a las integradas por el diferencial de retenciones'),
+        ('2.040 M usd', 'transferidos a las integradas por el diferencial de retenciones', 'neg compacto'),
         ('3,4 veces', 'la inversión total repagada por ese diferencial'),
-        ('&gt;120%', 'derechos compensatorios y antidumping aplicados por EE.UU.'),
+        ('&gt;120%', 'derechos compensatorios y antidumping aplicados por EE.UU.', 'neg'),
         ('6,3 a 1', 'escala de la integrada promedio frente a la no integrada'),
     ) + _flujo(
         ('Retenciones asimétricas', 'aceite 27-32% vs biodiesel 0-5%'),
@@ -145,10 +145,11 @@ HECHOS_DESTACADOS = {
     6: _kpis(
         ('4', 'no integradas registradas al iniciarse la obligación de mezcla (2010)'),
         ('50.000 t', 'tope por empresa, eludido mediante fragmentación societaria'),
-        ('348.000 t', 'acumuladas por un grupo con siete plantas "independientes"'),
+        ('348.000 t', 'acumuladas por un grupo con siete plantas "independientes"', 'neg'),
     ),
     10: _kpis(
-        ('3 años, 3 meses y 27 días', 'demoró la primera metodología de precios ordenada por la Ley 27.640'),
+        ('3 años, 3 meses y 27 días', 'demoró la primera metodología de precios ordenada por la Ley 27.640', 'neg compacto'),
+        ('10', 'secretarios de Energía desde 2010: la rotación del área', 'neg'),
     ),
     12: _kpis(
         ('2,6 Mt', 'déficit de mezcla acumulado 2010-2026: 2.581.105 toneladas', 'neg'),
@@ -162,79 +163,79 @@ HECHOS_DESTACADOS = {
         ('Ganancia de las mezcladoras', '1.059 M usd + 407 M usd por reducción del corte'),
     ),
     13: _kpis(
-        ('10% → 5%', 'la reducción del mandato de biodiesel que la Ley 27.640 consolidó'),
+        ('10% → 5%', 'la reducción del mandato de biodiesel que la Ley 27.640 consolidó', 'neg'),
         ('6% + 6%', 'mínimos de caña y maíz que la facultad abierta contradecía'),
     ),
     14: _kpis(
-        ('98%', 'de la demanda concentrada en cuatro compañías'),
-        ('≈60%', 'de las compras reunidas en un solo comprador'),
-        ('&gt;90%', 'del metanol provisto por ese mismo actor'),
+        ('98%', 'de la demanda concentrada en cuatro compañías', 'neg'),
+        ('≈60%', 'de las compras reunidas en un solo comprador', 'neg'),
+        ('&gt;90%', 'del metanol provisto por ese mismo actor', 'neg'),
     ),
     15: _kpis(
-        ('2.581.105 t', 'de déficit reconstruido por los privados, no publicado por el Estado', 'compacto'),
-        ('USD 53 M', 'de quebranto documentado mediante intimaciones'),
-        ('0', 'indicadores de cumplimiento publicados por el Estado'),
+        ('2.581.105 t', 'de déficit reconstruido por los privados, no publicado por el Estado', 'neg compacto'),
+        ('53 M usd', 'de quebranto documentado mediante intimaciones', 'neg'),
+        ('0', 'indicadores de cumplimiento publicados por el Estado', 'neg'),
     ),
     16: _kpis(
         ('5% → 7%', 'el corte elevado por la Res. 554/2010 a favor de las integradas'),
-        ('98%', 'de las compras concentradas en cuatro compañías'),
+        ('98%', 'de las compras concentradas en cuatro compañías', 'neg'),
     ),
     17: _kpis(
-        ('USD 0,80/l', 'cuesta el rubro metanol e insumos en la Argentina'),
-        ('USD 0,10/l', 'el mismo rubro en EE.UU. y Brasil'),
-        ('&gt;90%', 'del metanol proviene de un único proveedor'),
-        ('10', 'resoluciones de precio dictadas fuera de la metodología legal'),
+        ('0,80 usd/l', 'cuesta el rubro metanol e insumos en la Argentina', 'neg'),
+        ('0,10 usd/l', 'el mismo rubro en EE.UU. y Brasil'),
+        ('&gt;90%', 'del metanol proviene de un único proveedor', 'neg'),
+        ('10', 'resoluciones de precio dictadas fuera de la metodología legal', 'neg'),
     ),
     19: _kpis(
         ('84%', 'reducción certificada del biodiesel de residuos, auditada anualmente'),
-        ('Menor y sin verificar', 'la reducción que acredita el coprocesado'),
-        ('Solo refinadores', 'disponen de infraestructura para coprocesar'),
+        ('Menor y sin verificar', 'la reducción que acredita el coprocesado', 'neg compacto'),
+        ('Solo refinadores', 'disponen de infraestructura para coprocesar', 'compacto'),
     ),
     20: _kpis(
-        ('&gt;75%', 'del costo del biodiesel es el aceite, comprado a competidores directos'),
-        ('&gt;90%', 'del metanol proviene de un único proveedor'),
+        ('&gt;75%', 'del costo del biodiesel es el aceite, comprado a competidores directos', 'neg'),
+        ('&gt;90%', 'del metanol proviene de un único proveedor', 'neg'),
         ('3,4 veces', 'la inversión repagada por ventaja regulatoria'),
         ('6,3 a 1', 'relación de escala entre integrada y no integrada promedio'),
     ),
     26: _kpis(
-        ('USD 1.059 M', 'ganó la sustitución del biodiesel con gasoil fósil importado'),
-        ('USD 1,10-1,15/l', 'costo del biodiesel argentino a fines de 2024, equivalente a EE.UU. y Brasil'),
+        ('1.059 M usd', 'ganó la sustitución del biodiesel con gasoil fósil importado', 'neg compacto'),
+        ('1,10-1,15 usd/l', 'costo del biodiesel argentino a fines de 2024, equivalente a EE.UU. y Brasil', 'compacto'),
     ),
     28: _kpis(
-        ('2.581.105 t', 'de déficit de mezcla sin sanción conocida', 'compacto'),
-        ('10', 'determinaciones de precio fuera de la ley sin consecuencia'),
-        ('16 meses', 'de fórmula incumplida, documentados por los propios administrados'),
+        ('2.581.105 t', 'de déficit de mezcla sin sanción conocida', 'neg compacto'),
+        ('10', 'determinaciones de precio fuera de la ley sin consecuencia', 'neg'),
+        ('16 meses', 'de fórmula incumplida, documentados por los propios administrados', 'neg'),
     ),
     33: _kpis(
-        ('0', 'sanciones aplicadas pese al déficit, el no retiro y el apartamiento de la fórmula'),
-        ('Sin tipo expreso', 'las conductas más lesivas del sistema'),
+        ('0', 'sanciones aplicadas pese al déficit, el no retiro y el apartamiento de la fórmula', 'neg'),
+        ('Sin tipo expreso', 'las conductas más lesivas del sistema', 'neg compacto'),
     ),
     36: _kpis(
-        ('Ninguna', 'medición exigía el texto base a la porción exenta'),
+        ('Ninguna', 'medición exigía el texto base a la porción exenta', 'neg'),
         ('100%', 'del biodiesel se mide, factura y certifica operación por operación'),
     ),
     38: _kpis(
         ('50.000 t', 'plantas replicadas para eludir el tope de capacidad'),
-        ('2', 'espacios de indeterminación documentados que la modificación cierra'),
+        ('2', 'espacios de indeterminación documentados que la modificación cierra', 'neg'),
     ),
     39: _kpis(
         ('3 de 5', 'umbrales de prórroga se verificarían hoy'),
-        ('≈60%', 'de las compras en un solo comprador (el umbral fija 50%)'),
-        ('43%', 'utilización de capacidad de las elaboradoras pequeñas en 2023'),
-        ('Sin acceso', 'de las No Integradas al cupo europeo (Decisión UE 2019/245)'),
+        ('≈60%', 'de las compras en un solo comprador (el umbral fija 50%)', 'neg'),
+        ('43%', 'utilización de capacidad de las elaboradoras pequeñas en 2023', 'neg'),
+        ('Sin acceso', 'de las No Integradas al cupo europeo (Decisión UE 2019/245)', 'neg compacto'),
     ),
     40: _kpis(
-        ('2,8 Mt', 'de déficit sin sanción bajo la obligación agregada'),
+        ('2,6 Mt', 'de déficit sin sanción bajo la obligación agregada', 'neg'),
         ('3', 'conceptos que la tabla separa: físico, certificado y crédito'),
     ),
     41: _kpis(
-        ('&gt;340.000 t', 'acumuladas por grupos vía plantas "independientes" de 50.000'),
-        ('≈60%', 'de las compras concentradas en el comprador dominante'),
-        ('2,8 Mt', 'acumuladas de faltante: bajo el régimen vigente fue la regla'),
+        ('&gt;340.000 t', 'acumuladas por grupos vía plantas "independientes" de 50.000', 'neg compacto'),
+        ('≈60%', 'de las compras concentradas en el comprador dominante', 'neg'),
+        ('2,6 Mt', 'acumuladas de faltante: bajo el régimen vigente fue la regla', 'neg'),
     ),
     42: _kpis(
-        ('1 día', 'después de publicada, el texto base derogaba todo el régimen anterior'),
-        ('3 años, 3 meses y 27 días', 'demoró la única metodología ordenada por la Ley 27.640'),
+        ('1 día', 'después de publicada, el texto base derogaba todo el régimen anterior', 'neg'),
+        ('3 años, 3 meses y 27 días', 'demoró la única metodología ordenada por la Ley 27.640', 'neg compacto'),
     ) + _flujo(
         ('Derogación inmediata', 'al día siguiente de la publicación'),
         ('Régimen sustituto inexistente', 'mercado, registros, metodologías y garantías por constituirse'),
@@ -712,14 +713,46 @@ IMAGENES = {
 # src/components/propuesta/HechosCharts.jsx; se montan por portal sobre los
 # placeholders .pl-chart del popup). Datos: src/data/*.json del dashboard.
 CHARTS = {
-    5: ['asimetria-escala', 'retenciones'],
+    5: ['asimetria-escala', 'retenciones', 'categorias-comparadas', 'grupos-aceiteras'],
+    6: ['grupos-aceiteras'],
+    10: ['secretarios'],
     # corte-serie y eficacia-gestiones van inline en el override (después de
     # los párrafos 1 y 2); acá solo lo que cierra el popup
     12: ['petroleras-cumplimiento'],
-    14: ['precio-formula', 'concentracion-compradores'],
+    13: ['corte-serie'],
+    14: ['precio-formula', 'concentracion-compradores', 'demanda-petroleras'],
+    15: ['deficit', 'asignacion-ventas'],
     17: ['metanol'],
-    39: ['utilizacion'],
+    20: ['aceite-fas', 'metanol'],
+    26: ['corte-real-go'],
+    28: ['deficit'],
+    38: ['grupos-aceiteras'],
+    39: ['utilizacion', 'categorias-comparadas', 'concentracion-compradores'],
+    41: ['grupos-aceiteras', 'concentracion-compradores'],
+    42: ['formulas-precios'],
 }
+
+
+def intercalar_charts(texto, charts):
+    """Reparte los gráficos dentro del texto del popup, uno después de cada
+    párrafo (patrón aprobado en el art. 12); los que sobran van al final.
+    Si el texto ya trae placeholders (override con posiciones propias), los
+    de CHARTS se agregan al final sin tocar el intercalado manual."""
+    marca = '<div class="pl-chart" data-chart="{}"></div>'
+    if not charts:
+        return texto
+    if 'pl-chart' in texto:
+        return texto + ''.join(marca.format(c) for c in charts)
+    partes = texto.split('</p>')
+    out, ci = [], 0
+    for parte in partes[:-1]:
+        out.append(parte + '</p>')
+        if ci < len(charts):
+            out.append(marca.format(charts[ci]))
+            ci += 1
+    out.append(partes[-1])
+    out.extend(marca.format(c) for c in charts[ci:])
+    return ''.join(out)
 
 # Artículos con modificaciones que no violan norma alguna: llevan solo la
 # oblea de Justificación, con texto dictado por HDO (2026-08-10).
@@ -1222,14 +1255,13 @@ def generar_informe(bloques, ampliado):
         html_hechos = OVERRIDES.get((nro, 'hechos')) or strip_lead(hechos, 'Evidencia fáctica.')
         if not html_hechos.strip():
             sys.exit(f'ERROR: artículo {nro} sin párrafos de Evidencia fáctica')
+        html_hechos = intercalar_charts(html_hechos, CHARTS.get(nro, []))
         html_hechos = HECHOS_DESTACADOS.get(nro, '') + html_hechos
         html_hechos += ''.join(
             f'<figure class="pl-imagen"><a href="{src}" target="_blank" rel="noopener">'
             f'<img src="{src}" alt="{html.escape(alt)}" loading="lazy"/></a>'
             '<figcaption>Click para ampliar</figcaption></figure>'
             for src, alt in IMAGENES.get(nro, []))
-        html_hechos += ''.join(f'<div class="pl-chart" data-chart="{c}"></div>'
-                               for c in CHARTS.get(nro, []))
         html_hechos += tablas_evidencia_ampl(secciones_ampl, nro)
         pops.append(f'<div class="pl-pop" data-art="{nro}" data-tipo="normas" '
                     f'data-titulo="{tit}" data-sub="Normas que viola el proyecto oficial">'

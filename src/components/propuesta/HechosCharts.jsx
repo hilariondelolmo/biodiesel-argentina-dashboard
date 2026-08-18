@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Area, Bar, BarChart, Cell, ComposedChart, Line, LineChart,
   Tooltip, XAxis, YAxis, ResponsiveContainer,
@@ -12,6 +13,13 @@ import { fmt } from '../../lib/format.js';
 import ChartTooltip from '../charts/ChartTooltip.jsx';
 import EficaciaGestionesCards from '../gestion/EficaciaGestiones.jsx';
 import PetrolerasCumplimiento from '../gestion/PetrolerasCumplimiento.jsx';
+import DeficitChart from '../gestion/DeficitChart.jsx';
+import SecretariosLista from '../gestion/Secretarios.jsx';
+import FormulasPreciosGrid from '../gestion/FormulasPrecios.jsx';
+import GruposAceiteras from '../mercado/GruposAceiteras.jsx';
+import CategoriasComparadas from '../mercado/CategoriasComparadas.jsx';
+import CorteRealGO from '../mercado/CorteRealGO.jsx';
+import DemandaPetroleras from '../mercado/DemandaPetroleras.jsx';
 import { useChartColors } from '../../lib/theme.jsx';
 
 /**
@@ -25,17 +33,36 @@ import { useChartColors } from '../../lib/theme.jsx';
 
 const ALTO = 240;
 
-function Marco({ titulo, nota, children }) {
+function Marco({ titulo, nota, extra, children }) {
   return (
     <figure className="pl-chart-box">
-      <figcaption>
-        <span className="pl-chart-titulo">{titulo}</span>
-        {nota && <span className="pl-chart-nota">{nota}</span>}
+      <figcaption style={extra ? { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.8rem', flexWrap: 'wrap' } : undefined}>
+        <span>
+          <span className="pl-chart-titulo">{titulo}</span>
+          {nota && <span className="pl-chart-nota">{nota}</span>}
+        </span>
+        {extra}
       </figcaption>
       <ResponsiveContainer width="100%" height={ALTO}>
         {children}
       </ResponsiveContainer>
     </figure>
+  );
+}
+
+// Ventanas de análisis compartidas por los gráficos con selector
+const VENTANAS = [['1m', 1], ['6m', 6], ['1a', 12], ['5a', 60], ['10a', 120], ['Todo', 0]];
+
+function SelectorVentana({ meses, setMeses }) {
+  return (
+    <span className="chart-range-selector">
+      {VENTANAS.map(([rotulo, m]) => (
+        <button key={rotulo} type="button" className={meses === m ? 'active' : ''}
+                onClick={() => setMeses(m)}>
+          {rotulo}
+        </button>
+      ))}
+    </span>
   );
 }
 
@@ -158,12 +185,16 @@ function PrecioFormula() {
   );
 }
 
-/* ── art. 14: concentración de la demanda (últimos 12 meses) ── */
+/* ── art. 14: concentración de la demanda, con ventana elegible ── */
 function ConcentracionCompradores() {
   const C = useChartColors();
+  const [meses, setMeses] = useState(12);
+  const filas = petroleras.mensual;
+  const ventana = meses ? filas.slice(-meses) : filas;
   const compras = {};
-  for (const e of petroleras.matriz_12m) {
-    for (const [petro, v] of Object.entries(e.ventas)) {
+  for (const row of ventana) {
+    for (const [petro, v] of Object.entries(row)) {
+      if (petro === 'fecha' || !v) continue;
       compras[petro] = (compras[petro] || 0) + v;
     }
   }
@@ -177,10 +208,14 @@ function ConcentracionCompradores() {
   if (resto > 0) {
     top.push({ nombre: 'Resto', Participación: +((resto / total) * 100).toFixed(1) });
   }
-  const { desde, hasta } = petroleras.periodo_12m;
+  const desde = ventana[0]?.fecha;
+  const hasta = ventana.at(-1)?.fecha;
+  const rango = desde === hasta ? fmt.monthShort(desde)
+    : `${fmt.monthShort(desde)} - ${fmt.monthShort(hasta)}`;
   return (
     <Marco titulo="Concentración de las compras de biodiesel para el corte"
-           nota={`% del total, ${fmt.monthShort(desde)} - ${fmt.monthShort(hasta)} - fuente: SE / dashboard explorarg`}>
+           nota={`% del total, ${rango} - fuente: SE / dashboard explorarg`}
+           extra={<SelectorVentana meses={meses} setMeses={setMeses} />}>
       <BarChart data={top} layout="vertical"
                 margin={{ top: 4, right: 24, left: 8, bottom: 0 }}>
         <XAxis type="number" {...ejeX(C, { tickFormatter: (v) => `${v}%` })} />
@@ -342,11 +377,76 @@ function Utilizacion() {
   );
 }
 
+/* ── art. 20: aceite de soja FAS Rosario, el rubro dominante del costo ── */
+function AceiteFas() {
+  const C = useChartColors();
+  const serie = evidencia.aceite
+    .filter((r) => r.fecha >= '2010-01' && r.fas_minagri != null)
+    .map((r) => ({ fecha: r.fecha, 'FAS Rosario': Math.round(r.fas_minagri) }));
+  return (
+    <Marco titulo="Aceite de soja - precio FAS Rosario"
+           nota="usd/ton - más del 75% del costo del biodiesel - fuente: MINAGRI / dashboard explorarg">
+      <LineChart data={serie} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+        <XAxis dataKey="fecha" {...ejeX(C, {
+          ticks: ticksAnuales(serie),
+          tickFormatter: (f) => f.slice(0, 4),
+        })} />
+        <YAxis {...ejeY(C, fmt.compact)} />
+        <Tooltip content={<ChartTooltip unit="usd/ton" labelFormatter={fmt.monthShort} />}
+                 cursor={{ stroke: C.cursorLinea }} />
+        <Line isAnimationActive={false} dataKey="FAS Rosario" stroke={C.oil} dot={false} strokeWidth={2} />
+      </LineChart>
+    </Marco>
+  );
+}
+
+/* ── componentes de /gestion y /mercado reusados tal cual en los popups ── */
+function SecretariosBox() {
+  return (
+    <figure className="pl-chart-box">
+      <figcaption>
+        <span className="pl-chart-titulo">Los funcionarios del régimen</span>
+        <span className="pl-chart-nota">
+          rotación de la Autoridad de Aplicación - fuente: normativa / dashboard explorarg
+        </span>
+      </figcaption>
+      <SecretariosLista />
+    </figure>
+  );
+}
+
+function FormulasBox() {
+  return (
+    <figure className="pl-chart-box">
+      <figcaption>
+        <span className="pl-chart-titulo">Las fórmulas de precio del biodiesel desde 2010</span>
+        <span className="pl-chart-nota">
+          una veintena de cambios normativos - fuente: normativa SE / dashboard explorarg
+        </span>
+      </figcaption>
+      <FormulasPreciosGrid />
+    </figure>
+  );
+}
+
+function DemandaPetrolerasBox() {
+  const ultimo = corte.mensual.filter((m) => m.obligatorio != null).at(-1)?.fecha;
+  return <DemandaPetroleras mes={ultimo} />;
+}
+
 export const HECHOS_CHARTS = {
   'corte-serie': CorteSerie,
   'eficacia-gestiones': EficaciaGestiones,
   'petroleras-cumplimiento': PetrolerasCumplimiento,
   'asignacion-ventas': AsignacionVentas,
+  'grupos-aceiteras': GruposAceiteras,
+  'categorias-comparadas': CategoriasComparadas,
+  'corte-real-go': CorteRealGO,
+  'demanda-petroleras': DemandaPetrolerasBox,
+  deficit: DeficitChart,
+  secretarios: SecretariosBox,
+  'formulas-precios': FormulasBox,
+  'aceite-fas': AceiteFas,
   'precio-formula': PrecioFormula,
   'concentracion-compradores': ConcentracionCompradores,
   metanol: Metanol,
